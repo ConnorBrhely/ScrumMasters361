@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{%  load static %}
+<html lang="en">
+<head>
+    <link href="{%  static 'bg.css' %}" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <title>{{ page }}</title>
+</head>
+<body>
+    stuff: {{ page }}
+    <form method="post" action="#">
+        {%  csrf_token %}
+        #take input here for email/pw
+    </form>
+</body>
+</html>
