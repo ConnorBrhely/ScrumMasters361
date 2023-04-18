@@ -8,13 +8,17 @@
 </head>
 <body>
     stuff: {{ page }}
-    <form method="post" action="#">
-        {%  csrf_token %}
-        <!--take input here for email/pw-->
-        x: <input name="x" type="email"/><br/>
-		y: <input name="y" type="text"/><br/>
-		<input type="submit">
-    </form>
+        <div id = "login">
+        <form method="post" action="#">
+            {%  csrf_token %}
+            <!--take input here for email/pw-->
+            <label for="x"> Email: </label> <br>
+            <input name="Email: " type="email"/><br/>
+            <label for="y"> Password: </label> <br>
+		    <input name="Password: " type="password"/><br/>
+		    <input type="submit" value="Log in">
+        </form>
+        </div>
     output = {{s}} <!-- return confirmation that input was valid/invalid -->
 </body>
 </html>
