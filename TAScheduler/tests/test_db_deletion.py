@@ -1,7 +1,8 @@
 from django.test import TestCase
 from TAScheduler.models import User, Course, Section
 
-class TestLogin(TestCase):
+
+class TestDatabaseDeletion(TestCase):
     def setUp(self):
         self.user = User.objects.create(
             name='Test User',
@@ -31,3 +32,9 @@ class TestLogin(TestCase):
         self.course.delete()
         self.assertEqual(Course.objects.count(), 0, 'Course was not deleted')
         self.assertEqual(Section.objects.count(), 0, 'Section was not cascade deleted after course deletion')
+
+    def test_delete_section(self):
+        self.section.delete()
+        self.assertEqual(Section.objects.count(), 0, 'Section was not deleted')
+        self.assertEqual(Course.objects.get(pk=self.course.pk).sections.count(), 0,
+                         'Section was not removed from course after section deletion')

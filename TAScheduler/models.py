@@ -9,7 +9,7 @@ class User(models.Model):
     name = models.CharField(max_length=128)
     email = models.EmailField()
     password = models.CharField(max_length=256)
-    type = models.CharField(max_length=8, choices=UserType.choices)
+    type = models.CharField(max_length=32, choices=UserType.choices)
     home_address = models.CharField(max_length=256)
     phone_number = models.CharField(max_length=16)
     office_hours = models.CharField(max_length=256)
@@ -18,7 +18,7 @@ class User(models.Model):
 class Course(models.Model):
     name = models.CharField(max_length=128)
     term = models.CharField(max_length=128)
-    instructor = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='instructor')
+    instructor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='instructor')
 
 
 class Section(models.Model):
