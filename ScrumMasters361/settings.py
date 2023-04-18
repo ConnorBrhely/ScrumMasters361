@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # 'TAScheduler',
     'TAScheduler.apps.TASchedulerConfig',
     'django.contrib.admin',
     'django.contrib.auth',

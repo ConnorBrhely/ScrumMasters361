@@ -1,5 +1,5 @@
-from django.test import TestCase
 from TAScheduler.models import User, Course, Section
+from django.test import TestCase
 
 
 class TestDatabaseDeletion(TestCase):
