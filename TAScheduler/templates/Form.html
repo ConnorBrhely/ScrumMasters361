@@ -2,7 +2,7 @@
 {%  load static %}
 <html lang="en">
 <head>
-    <link href="{%  static 'bg.css' %}" rel="stylesheet" type="text/css">
+    <link href="{%  static 'style.css' %}" rel="stylesheet" type="text/css">
     <meta charset="UTF-8">
     <title>{{ page }}</title>
 </head>
@@ -10,7 +10,11 @@
     stuff: {{ page }}
     <form method="post" action="#">
         {%  csrf_token %}
-        #take input here for email/pw
+        <!--take input here for email/pw-->
+        x: <input name="x" type="email"/><br/>
+		y: <input name="y" type="text"/><br/>
+		<input type="submit">
     </form>
+    output = {{s}} <!-- return confirmation that input was valid/invalid -->
 </body>
 </html>
