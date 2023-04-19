@@ -8,7 +8,7 @@ class TestUserModel(TestCase):
             name='Test User',
             email='testuser@example.com',
             password='testpassword',
-            type=User.UserType.STUDENT,
+            type=User.UserType.TA,
             home_address='123 Main St.',
             phone_number='555-555-5555',
             office_hours='MWF 1-3',
@@ -41,7 +41,7 @@ class TestUserModel(TestCase):
         self.assertEqual(self.user.name, 'Test User')
         self.assertEqual(self.user.email, 'testuser@example.com')
         self.assertEqual(self.user.password, 'testpassword')
-        self.assertEqual(self.user.type, User.UserType.STUDENT)
+        self.assertEqual(self.user.type, User.UserType.TA)
         self.assertEqual(self.user.home_address, '123 Main St.')
         self.assertEqual(self.user.phone_number, '555-555-5555')
         self.assertEqual(self.user.office_hours, 'MWF 1-3')
