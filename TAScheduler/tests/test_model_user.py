@@ -36,3 +36,27 @@ class TestModelUser(TestCase):
         with self.assertRaises(ValueError, msg="Value error not thrown when blank input entered"):
             self.user.update_password("")
 
+    def test_updateHomeAddress(self):
+        self.user.home_address = '1234 S. Street'
+        self.save()
+        self.assertEqual('1234 S. Street', self.user.home_address, msg='user home address updated')
+
+    def test_noHomeAddress(self):
+        self.user.home_address = ''
+        self.save()
+        self.assertEqual('', self.user.home_address, msg='user has no home address')
+
+    def test_updatePhoneNumber(self):
+        self.user.phone_number = '(414) 444-4444'
+        self.save()
+        self.assertEqual('(414) 444-4444', self.user.phone_number, msg='user has updated phone number')
+
+    def test_updateOfficeHours(self):
+        self.user.office_hours = '2-4 pm MW'
+        self.save()
+        self.assertEqual('2-4 pm MW', self.user.office_hours, msg='user has updated office hours')
+
+    def test_noOfficeHours(self):
+        self.user.office_hours = ''
+        self.save()
+        self.assertEqual('', self.user.office_hours, msg='user has no office hours')

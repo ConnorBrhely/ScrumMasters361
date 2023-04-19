@@ -23,6 +23,16 @@ class TestModelUser(TestCase):
 
         # TODO: Add tests for Section model
 
+    def test_updateName(self):
+        self.section.name = 'new name'
+        self.save()
+        self.assertEqual('new name', self.section.name, msg="section has new name")
+
+    def test_noName(self):
+        self.section.name = ''
+        self.save()
+        self.assertEqual('', self.section.name, msg="section has no name")
+
 
 
     def test_update_name(self):
