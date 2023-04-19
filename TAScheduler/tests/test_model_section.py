@@ -21,4 +21,13 @@ class TestModelUser(TestCase):
                 course=self.course,
             )
 
-        # TODO: Add tests for Section model
+        #TODO: Add tests for Section model
+
+    def testSection(self):
+        self.assertequal(self.section.name, 'Test Section' , 'name is not the same as section')
+
+    def testLocation(self):
+        self.assertequal(self.section.location, 'Test Location', 'location does not match given data')
+
+    def testTime(self):
+        self.assertequal
