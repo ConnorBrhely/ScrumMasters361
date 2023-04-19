@@ -18,7 +18,7 @@ class UserManager(models.Manager):
 
 class User(models.Model):
     class UserType(models.TextChoices):
-        STUDENT = 'TA', 'TA'
+        TA = 'TA', 'TA'
         PROFESSOR = 'PROFESSOR', 'Professor'
         ADMIN = 'ADMIN', 'Admin'
 
