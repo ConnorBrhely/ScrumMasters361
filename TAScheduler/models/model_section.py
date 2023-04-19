@@ -1,5 +1,4 @@
 from django.db import models
-from model_user import User
 
 class Section(models.Model):
     name = models.CharField(max_length=128)
@@ -19,12 +18,13 @@ class Section(models.Model):
         self.save()
         return self
 
-    def add_ta(self, user: User):
+    def add_ta(self, user):
         """
         Adds a TA to a section
         :param user: The TA to add to the section
         :return: The updated section object
         """
+        from model_user import User
         if user.type != User.UserType.TA:
             raise ValueError('User must be a TA to be added to a section')
 
@@ -32,7 +32,7 @@ class Section(models.Model):
         self.save()
         return self
 
-    def remove_ta(self, user: User):
+    def remove_ta(self, user):
         """
         Removes a TA from a section
         :param user: The TA to remove from the section
