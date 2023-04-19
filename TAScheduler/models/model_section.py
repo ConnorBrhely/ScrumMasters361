@@ -8,6 +8,7 @@ class Section(models.Model):
     course = models.ForeignKey("TAScheduler.Course", on_delete=models.CASCADE, related_name='sections')
     tas = models.ManyToManyField("TAScheduler.User", related_name='sections')
 
+    # Hello, world!
     def update_name(self, name: str):
         """
         Updates the name of a section
