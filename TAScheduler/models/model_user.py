@@ -53,7 +53,7 @@ class User(models.Model):
         :return: The updated user object
         """
         if not validate.validate_password(password):
-            raise ValueError('Password must be at least 8 characters long and contain at least one number and one letter')
+            raise ValueError('Password must be at least 8 characters long and contain at least one number and one uppercase letter')
         self.password = password
         self.save()
         return self
