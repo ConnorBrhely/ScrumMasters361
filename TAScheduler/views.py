@@ -29,9 +29,9 @@ class CreateUser(View):
             m = User.objects.register(name="ben", email=email, password=password, user_type=request.POST["type"])
             m.save()
             return render(request, "createuser.html", {"message": "User successfully created"})
-        elif not validPassword:
-            return render(request, "createuser.html", {"message": "Passwords does not contain 8 characters with 1 uppercase letter and 1 number"})
         elif not equalPassword:
             return render(request, "createuser.html", {"message": "Passwords do not match"})
+        elif not validPassword:
+            return render(request, "createuser.html", {"message": "Passwords does not contain 8 characters with 1 uppercase letter and 1 number"})
         else:
             return render(request, "createuser.html", {"message": "User with email already exists"})
