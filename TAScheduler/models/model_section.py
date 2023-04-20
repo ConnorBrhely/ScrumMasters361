@@ -41,3 +41,5 @@ class Section(models.Model):
         self.tas.remove(user)
         self.save()
         return self
+
+    #COMMENT
