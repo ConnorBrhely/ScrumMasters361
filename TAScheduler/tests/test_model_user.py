@@ -60,3 +60,17 @@ class TestModelUser(TestCase):
         self.user.office_hours = ''
         self.save()
         self.assertEqual('', self.user.office_hours, msg='user has no office hours')
+
+    def test_updateContactInfo(self):
+        self.user.update_contact_info(self, '1234 S. Street', '(414) 444-4444', '2-4 pm MW')
+        self.save()
+        self.assertEqual('1234 S. Street', self.user.home_address, msg='user home address updated')
+        self.assertEqual('(414) 444-4444', self.user.phone_number, msg='user phone number updated')
+        self.assertEqual('2-4 pm MW', self.user.office_hours, msg='office hours updated')
+
+    def test_noContactInfo(self):
+        self.user.update_contact_info(self, '', '', '')
+        self.save()
+        self.assertEqual('', self.user.home_address, msg='user has no home address')
+        self.assertEqual('', self.user.phone_number, msg='user has no phone number')
+        self.assertEqual('', self.user.office_hours, msg='user has no office hours')
