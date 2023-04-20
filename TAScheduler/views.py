@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from TAScheduler.models import User
+from TAScheduler.common import validate
 
 
 class CreateUser(View):
@@ -10,21 +11,27 @@ class CreateUser(View):
 
     def post(self, request):
         noSuchUser = False
-        badPassword = False
+        validPassword = False
+        equalPassword = False
+        validEmail = False
 
         email = request.POST["email"]
+        badEmail = validate.validate_email(email)
         password = request.POST["password"]
         secondpassword = request.POST["confirmpassword"]
         try:
             m = User.objects.get(email=email)
-            badPassword = (password != secondpassword)
+            equalPassword = (password == secondpassword)
+            validPassword = validate.validate_password(password)
         except:
             noSuchUser = True
-        if noSuchUser & badPassword == True:
+        if noSuchUser and validPassword and equalPassword and validEmail:
             m = User(email=email, password=password)
             m.save()
             return render(request, "createuser.html", {"message": "User successfully created"})
-        elif badPassword:
+        elif not validPassword:
+            return render(request, "createuser.html", {"message": "Passwords does not contain 8 characters with 1 uppercase letter and 1 number"})
+        elif not equalPassword:
             return render(request, "createuser.html", {"message": "Passwords do not match"})
         else:
             return render(request, "createuser.html", {"message": "User with email already exists"})
