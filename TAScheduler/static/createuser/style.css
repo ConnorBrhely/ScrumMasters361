@@ -9,10 +9,9 @@
 .submitbutton:hover{
    background-color: orange;
 }
-input.email {
+input.key{
     width: 400px; height: 20px;
 }
-
 .center {
    display: flex;
    justify-content: center;
