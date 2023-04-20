@@ -20,9 +20,9 @@ class CreateUser(View):
         password = request.POST["password"]
         secondpassword = request.POST["confirmpassword"]
         try:
-            m = User.objects.get(email=email)
             equalPassword = (password == secondpassword)
             validPassword = validate.validate_password(password)
+            m = User.objects.get(email=email)
         except:
             noSuchUser = True
         if noSuchUser and validPassword and equalPassword and validEmail:
