@@ -11,14 +11,12 @@ class CreateUser(View):
 
     def post(self, request):
         noSuchUser = False
-        validPassword = False
-        equalPassword = False
-        validEmail = False
-
         email = request.POST["email"]
         validEmail = validate.validate_email(email)
         password = request.POST["password"]
         secondpassword = request.POST["confirmpassword"]
+        if email == "" or password == "" or secondpassword == "":
+            return render(request, "createuser.html", {"message": "One or more blank field detected"})
         try:
             equalPassword = (password == secondpassword)
             validPassword = validate.validate_password(password)
@@ -32,6 +30,7 @@ class CreateUser(View):
         elif not equalPassword:
             return render(request, "createuser.html", {"message": "Passwords do not match"})
         elif not validPassword:
-            return render(request, "createuser.html", {"message": "Passwords does not contain 8 characters with 1 uppercase letter and 1 number"})
+            return render(request, "createuser.html",
+                          {"message": "Passwords does not contain 8 characters with 1 uppercase letter and 1 number"})
         else:
             return render(request, "createuser.html", {"message": "User with email already exists"})
