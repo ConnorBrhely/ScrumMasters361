@@ -16,7 +16,7 @@ class CreateUser(View):
         validEmail = False
 
         email = request.POST["email"]
-        badEmail = validate.validate_email(email)
+        validEmail = validate.validate_email(email)
         password = request.POST["password"]
         secondpassword = request.POST["confirmpassword"]
         try:
