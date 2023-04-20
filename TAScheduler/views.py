@@ -26,7 +26,7 @@ class CreateUser(View):
         except:
             noSuchUser = True
         if noSuchUser and validPassword and equalPassword and validEmail:
-            m = User(email=email, password=password, user_type=request.POST["type"])
+            m = User.objects.register(name="ben", email=email, password=password, user_type=request.POST["type"])
             m.save()
             return render(request, "createuser.html", {"message": "User successfully created"})
         elif not validPassword:
