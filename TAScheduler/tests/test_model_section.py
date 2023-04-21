@@ -54,3 +54,14 @@ class TestModelUser(TestCase):
         self.section.tas.add(self.user)
         self.section.remove_ta(self.user)
         self.assertFalse(self.section.tas.exists())
+
+        #TODO: Add tests for Section model
+
+    def testSection(self):
+        self.assertequal(self.section.name, 'Test Section' , 'name is not the same as section')
+
+    def testLocation(self):
+        self.assertequal(self.section.location, 'Test Location', 'location does not match given data')
+
+    def testTime(self):
+        self.assertequal
