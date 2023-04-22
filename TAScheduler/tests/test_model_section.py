@@ -57,11 +57,7 @@ class TestModelUser(TestCase):
 
         #TODO: Add tests for Section model
 
-    def testSection(self):
-        self.assertequal(self.section.name, 'Test Section' , 'name is not the same as section')
+    def test_add_to_section(self):
+        self.user.add_to_section('Test Section')
+        self.assertTrue(self.section.tas.exists())
 
-    def testLocation(self):
-        self.assertequal(self.section.location, 'Test Location', 'location does not match given data')
-
-    def testTime(self):
-        self.assertequal
