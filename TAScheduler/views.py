@@ -11,11 +11,14 @@ class CreateUser(View):
 
     def post(self, request):
         noSuchUser = False
+        name = request.POST["name"]
         email = request.POST["email"]
         validEmail = validate.validate_email(email)
+        if not validEmail:
+            return render(request, "createuser.html", {"message": "Invalid email entered"})
         password = request.POST["password"]
         secondpassword = request.POST["confirmpassword"]
-        if email == "" or password == "" or secondpassword == "":
+        if email == "" or password == "" or secondpassword == "" or name == "":
             return render(request, "createuser.html", {"message": "One or more blank field detected"})
         try:
             equalPassword = (password == secondpassword)
@@ -23,8 +26,8 @@ class CreateUser(View):
             m = User.objects.get(email=email)
         except:
             noSuchUser = True
-        if noSuchUser and validPassword and equalPassword and validEmail:
-            m = User.objects.register(name="ben", email=email, password=password, user_type=request.POST["type"])
+        if noSuchUser and validPassword and equalPassword:
+            m = User.objects.register(name=name, email=email, password=password, user_type=request.POST["type"])
             m.save()
             return render(request, "createuser.html", {"message": "User successfully created"})
         elif not equalPassword:
