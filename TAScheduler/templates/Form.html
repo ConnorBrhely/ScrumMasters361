@@ -1,3 +1,7 @@
+{# Changed the form html page to work better for taking the input#}
+{# However it doesn't have any styling or blurring of password inputs #}
+{# I don't think this is a permanent solution, but it's good for testing. #}
+
 <!DOCTYPE html>
 {%  load static %}
 <html lang="en">
@@ -12,11 +16,22 @@
         <form method="post" action="#">
             {%  csrf_token %}
             <!--take input here for email/pw-->
-            <label for="x"> Email: </label> <br>
-            <input name="Email: " type="email"/><br/>
-            <label for="y"> Password: </label> <br>
-		    <input name="Password: " type="password"/><br/>
-		    <input type="submit" value="Log in">
+{#            <label for="x"> Email: </label> <br>#}
+{#            <input name="Email: " type="email"/><br/>#}
+{#            <label for="y"> Password: </label> <br>#}
+{#		    <input name="Password: " type="password"/><br/>#}
+{#		    <input type="submit" value="Log in">#}
+
+            <tr>
+                <td><label for="email">Email:</label></td>
+                <td style="text-align: center"><input type="text" class="key" id="email" name="email"></td>
+            </tr>
+            <tr>
+                <td><label for="password">Password:</label></td>
+                <td style="text-align: center"><input type="text" class="key" id="password" name="password"></td>
+            </tr>
+
+            <input type="submit" value="Log in">
         </form>
         </div>
     output = {{s}} <!-- return confirmation that input was valid/invalid -->
