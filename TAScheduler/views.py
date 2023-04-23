@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from TAScheduler.models import User
 from TAScheduler.common import validate
@@ -24,7 +24,9 @@ class CreateUser(View):
         except:
             noSuchUser = True
         if noSuchUser and validPassword and equalPassword and validEmail:
-            m = User.objects.register(name="ben", email=email, password=password, user_type=request.POST["type"])
+            #Edited the code to just use the email before the '@' as a name for the user for now - Connor
+            name, _, _ = email.partition("@")
+            m = User.objects.register(name=name, email=email, password=password, user_type=request.POST["type"])
             m.save()
             return render(request, "createuser.html", {"message": "User successfully created"})
         elif not equalPassword:
@@ -34,3 +36,33 @@ class CreateUser(View):
                           {"message": "Passwords does not contain 8 characters with 1 uppercase letter and 1 number"})
         else:
             return render(request, "createuser.html", {"message": "User with email already exists"})
+
+class Login(View):
+    def get(self,request):
+        return render(request, "Form.html", {})
+    def post(self,request):
+        noSuchUser = False
+        badPassword = False
+        try:
+            m = User.objects.get(email = request.POST["email"])
+            badPassword = (m.password != request.POST["password"])
+        except:
+            noSuchUser = True;
+
+        if noSuchUser:
+            m = User.objects.register(email = request.POST["email"], password = request.POST["password"])
+            m.save()
+            request.session["email"] = m.email
+            return redirect("/home/")
+        elif badPassword:
+            return render(request,"Form.html", {"message":"incorrect password"})
+        else:
+            request.session["email"] = m.email
+            return redirect("/home/")
+
+class Home(View):
+    def get(self,request):
+        return render(request, "home.html", {})
+
+    # def post(self, request):
+
