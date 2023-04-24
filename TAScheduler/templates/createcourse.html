@@ -1,12 +1,42 @@
 <!DOCTYPE html>
+{%  load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Course</title>
-</head>
-<body>
-    <!--Use for loop to display all courses from database. -->
+    <head>
+        <meta charset="UTF-8">
+        <title>Create Course</title>
+        <link href="{%  static '/TAScheduler/static/form/login.css' %}" rel="stylesheet" type="text/css">
+        <link href="{%  static '/TAScheduler/static/form/course.css' %}" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <h1>Create Course</h1>
+        {%  csrf_token %}
 
+
+    <!--Use for loop to display all courses from database. -->
+    <div class="content-table">
+        <table>
+            <tr><td> All courses </td></tr>
+            {%  for i,b in courses %}
+                <tr>
+                <td>{{ i }}</td>
+                <td>{{ b }}</td>
+                </tr>
+            {%  endfor %}
+        </table>
+    </div>
     <!--get form and post data to database (if arguments are valid!)-->
-</body>
+     <div id = "input">
+        <form method="post" action="#">
+            {%  csrf_token %}
+            <!--take input here for email/pw-->
+            <label for="x"> Course: </label> <br>
+            <input name="Email: " type="email"/><br/>
+            <label for="y"> Section: </label> <br>
+		    <input name="Password: " type="password"/><br/>
+		    <input type="submit" value="Log in">
+        </form>
+        </div>
+
+
+    </body>
 </html>
