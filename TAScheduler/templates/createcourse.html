@@ -13,7 +13,15 @@
 
     <!--Use for loop to display all courses from database. -->
     <div class="content-table">
-      <!--  {#%  for i in section % review for loop syntax#} -->
+        <table>
+            <tr><td> All courses </td></tr>
+            {%  for i,b in courses %}
+                <tr>
+                <td>{{ i }}</td>
+                <td>{{ b }}</td>
+                </tr>
+            {%  endfor %}
+        </table>
     </div>
     <!--get form and post data to database (if arguments are valid!)-->
     <form method="post" action="#">
