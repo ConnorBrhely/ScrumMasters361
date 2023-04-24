@@ -19,10 +19,10 @@ from django.urls import path
 import TAScheduler.views as views
 
 urlpatterns = [
-    # path('', views.CreateUser.as_view()),
     path('admin/', admin.site.urls),
     path('', views.Login.as_view()),
     path('home/', views.Home.as_view()),
-    path('home/createuser.html', views.CreateUser.as_view()),
-    path('home/createsection.html', views.CreateSection.as_view()),
+    path('create_user/', views.CreateUser.as_view()),
+    # path('create_course/', views.CreateCourse.as_view()),
+    # path('create_section/', views.CreateSection.as_view()),
 ]

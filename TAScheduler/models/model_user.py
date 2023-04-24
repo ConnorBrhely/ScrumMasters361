@@ -8,8 +8,10 @@ class UserAccountManager(models.Manager):
         user = User.objects.create_user(
             username=email,
             email=email,
-            password=password,
+            first_name=first_name,
+            last_name=last_name,
         )
+        user.set_password(password)
         user.save()
         user_account = self.create(
             user=user,
@@ -20,6 +22,7 @@ class UserAccountManager(models.Manager):
             phone_number=phone_number,
             office_hours=office_hours,
         )
+        user_account.save()
         return user_account
 
 

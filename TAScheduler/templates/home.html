@@ -6,20 +6,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    {% load static %}
     <link href="{% static 'home/style.css' %}" rel="stylesheet" type="text/css">
 </head>
 <body>
     <h1>Home Page</h1>
     <div class="center">
-        <a href="createuser.html"><button class="linkbutton">Create User</button></a>
+        <a href="/create_user"><button class="linkbutton">Create User</button></a>
     </div>
     <br>
     <div class="center">
-        <a href="createcourse.html"><button class="linkbutton">Create Course</button></a>
+        <a href="/create_course"><button class="linkbutton">Create Course</button></a>
     </div>
     <br>
     <div class="center">
-        <a href="createsection.html"><button class="linkbutton">Create Section</button></a>
+        <a href="/create_section"><button class="linkbutton">Create Section</button></a>
     </div>
 
 

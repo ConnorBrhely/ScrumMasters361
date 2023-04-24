@@ -13,15 +13,31 @@ class TestCreateUser(TestCase):
         self.email = "test@gmail.com"
 
     def test_create_user(self):
-        resp = self.monkey.post("/create_user/", {"type": self.type, "name": self.name, "password": self.password, "confirmpassword": self.confirm_password, "email": self.email}, follow=True)
+        resp = self.monkey.post("/create_user/", {
+            "type": self.type,
+            "name": self.name,
+            "password": self.password,
+            "confirmpassword": self.confirm_password,
+            "email": self.email
+        }, follow=True)
         self.assertEqual(UserAccount.objects.count(), 1, msg="User not successfully created with valid information")
-        self.assertEqual(resp.context["message"], "User successfully created", msg="User not successfully created with valid information")
+        self.assertEqual(resp.context["message"],
+                         "User successfully created",
+                         msg="User not successfully created with valid information")
 
     def test_invalid_password(self):
         self.password = "password123"
         self.confirm_password = "password123"
-        resp = self.monkey.post("/create_user/", {"type": self.type, "name": self.name, "password": self.password, "confirmpassword": self.confirm_password, "email": self.email}, follow=False)
-        self.assertEqual(resp.context["message"], "Passwords does not contain 8 characters with 1 uppercase letter and 1 number", msg="Correct error message not displayed with invalid password")
+        resp = self.monkey.post("/create_user/", {
+            "type": self.type,
+            "name": self.name,
+            "password": self.password,
+            "confirmpassword": self.confirm_password,
+            "email": self.email
+        }, follow=False)
+        self.assertEqual(resp.context["message"],
+                         "Passwords does not contain 8 characters with 1 uppercase letter and 1 number",
+                         msg="Correct error message not displayed with invalid password")
 
     def test_short_password(self):
         self.password = "Test1"
