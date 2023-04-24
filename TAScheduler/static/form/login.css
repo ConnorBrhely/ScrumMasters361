@@ -1,0 +1,9 @@
+.input{
+    margin: 0 auto;
+    display: block;
+    background-color: lightslategray;
+    width: 200px;
+    padding: 12px 20px;
+    font-size: 20pt;
+    text-align: center;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{%  load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Create Course</title>
+        <link href="{%  static '/TAScheduler/static/form/course.css' %}" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <h1>Create Course</h1>
+        {%  csrf_token %}
+
+
+    <!--Use for loop to display all courses from database. -->
+    <div class="content-table">
+        <table>
+            <tr><td> All courses </td></tr>
+            {%  for i,b in courses %}
+                <tr>
+                <td>{{ i }}</td>
+                <td>{{ b }}</td>
+                </tr>
+            {%  endfor %}
+        </table>
+    </div>
+    <!--get form and post data to database (if arguments are valid!)-->
+    <form method="post" action="#">
+
+    </form>
+
+
+    </body>
+</html>
