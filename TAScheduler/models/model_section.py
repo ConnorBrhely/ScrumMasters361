@@ -5,7 +5,7 @@ class Section(models.Model):
     location = models.CharField(max_length=128)
     time = models.CharField(max_length=256)
     course = models.ForeignKey("TAScheduler.Course", on_delete=models.CASCADE, related_name='sections')
-    tas = models.ManyToManyField("TAScheduler.User", related_name='sections')
+    tas = models.ManyToManyField("TAScheduler.UserAccount", related_name='sections')
 
     # Hello, world!
     def update_name(self, name: str):
@@ -24,7 +24,7 @@ class Section(models.Model):
         :param user: The TA to add to the section
         :return: The updated section object
         """
-        from TAScheduler.models import User
+        from TAScheduler.models import UserAccount
         if user.type != User.UserType.TA:
             raise ValueError('User must be a TA to be added to a section')
 

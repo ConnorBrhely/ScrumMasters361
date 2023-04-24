@@ -1,11 +1,12 @@
-from TAScheduler.models import User, Course, Section
+from TAScheduler.models import UserAccount, Course, Section
 from django.test import TestCase
 
 
 class TestDatabaseDeletion(TestCase):
     def setUp(self):
-        self.user = User.objects.create(
-            name='Test User',
+        self.user = UserAccount.objects.register(
+            first_name='Test',
+            last_name='User',
             type='INSTRUCTOR',
         )
 
@@ -24,7 +25,7 @@ class TestDatabaseDeletion(TestCase):
 
     def test_delete_login(self):
         self.user.delete()
-        self.assertEqual(User.objects.count(), 0, 'User was not deleted')
+        self.assertEqual(UserAccount.objects.count(), 0, 'User was not deleted')
         self.assertEqual(Course.objects.get(pk=self.course.pk).instructor, None,
                          'Course instructor was not set to None after user deletion')
 
