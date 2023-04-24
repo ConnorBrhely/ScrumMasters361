@@ -24,7 +24,7 @@ class Section(models.Model):
         :param user: The TA to add to the section
         :return: The updated section object
         """
-        from model_user import User
+        from TAScheduler.models import User
         if user.type != User.UserType.TA:
             raise ValueError('User must be a TA to be added to a section')
 
@@ -41,5 +41,3 @@ class Section(models.Model):
         self.tas.remove(user)
         self.save()
         return self
-
-    #COMMENT
