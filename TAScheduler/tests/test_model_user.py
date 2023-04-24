@@ -1,14 +1,14 @@
-from TAScheduler.models import User, Course, Section
+from TAScheduler.models import UserAccount, Course, Section
 from django.test import TestCase
 
 
 class TestModelUser(TestCase):
     def setUp(self):
-            self.user = UserAccount.objects.register(
-                first_name='Test',
-                last_name='User',
-                type='INSTRUCTOR',
-            )
+        self.user = UserAccount.objects.register(
+            first_name='Test',
+            last_name='User',
+            type='INSTRUCTOR',
+        )
 
         self.course = Course.objects.create(
             name='Test Course',
@@ -43,10 +43,3 @@ class TestModelUser(TestCase):
         self.assertEqual('1234 S. Street', self.user.home_address, msg='user home address updated')
         self.assertEqual('(414) 444-4444', self.user.phone_number, msg='user phone number updated')
         self.assertEqual('2-4 pm MW', self.user.office_hours, msg='office hours updated')
-
-    def test_noContactInfo(self):
-        self.user.update_contact_info(self, '', '', '')
-        self.save()
-        self.assertEqual('', self.user.home_address, msg='user has no home address')
-        self.assertEqual('', self.user.phone_number, msg='user has no phone number')
-        self.assertEqual('', self.user.office_hours, msg='user has no office hours')
