@@ -1,10 +1,11 @@
-from TAScheduler.models import User, Course, Section
+from TAScheduler.models import UserAccount, Course, Section
 from django.test import TestCase
 
 class TestModelUser(TestCase):
     def setUp(self):
-            self.user = User.objects.create(
-                name='Test User',
+            self.user = UserAccount.objects.register(
+                first_name='Test',
+                last_name='User',
                 type='INSTRUCTOR',
             )
 

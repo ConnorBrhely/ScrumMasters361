@@ -19,6 +19,7 @@ from django.urls import path
 import TAScheduler.views as views
 
 urlpatterns = [
+    path('', views.CreateUser.as_view()),
     path('admin/', admin.site.urls),
     path('', views.Login.as_view()),
     path('home', views.Home.as_view()),
