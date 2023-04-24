@@ -24,5 +24,5 @@ urlpatterns = [
     path('home/', views.Home.as_view()),
     path('create_user/', views.CreateUser.as_view()),
     # path('create_course/', views.CreateCourse.as_view()),
-    # path('create_section/', views.CreateSection.as_view()),
+    path('create_section/', views.CreateSection.as_view()),
 ]
