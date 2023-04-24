@@ -1,12 +1,25 @@
 <!DOCTYPE html>
+{%  load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Course</title>
-</head>
-<body>
-    <!--Use for loop to display all courses from database. -->
+    <head>
+        <meta charset="UTF-8">
+        <title>Create Course</title>
+        <link href="{%  static '/TAScheduler/static/form/course.css' %}" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <h1>Create Course</h1>
+        {%  csrf_token %}
 
+
+    <!--Use for loop to display all courses from database. -->
+    <div class="content-table">
+      <!--  {#%  for i in section %#} -->
+    </div>
     <!--get form and post data to database (if arguments are valid!)-->
-</body>
+    <form method="post" action="#">
+
+    </form>
+
+
+    </body>
 </html>
