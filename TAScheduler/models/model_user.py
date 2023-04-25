@@ -29,7 +29,7 @@ class UserAccountManager(models.Manager):
 class UserAccount(models.Model):
     class UserType(models.TextChoices):
         TA = 'TA', 'TA'
-        PROFESSOR = 'PROFESSOR', 'Professor'
+        INSTRUCTOR = 'INSTRUCTOR', 'Instructor'
         ADMIN = 'ADMIN', 'Admin'
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)

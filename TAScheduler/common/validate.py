@@ -1,5 +1,7 @@
 import re
 
+PASSWORD_REQUIREMENTS = "Passwords must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit"
+
 def validate_password(password: str):
     """
     Validates a given password to ensure it meets the minimum requirements

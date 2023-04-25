@@ -5,6 +5,8 @@ from TAScheduler.models import UserAccount
 
 class Login(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("/home/")
         return render(request, "login.html", {})
     def post(self,request):
         if "email" not in request.POST or request.POST["email"] == "":
