@@ -4,16 +4,18 @@ from django.test import TestCase
 
 class TestModelUser(TestCase):
     def setUp(self):
-        self.user = UserAccount.objects.register(
+        self.account = UserAccount.objects.register(
+            email="testuser@uwm.edu",
+            password="TestPassword123!",
             first_name='Test',
             last_name='User',
-            type='INSTRUCTOR',
+            user_type='INSTRUCTOR',
         )
 
         self.course = Course.objects.create(
             name='Test Course',
             term='Fall 2023',
-            instructor=self.user,
+            instructor=self.account,
         )
 
         self.section = Section.objects.create(
@@ -23,23 +25,71 @@ class TestModelUser(TestCase):
             course=self.course,
         )
 
-    def test_updatepassword(self):
-        self.user.update_password("Password123")
-        self.assertEqual(self.user.password, "Password123", msg="Password not updated when valid password entered")
-        with self.assertRaises(ValueError, msg="Value error not thrown when password is not 8 characters"):
-            self.user.update_password("error1")
-        with self.assertRaises(ValueError, msg="Value error not thrown when password is 8 characters without number"):
-            self.user.update_password("Password")
-        with self.assertRaises(ValueError,
-                               msg="Value error not thrown when password is 8 characters long with number but no "
-                                   "uppercase letter"):
-            self.user.update_password("password123")
-        with self.assertRaises(ValueError, msg="Value error not thrown when blank input entered"):
-            self.user.update_password("")
+    def test_update_address(self):
+        self.account.update_address('1234 S. Street')
+        self.assertEqual('1234 S. Street', self.account.home_address,
+                         msg='Home address not updated when valid address entered')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input entered'):
+            self.account.update_address('')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input with whitespace entered'):
+            self.account.update_address('   \t\n')
 
-    def test_updateContactInfo(self):
-        self.user.update_contact_info(self, '1234 S. Street', '(414) 444-4444', '2-4 pm MW')
-        self.save()
-        self.assertEqual('1234 S. Street', self.user.home_address, msg='user home address updated')
-        self.assertEqual('(414) 444-4444', self.user.phone_number, msg='user phone number updated')
-        self.assertEqual('2-4 pm MW', self.user.office_hours, msg='office hours updated')
+    def test_update_phone_number(self):
+        self.account.update_phone_number('(414) 444-4444')
+        self.assertEqual('(414) 444-4444', self.account.phone_number,
+                         msg='Phone number not updated when valid phone number entered')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when extra characters entered'):
+            self.account.update_phone_number('(414) 555-12/34')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input entered'):
+            self.account.update_phone_number('')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input with whitespace entered'):
+            self.account.update_phone_number('   \t\n')
+
+    def test_update_office_hours(self):
+        self.account.update_office_hours('MWF 8-9')
+        self.assertEqual('MWF 8-9', self.account.office_hours,
+                         msg='Office hours not updated when valid office hours entered')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input entered'):
+            self.account.update_office_hours('')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input with whitespace entered'):
+            self.account.update_office_hours('   \t\n')
+
+    def test_add_to_section(self):
+        self.account.add_to_section(self.section)
+        self.assertEqual(self.section.tas.count(), 1,
+                         msg='Section not added to user when valid section entered')
+        added_ta = self.section.tas.first()
+        ta_name = added_ta.first_name + ' ' + added_ta.last_name
+        expected_ta_name = self.account.first_name + ' ' + self.account.last_name
+        self.assertEqual(ta_name, expected_ta_name,
+                         msg='Section not added to user when valid section entered')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when None entered'):
+            self.account.add_to_section(None)
+
+    def test_set_password(self):
+        old_hash = self.account.user.password
+        self.account.update_password("Password123!")
+        self.assertNotEqual(self.account.user.password, old_hash, msg="Password not updated when valid password entered")
+
+        with self.assertRaises(ValueError, msg="ValueError not thrown when password is < 8 characters"):
+            self.account.update_password("Error1!")
+        with self.assertRaises(ValueError, msg="ValueError not thrown when password has no number"):
+            self.account.update_password("Password!")
+        with self.assertRaises(ValueError, msg="ValueError not thrown when password has no special character"):
+            self.account.update_password("Password123")
+        with self.assertRaises(ValueError, msg="ValueError not thrown when password has no uppercase character"):
+            self.account.update_password("password123!")
+        with self.assertRaises(ValueError, msg="Value error not thrown when blank input entered"):
+            self.account.update_password("")
+
+    def test_user_update(self):
+        self.user.name = 'New Test Name'
+        self.user.email = 'newemail@example.com'
+        self.user.password = 'newpassword'
+        self.user.type = UserAccount.UserType.ADMIN
+        self.user.home_address = '456 Elm St.'
+        self.user.phone_number = '555-555-5556'
+        self.user.office_hours = 'TR 2-4'
+        self.user.save()
+
+        updated_user = UserAccount.objects.get(pk=self.user.pk)

@@ -43,12 +43,32 @@ class UserAccount(models.Model):
 
     objects = UserAccountManager()
 
+    def update_password(self, password: str = None):
+        """
+        Updates the password for a user
+        :param password: The new password for the user
+        :return: The updated user object
+        """
+        if password is None:
+            raise ValueError("Password cannot be blank")
+        if password.strip() == "":
+            raise ValueError("Password cannot be blank")
+        if not validate.validate_password(password):
+            raise ValueError("Invalid password")
+        self.user.set_password(password)
+        self.user.save()
+        return self
+
     def update_address(self, home_address: str = None):
         """
         Updates the home address for a user
         :param home_address: The new home address for the user
         :return: The updated user object
         """
+        if home_address is None:
+            raise ValueError("Home address cannot be blank")
+        if home_address.strip() == "":
+            raise ValueError("Home address cannot be blank")
         self.home_address = home_address
         self.save()
         return self
@@ -59,6 +79,10 @@ class UserAccount(models.Model):
         :param phone_number: The new phone number for the user
         :return: The updated user object
         """
+        if phone_number is None:
+            raise ValueError("Phone number cannot be blank")
+        if not validate.validate_phone_number(phone_number):
+            raise ValueError("Invalid phone number")
         self.phone_number = phone_number
         self.save()
         return self
@@ -69,6 +93,10 @@ class UserAccount(models.Model):
         :param office_hours: The new office hours for the user
         :return: The updated user object
         """
+        if office_hours is None:
+            raise ValueError("Office hours cannot be blank")
+        if office_hours.strip() == "":
+            raise ValueError("Office hours cannot be blank")
         self.office_hours = office_hours
         self.save()
         return self
@@ -79,6 +107,8 @@ class UserAccount(models.Model):
         :param section: The section to add the user to
         :return: The updated user object
         """
+        if section is None:
+            raise ValueError("Section cannot be blank")
         section.tas.add(self)
         section.save()
         return self
