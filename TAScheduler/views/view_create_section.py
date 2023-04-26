@@ -16,7 +16,7 @@ class CreateSection(View):
         location = request.POST["location"].strip()
         time = request.POST["time"].strip()
 
-        message = None
+        message = "Section successfully created"
         status = "success"
 
         if course == "" or number == "" or location == "":
@@ -34,7 +34,6 @@ class CreateSection(View):
                 time=time
             )
             m.save()
-            message = "Section successfully created"
         else:
             message = "Section already exists"
             status = "failure"

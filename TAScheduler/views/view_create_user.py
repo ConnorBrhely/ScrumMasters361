@@ -17,26 +17,34 @@ class CreateUser(View):
         })
 
     def post(self, request):
-        first_name = request.POST["firstname"]
-        last_name = request.POST["lastname"]
-        email = request.POST["email"]
-        email_valid = validate.validate_email(email)
-        if not email_valid:
+        first_name = request.POST["firstname"].strip()
+        last_name = request.POST["lastname"].strip()
+        email = request.POST["email"].strip()
+
+        if not validate.validate_email(email):
             return render(request, "createuser.html", {
                 "message": "Invalid email entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
             })
 
-        password = request.POST["password"]
-        confirm_password = request.POST["confirmpassword"]
+        password = request.POST["password"].strip()
+        confirm_password = request.POST["confirmpassword"].strip()
+
+        print(f"email: '{email}'")
+        print(f"password: '{password}'")
+        print(f"confirm_password: '{confirm_password}'")
+        print(f"first_name: '{first_name}'")
+        print(f"last_name: '{last_name}'")
 
         if email == "" \
                 or password == "" \
                 or confirm_password == "" \
                 or first_name == "" \
                 or last_name == "":
+            print("One or more blank field detected")
             return render(request, "createuser.html", {
                 "message": "One or more blank field detected",
+                "status": "failure",
                 "account": UserAccount.objects.get(user_id=request.user.id),
             })
 
@@ -49,7 +57,7 @@ class CreateUser(View):
         except UserAccount.DoesNotExist:
             no_such_user = True
 
-        message = None
+        message = "User successfully created"
         status = "success"
 
         if no_such_user and password_valid and password_equal:
@@ -61,7 +69,6 @@ class CreateUser(View):
                 user_type=request.POST["type"]
             )
             m.save()
-            message = "User successfully created"
         elif not password_equal:
             message = "Passwords do not match"
             status = "failure"

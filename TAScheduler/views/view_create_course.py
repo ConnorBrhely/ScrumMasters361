@@ -25,7 +25,7 @@ class CreateCourse(View):
         term = request.POST["term"].strip()
         instructor = UserAccount.objects.get(pk=int(request.POST["instructor"].strip()))
 
-        message = None
+        message = "Course successfully created"
         status = "success"
 
         if name == "" or number == "" or term == "" or request.POST["instructor"].strip() == "":
@@ -43,7 +43,6 @@ class CreateCourse(View):
                 instructor=instructor
             )
             m.save()
-            message = "Course successfully created"
         else:
             message = "Course already exists"
             status = "failure"
