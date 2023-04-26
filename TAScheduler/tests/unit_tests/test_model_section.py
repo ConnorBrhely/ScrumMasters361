@@ -27,7 +27,7 @@ class TestModelSection(TestCase):
 
     def test_update_name(self):
         self.section.update_name("New Section Method")
-        self.assertEqual(self.section.name, "New Section Method", msg="Section name not updated")
+        self.assertEqual(self.section.number, "New Section Method", msg="Section name not updated")
         with self.assertRaises(ValueError, msg="Did not raise IntegrityError for input None"):
             self.section.update_name(None)
         with self.assertRaises(ValueError, msg="Did not raise ValueError for blank input"):

@@ -19,18 +19,36 @@
                     <th style="width:80%"></th>
                 </tr>
                 <tr>
-                    <td><label for="name">Course Name:</label></td>
-                    <td style="text-align: center"><input type="text" class="key" id="name" name="name"></td>
+                    <td><label for="number">Section Number:</label></td>
+                    <td style="text-align: center"><input type="text" class="key" id="number" name="number"></td>
                 </tr>
                 <tr>
-                    <td><label for="number">Course Number:</label></td>
-                    <td style="text-align: center"><input type="text" class="key" id="number" name="number"></td>
+                    <td><label for="course">Course:</label></td>
+                    <td>
+                        <select id="course" name="course">
+                            <option value="none">N/A</option>
+                            {% for course in courses %}
+                                <option value="{{ course.id }}">{{ course.name }} ({{ course.number }}), {{ course.term }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="time">Time:</label></td>
+                    <td style="text-align: center"><input type="text" class="key" id="time" name="time"></td>
+                </tr>
+                <tr>
+                    <td><label for="location">Location:</label></td>
+                    <td style="text-align: center"><input type="text" class="key" id="location" name="location"></td>
                 </tr>
             </table>
         </div>
         <div class="center">
             <input type="submit" class="submitbutton" value="Create Section">
         </div>
+        {% if message %}
+            <div style="text-align: center;">{{ message }}</div>
+        {% endif %}
     </form>
 </body>
 </html>

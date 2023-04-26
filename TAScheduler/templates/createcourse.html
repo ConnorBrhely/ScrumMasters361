@@ -11,13 +11,12 @@
         <h1>Create Course</h1>
         {%  csrf_token %}
         <!--Use for loop to display all courses from database. -->
-        <div class="content-table">
+        <div class="center content-table">
             <table>
-                <tr><td> All courses </td></tr>
-                {%  for i,b in courses %}
+                <tr><td><h3>All courses:</h3></td></tr>
+                {%  for course in courses %}
                     <tr>
-                    <td>{{ i }}</td>
-                    <td>{{ b }}</td>
+                        <td>{{ course.name }} ({{ course.number }}), {{ course.term }}</td>
                     </tr>
                 {%  endfor %}
             </table>
@@ -40,6 +39,10 @@
                     <td style="text-align: center"><input type="text" class="key" id="number" name="number"></td>
                 </tr>
                 <tr>
+                    <td><label for="term">Course Term:</label></td>
+                    <td style="text-align: center"><input type="text" class="key" id="term" name="term"></td>
+                </tr>
+                <tr>
                     <td><label for="instructor">Instructor:</label></td>
                     <td>
                         <select id="instructor" name="instructor">
@@ -55,6 +58,9 @@
             <div class="center">
                 <input type="submit" class="submitbutton" value="Create Section">
             </div>
+            {% if message %}
+                <div style="text-align: center;">{{ message }}</div>
+            {% endif %}
         </form>
     </body>
 </html>

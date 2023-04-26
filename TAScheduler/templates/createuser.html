@@ -51,7 +51,9 @@
         <div class="center">
             <input type="submit" class="submitbutton" value="Create Account">
         </div>
-        <div style="text-align: center;">{{ message }}</div>
+        {% if message %}
+            <div style="text-align: center;">{{ message }}</div>
+        {% endif %}
 </form>
 </body>
 </html>
