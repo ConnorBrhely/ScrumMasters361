@@ -81,3 +81,15 @@ class TestModelUser(TestCase):
             self.account.update_password("password123!")
         with self.assertRaises(ValueError, msg="Value error not thrown when blank input entered"):
             self.account.update_password("")
+
+    def test_user_update(self):
+        self.user.name = 'New Test Name'
+        self.user.email = 'newemail@example.com'
+        self.user.password = 'newpassword'
+        self.user.type = UserAccount.UserType.ADMIN
+        self.user.home_address = '456 Elm St.'
+        self.user.phone_number = '555-555-5556'
+        self.user.office_hours = 'TR 2-4'
+        self.user.save()
+
+        updated_user = UserAccount.objects.get(pk=self.user.pk)
