@@ -19,15 +19,15 @@ class TestModelSection(TestCase):
         )
 
         self.section = Section.objects.create(
-            name='Test Section',
+            number='001',
             location='Test Location',
             time='Test Time',
             course=self.course,
         )
 
     def test_update_number(self):
-        self.section.update_number("New Section Method")
-        self.assertEqual(self.section.number, "New Section Method", msg="Section name not updated")
+        self.section.update_number("001")
+        self.assertEqual(self.section.number, "001", msg="Section name not updated")
         with self.assertRaises(ValueError, msg="Did not raise ValueError for invalid characters"):
             self.section.update_number("Invalid Section Method") # Only digits and '-' allowed
         with self.assertRaises(ValueError, msg="Did not raise IntegrityError for input None"):

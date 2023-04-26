@@ -7,7 +7,9 @@ class TestDatabaseDeletion(TestCase):
         self.user = UserAccount.objects.register(
             first_name='Test',
             last_name='User',
-            type='INSTRUCTOR',
+            email="testemail@uwm.edu",
+            password="TestPassword123!",
+            user_type='INSTRUCTOR',
         )
 
         self.course = Course.objects.create(
@@ -17,7 +19,7 @@ class TestDatabaseDeletion(TestCase):
         )
 
         self.section = Section.objects.create(
-            name='Test Section',
+            number='001',
             location='Test Location',
             time='Test Time',
             course=self.course,
