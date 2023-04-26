@@ -1,4 +1,5 @@
 from django.db import models
+from ..common import validate
 
 class Section(models.Model):
     number = models.CharField(max_length=128)
@@ -7,7 +8,7 @@ class Section(models.Model):
     course = models.ForeignKey("TAScheduler.Course", on_delete=models.CASCADE, related_name='sections', null=True, blank=True)
     tas = models.ManyToManyField("TAScheduler.UserAccount", related_name='sections')
 
-    def update_name(self, number: str):
+    def update_number(self, number: str):
         """
         Updates the name of a section
         :param number: The new name for the section
@@ -17,6 +18,8 @@ class Section(models.Model):
             raise ValueError("Name cannot be blank")
         if number.strip() == "":
             raise ValueError("Name cannot be blank")
+        if not validate.validate_section_number(number):
+            raise ValueError("Invalid section number")
         self.number = number
         self.save()
         return self
