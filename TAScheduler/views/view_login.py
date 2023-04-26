@@ -5,7 +5,7 @@ from TAScheduler.models import UserAccount
 
 class Login(View):
     def get(self, request):
-        if request.user.is_authenticated:
+        if request.account.is_authenticated:
             return redirect("/home/")
         return render(request, "login.html", {})
     def post(self,request):
@@ -22,9 +22,9 @@ class Login(View):
                 password=request.POST["password"],
                 user_type=UserAccount.UserType.ADMIN
             )
-            m.user.is_superuser = True
+            m.account.is_superuser = True
             print(authenticate(email=request.POST["email"], password=request.POST["password"]))
-            request.session["email"] = m.user.email
+            request.session["email"] = m.account.email
             return redirect("/home/")
 
         password = request.POST["password"].strip()

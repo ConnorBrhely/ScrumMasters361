@@ -1,29 +1,26 @@
 from django.shortcuts import render
 from django.views import View
-from TAScheduler.models import Section, UserAccount
+from TAScheduler.models import Section, Course, UserAccount
 
 class CreateCourse(View):
     def get(self, request):
+        courses = Course.objects.all()
         instructors = UserAccount.objects.filter(type="Instructor")
-        # entry = UserAccount.objects.get(pk=2)
-        # print(entry.type)
-        # print("Entry: " + entry.first_name + " " + entry.last_name)
-        # for i in instructors:
-        #     print(i.first_name + " " + i.last_name)
         return render(request, "createcourse.html", {
+            "courses": courses,
             "instructors": instructors
         })
 
     def post(self, request):
         no_such_section = False
-        course = request.POST["course"].strip()
         name = request.POST["name"].strip()
-        location = request.POST["location"].strip()
+        number = request.POST["number"].strip()
+        instructor = UserAccount.objects.get(pk=int(request.POST["instructor"].strip()))
 
-        if course == "" or name == "" or location == "":
+        if name == "" or number == "" or request.POST["instructor"].strip() == "":
             return render(request, "createcourse.html", {"message": "One or more blank field detected"})
         try:
-            m = Section.objects.get(name=name)
+            m = Course.objects.get(number=number)
         except Section.DoesNotExist:
             no_such_section = True
         if no_such_section:
