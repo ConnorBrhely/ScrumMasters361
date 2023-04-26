@@ -5,7 +5,7 @@ class Section(models.Model):
     location = models.CharField(max_length=128)
     time = models.CharField(max_length=256)
     course = models.ForeignKey("TAScheduler.Course", on_delete=models.CASCADE, related_name='sections', null=True, blank=True)
-    tas = models.ManyToManyField("TAScheduler.UserAccount", related_name='sections', null=True, blank=True)
+    tas = models.ManyToManyField("TAScheduler.UserAccount", related_name='sections')
 
     def update_name(self, name: str):
         """

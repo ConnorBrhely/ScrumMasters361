@@ -55,8 +55,8 @@ input.key {
 .row-bordered-table tr:hover td {
   background-color: #f8f8f8;
 }
-h1 {
-   font-size: 300%;
-   text-align: center;
+h1, h2 {
+    font-size: 300%;
+    text-align: center;
     padding-bottom: 5px;
 }
