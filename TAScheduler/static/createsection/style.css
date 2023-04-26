@@ -11,7 +11,6 @@
 }
 
 @font-face {
-  font-family: 'password';
   font-style: normal;
   font-weight: 400;
   src: url(https://jsbin-user-assets.s3.amazonaws.com/rafaelcastrocouto/password.ttf);
@@ -20,7 +19,6 @@ input.email {
     width: 400px; height: 20px;
 }
 input.key {
-  font-family: 'password';
   width: 400px; height: 20px;
 }
 .center {
@@ -55,8 +53,8 @@ input.key {
 .row-bordered-table tr:hover td {
   background-color: #f8f8f8;
 }
-h1 {
-   font-size: 300%;
-   text-align: center;
+h1, h2 {
+    font-size: 300%;
+    text-align: center;
     padding-bottom: 5px;
 }

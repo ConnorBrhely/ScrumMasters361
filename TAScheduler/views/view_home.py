@@ -1,12 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from TAScheduler.models import UserAccount
-from TAScheduler.common import validate
-
 
 class Home(View):
     def get(self,request):
-        return render(request, "home.html", {})
+        try:
+            account = UserAccount.objects.get(user_id=request.user.id)
+        except UserAccount.DoesNotExist:
+            return redirect("/login")
+        return render(request, "home.html", {
+            "account": account,
+        })
 
     # def post(self, request):
 

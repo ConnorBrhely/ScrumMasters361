@@ -23,9 +23,11 @@ import TAScheduler.views as views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.Login.as_view()),
+    path('login/', views.Login.as_view()),
+    path('logout/', views.Logout.as_view()),
     path('home/', views.Home.as_view()),
     path('create_user/', views.CreateUser.as_view()),
     path('create_course/', views.CreateCourse.as_view()),
     path('create_section/', views.CreateSection.as_view()),
-    path("favicon.ico", RedirectView.as_view(url=static("images/favicon.ico")))
+    # path("favicon.ico", RedirectView.as_view(url=static("images/favicon.ico")))
 ]

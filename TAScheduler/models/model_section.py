@@ -1,23 +1,26 @@
 from django.db import models
+from ..common import validate
 
 class Section(models.Model):
-    name = models.CharField(max_length=128)
+    number = models.CharField(max_length=128)
     location = models.CharField(max_length=128)
     time = models.CharField(max_length=256)
     course = models.ForeignKey("TAScheduler.Course", on_delete=models.CASCADE, related_name='sections', null=True, blank=True)
-    tas = models.ManyToManyField("TAScheduler.UserAccount", related_name='sections', null=True, blank=True)
+    tas = models.ManyToManyField("TAScheduler.UserAccount", related_name='sections')
 
-    def update_name(self, name: str):
+    def update_number(self, number: str):
         """
         Updates the name of a section
-        :param name: The new name for the section
+        :param number: The new name for the section
         :return: The updated section object
         """
-        if name is None:
+        if number is None:
             raise ValueError("Name cannot be blank")
-        if name.strip() == "":
+        if number.strip() == "":
             raise ValueError("Name cannot be blank")
-        self.name = name
+        if not validate.validate_section_number(number):
+            raise ValueError("Invalid section number")
+        self.number = number
         self.save()
         return self
 
