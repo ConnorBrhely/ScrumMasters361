@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{%  load static %}
+<html lang="en">
+<head>
+    <link href="{%  static 'form/login.css' %}" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <title>{{ page }}</title>
+</head>
+<body>
+    <div id = "input">
+    <form method="post" action="#">
+        {%  csrf_token %}
+        <!--take input here for email/pw-->
+        <label for="email"> Email: </label> <br>
+        <input name="email" type="email"/><br/>
+        <label for="password"> Password: </label> <br>
+        <input name="password" type="password"/><br/>
+        <input type="submit" value="Log in">
+    </form>
+    </div>
+    {% if message %}
+    <p>{{message}}</p>
+    {% endif %}
+</body>
+</html>
+

@@ -4,39 +4,57 @@
     <head>
         <meta charset="UTF-8">
         <title>Create Course</title>
-        <link href="{%  static '/TAScheduler/static/form/login.css' %}" rel="stylesheet" type="text/css">
-        <link href="{%  static '/TAScheduler/static/form/course.css' %}" rel="stylesheet" type="text/css">
+        {%  load static %}
+        <link href="{%  static 'form/course.css' %}" rel="stylesheet" type="text/css">
     </head>
     <body>
         <h1>Create Course</h1>
         {%  csrf_token %}
-
-
-    <!--Use for loop to display all courses from database. -->
-    <div class="content-table">
-        <table>
-            <tr><td> All courses </td></tr>
-            {%  for i,b in courses %}
-                <tr>
-                <td>{{ i }}</td>
-                <td>{{ b }}</td>
-                </tr>
-            {%  endfor %}
-        </table>
-    </div>
-    <!--get form and post data to database (if arguments are valid!)-->
-     <div id = "input">
+        <!--Use for loop to display all courses from database. -->
+        <div class="content-table">
+            <table>
+                <tr><td> All courses </td></tr>
+                {%  for i,b in courses %}
+                    <tr>
+                    <td>{{ i }}</td>
+                    <td>{{ b }}</td>
+                    </tr>
+                {%  endfor %}
+            </table>
+        </div>
+        <!--get form and post data to database (if arguments are valid!)-->
         <form method="post" action="#">
             {%  csrf_token %}
-            <!--take input here for email/pw-->
-            <label for="x"> Course: </label> <br>
-            <input name="Email: " type="email"/><br/>
-            <label for="y"> Section: </label> <br>
-		    <input name="Password: " type="password"/><br/>
-		    <input type="submit" value="Log in">
+            <div class="center">
+            <table class="row-bordered-table" style="width:50%">
+                <tr>
+                    <th style="width:20%"></th>
+                    <th style="width:80%"></th>
+                </tr>
+                <tr>
+                    <td><label for="name">Course Name:</label></td>
+                    <td style="text-align: center"><input type="text" class="key" id="name" name="name"></td>
+                </tr>
+                <tr>
+                    <td><label for="number">Course Number:</label></td>
+                    <td style="text-align: center"><input type="text" class="key" id="number" name="number"></td>
+                </tr>
+                <tr>
+                    <td><label for="instructor">Instructor:</label></td>
+                    <td>
+                        <select id="instructor" name="instructor">
+                            <option value="none">N/A</option>
+                            {% for instructor in instructors %}
+                                <option value="{{ instructor.id }}">{{ instructor.first_name }} {{ instructor.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            </div>
+            <div class="center">
+                <input type="submit" class="submitbutton" value="Create Section">
+            </div>
         </form>
-        </div>
-
-
     </body>
 </html>

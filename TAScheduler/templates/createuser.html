@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Create User</title>
-    <link href="/TAScheduler/static/createuser/style.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'createuser/style.css' %}" rel="stylesheet" type="text/css">
 </head>
 <body>
     <h1>Create User</h1>
@@ -18,29 +18,40 @@
             </tr>
             <tr>
                 <td><label for="type">User Type:</label></td>
-                <td style="text-align: center"><center><select id="type">
-                <option value="Supervisor">Supervisor</option>
-                <option value="Instructor">Instructor</option>
-                <option value="TA">TA</option>
-                </select></center></td>
+                <td style="text-align: center">
+                    <select id="type" name="type">
+                        <option value="Admin">Admin</option>
+                        <option value="Instructor">Instructor</option>
+                        <option value="TA">TA</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="firstname">First Name:</label></td>
+                <td style="text-align: center"><input type="text" class="key" id="firstname" name="firstname"></td>
+            </tr>
+            <tr>
+                <td><label for="lastname">Last Name:</label></td>
+                <td style="text-align: center"><input type="text" class="key" id="lastname" name="lastname"></td>
             </tr>
             <tr>
                 <td><label for="email">Email:</label></td>
-                <td style="text-align: center"><input type="text" class="email" id="email"></td>
+                <td style="text-align: center"><input type="text" class="key" id="email" name="email"></td>
             </tr>
             <tr>
                 <td><label for="password">Password:</label></td>
-                <td style="text-align: center"><input type="text" class="key" id="password"></td>
+                <td style="text-align: center"><input type="password" class="key" id="password" name="password"></td>
             </tr>
             <tr>
                 <td><label for="confirmpassword">Confirm Password:</label></td>
-                <td style="text-align: center"><input type="text" class="key" id="confirmpassword"></td>
+                <td style="text-align: center"><input type="password" class="key" id="confirmpassword" name="confirmpassword"></td>
             </tr>
         </table>
         </div>
         <div class="center">
             <input type="submit" class="submitbutton" value="Create Account">
         </div>
+        <div style="text-align: center;">{{ message }}</div>
 </form>
 </body>
 </html>
