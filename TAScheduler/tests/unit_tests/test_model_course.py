@@ -18,7 +18,7 @@ class TestModelCourse(TestCase):
         )
 
         self.section = Section.objects.create(
-            name='Test Section',
+            number='001',
             location='Test Location',
             time='Test Time',
             course=self.course,
