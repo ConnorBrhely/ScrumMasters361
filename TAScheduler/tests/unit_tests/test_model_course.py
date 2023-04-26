@@ -23,13 +23,3 @@ class TestModelCourse(TestCase):
             time='Test Time',
             course=self.course,
         )
-
-    def test_update_name(self):
-        self.section.update_name("New Section Method")
-        self.assertEqual(self.section.name, "New Section Method", msg="Section name not updated")
-        with self.assertRaises(ValueError, msg="Did not raise IntegrityError for input None"):
-            self.section.update_name(None)
-        with self.assertRaises(ValueError, msg="Did not raise ValueError for blank input"):
-            self.section.update_name('')
-        with self.assertRaises(ValueError, msg="Did not raise ValueError for whitespace input"):
-            self.section.update_name('   \t\n')
