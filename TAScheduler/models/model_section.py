@@ -14,6 +14,10 @@ class Section(models.Model):
         :param name: The new name for the section
         :return: The updated section object
         """
+        if name is None:
+            raise ValueError("Name cannot be blank")
+        if name.strip() == "":
+            raise ValueError("Name cannot be blank")
         self.name = name
         self.save()
         return self
@@ -25,7 +29,7 @@ class Section(models.Model):
         :return: The updated section object
         """
         from TAScheduler.models import UserAccount
-        if user.type != User.UserType.TA:
+        if user.type != UserAccount.UserType.TA:
             raise ValueError('User must be a TA to be added to a section')
 
         self.tas.add(user)
