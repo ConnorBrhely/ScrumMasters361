@@ -36,7 +36,7 @@ class TestCreateUser(TestCase):
             "email": self.email
         }, follow=False)
         self.assertEqual(resp.context["message"],
-                         "Passwords does not contain 8 characters with 1 uppercase letter and 1 number",
+                         "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character",
                          msg="Correct error message not displayed with invalid password")
 
     def test_short_password(self):
@@ -44,7 +44,9 @@ class TestCreateUser(TestCase):
         self.confirm_password = "Test1"
         resp = self.monkey.post("/create_user/", {"type": self.type, "name": self.name, "password": self.password, "confirmpassword": self.confirm_password, "email": self.email}, follow=False)
         self.assertEqual(UserAccount.objects.count(), 0, msg="object created with invalid password")
-        self.assertEqual(resp.context["message"], "Passwords does not contain 8 characters with 1 uppercase letter and 1 number", msg="Correct error message not displayed with invalid password")
+        self.assertEqual(resp.context["message"],
+                         "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character",
+                         msg="Correct error message not displayed with invalid password")
 
     def test_non_matching_passwords(self):
         self.confirm_password = "Password1234"

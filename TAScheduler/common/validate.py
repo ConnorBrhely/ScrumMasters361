@@ -46,7 +46,7 @@ def validate_email(email):
 
     return re.match(r"[^@]+@[^@]+\.[^@]+", email) is not None
 
-def validate_phone_number(phone_number):
+def validate_phone_number(phone_number: str):
     """
     Validates a given phone number to ensure it is a valid phone number (i.e. only 0-9, (), +, and -)
     :param phone_number: The phone number to validate
@@ -57,6 +57,21 @@ def validate_phone_number(phone_number):
 
     for char in phone_number:
         if not char.isdigit() and char not in "()+- ":
+            return False
+
+    return True
+
+def validate_section_number(section_number: str):
+    """
+    Validates a given section number to ensure it is a valid section number (i.e. only 0-9 and -)
+    :param section_number: The section number to validate
+    :return: True if the section number is valid, False otherwise
+    """
+    if not section_number:
+        return False
+
+    for char in section_number:
+        if not char.isdigit() and char != "-":
             return False
 
     return True

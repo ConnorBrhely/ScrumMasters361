@@ -25,15 +25,17 @@ class TestModelSection(TestCase):
             course=self.course,
         )
 
-    def test_update_name(self):
-        self.section.update_name("New Section Method")
+    def test_update_number(self):
+        self.section.update_number("New Section Method")
         self.assertEqual(self.section.number, "New Section Method", msg="Section name not updated")
+        with self.assertRaises(ValueError, msg="Did not raise ValueError for invalid characters"):
+            self.section.update_number("Invalid Section Method") # Only digits and '-' allowed
         with self.assertRaises(ValueError, msg="Did not raise IntegrityError for input None"):
-            self.section.update_name(None)
+            self.section.update_number(None)
         with self.assertRaises(ValueError, msg="Did not raise ValueError for blank input"):
-            self.section.update_name('')
+            self.section.update_number('')
         with self.assertRaises(ValueError, msg="Did not raise ValueError for whitespace input"):
-            self.section.update_name('   \t\n')
+            self.section.update_number('   \t\n')
 
     def test_add_ta(self):
         self.section.add_ta(self.account)
