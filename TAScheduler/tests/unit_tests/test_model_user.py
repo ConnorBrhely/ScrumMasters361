@@ -49,8 +49,12 @@ class TestModelUser(TestCase):
         self.account.update_office_hours('MWF 8-9')
         self.assertEqual('MWF 8-9', self.account.office_hours,
                          msg='Office hours not updated when valid office hours entered')
+
+    def test_update_no_hours(self):
         with self.assertRaises(ValueError, msg='ValueError not thrown when blank input entered'):
             self.account.update_office_hours('')
+
+    def test_update_only_spaces(self):
         with self.assertRaises(ValueError, msg='ValueError not thrown when blank input with whitespace entered'):
             self.account.update_office_hours('   \t\n')
 
@@ -58,11 +62,15 @@ class TestModelUser(TestCase):
         self.account.add_to_section(self.section)
         self.assertEqual(self.section.tas.count(), 1,
                          msg='Section not added to user when valid section entered')
+
+    def test_check_TA(self):
         added_ta = self.section.tas.first()
         ta_name = added_ta.first_name + ' ' + added_ta.last_name
         expected_ta_name = self.account.first_name + ' ' + self.account.last_name
         self.assertEqual(ta_name, expected_ta_name,
                          msg='Section not added to user when valid section entered')
+
+    def test_no_TA(self):
         with self.assertRaises(ValueError, msg='ValueError not thrown when None entered'):
             self.account.add_to_section(None)
 
