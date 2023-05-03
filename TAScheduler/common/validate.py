@@ -54,7 +54,8 @@ def validate_phone_number(phone_number: str):
     """
     if not phone_number:
         return False
-
+    if len(phone_number) < 10:
+        return False
     for char in phone_number:
         if not char.isdigit() and char not in "()+- ":
             return False

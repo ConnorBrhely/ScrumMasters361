@@ -89,3 +89,31 @@ class TestModelUser(TestCase):
             self.account.update_password("password123!")
         with self.assertRaises(ValueError, msg="Value error not thrown when blank input entered"):
             self.account.update_password("")
+
+    def test_changeValidPhone(self):
+        self.account.update_phone_number("4144444444")
+        self.assertEqual(self.account.phone_number, "4144444444", msg="Phone number not updated with valid number")
+
+    def test_invalidPhone(self):
+        with self.assertRaises(ValueError, msg="ValueError not thrown when phone number is too short"):
+            self.account.update_phone_number("414444444")
+
+    def test_blankPhone(self):
+        with self.assertRaises(ValueError, msg="ValueError not thrown when blank number entered"):
+            self.account.update_phone_number("")
+
+    def test_invalidCharsPhone(self):
+        with self.assertRaises(ValueError, msg="ValueError not thrown when invalid character entered"):
+            self.account.update_phone_number("414B44[as")
+
+    def test_blankAddress(self):
+        with self.assertRaises(ValueError, msg="ValueError not thrown when blank address entered")
+            self.account.update_address("")
+
+    def test_validAddress(self):
+        self.account.update_address("123 S Fake St")
+        self.assertEqual(self.account.home_address, "123 S Fake St")
+
+
+
+
