@@ -74,6 +74,13 @@ class TestModelUser(TestCase):
         with self.assertRaises(ValueError, msg='ValueError not thrown when None entered'):
             self.account.add_to_section(None)
 
+    def test_remove_TA(self):
+        self.section.remove_ta(self.account)
+        self.assertEqual(0, self.section.tas.count(), msg = 'Section did not remove TA')
+
+    #def test_remove_no_TA(self):
+
+
     def test_set_password(self):
         old_hash = self.account.user.password
         self.account.update_password("Password123!")
@@ -107,7 +114,7 @@ class TestModelUser(TestCase):
             self.account.update_phone_number("414B44[as")
 
     def test_blankAddress(self):
-        with self.assertRaises(ValueError, msg="ValueError not thrown when blank address entered")
+        with self.assertRaises(ValueError, msg="ValueError not thrown when blank address entered"):
             self.account.update_address("")
 
     def test_validAddress(self):
