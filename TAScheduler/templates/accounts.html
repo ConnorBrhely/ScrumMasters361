@@ -41,8 +41,6 @@
                                     <option value="name">Name A-Z</option>
                                     <option value="namereverse">Name Z-A</option>
                                     <option value="type">Type</option>
-                                    <option value="email">Email A-Z</option>
-                                    <option value="emailreverse">Email Z-A</option>
                                 </select>
                     </div>
                 </div>
@@ -69,7 +67,7 @@
             {% for user in accounts %}
                 <tr class="bordered">
                     <td class="bordered">{{ user.first_name }} {{ user.last_name }}</td>
-                    <td class="bordered">{{ user.email }}</td>
+                    <td class="bordered">{{ user.user.email }}</td>
                     <td class="bordered">{{ user.type }}</td>
                 </tr>
             {% endfor %}
