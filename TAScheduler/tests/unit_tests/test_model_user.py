@@ -64,6 +64,7 @@ class TestModelUser(TestCase):
                          msg='Section not added to user when valid section entered')
 
     def test_check_TA(self):
+        self.account.add_to_section(self.section)
         added_ta = self.section.tas.first()
         ta_name = added_ta.first_name + ' ' + added_ta.last_name
         expected_ta_name = self.account.first_name + ' ' + self.account.last_name
@@ -75,11 +76,13 @@ class TestModelUser(TestCase):
             self.account.add_to_section(None)
 
     def test_remove_TA(self):
+        self.account.add_to_section(self.section)
         self.section.remove_ta(self.account)
         self.assertEqual(0, self.section.tas.count(), msg = 'Section did not remove TA')
 
-    #def test_remove_no_TA(self):
-
+    def test_remove_no_TA(self):
+        self.section.remove_ta(self.account)
+        self.assertEqual(0, self.section.tas.count(), msg='Section does not have a TA to remove')
 
     def test_set_password(self):
         old_hash = self.account.user.password
