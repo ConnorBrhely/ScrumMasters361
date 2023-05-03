@@ -58,3 +58,7 @@ class TestModelSection(TestCase):
         self.assertEqual(self.section.tas.count(), 0, msg="TA not removed from section")
         with self.assertRaises(ValueError, msg="Did not raise ValueError for input None"):
             self.section.remove_ta(None)
+
+
+    def test_section_str(self):
+        sgelf.assertEqual(str(self.section), f"{self.course} - {self.section.number}")
