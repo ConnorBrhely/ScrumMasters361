@@ -50,16 +50,8 @@ class UserAccount(models.Model):
         :param last_name:
         :return:
         """
-        if first_name is None:
-            raise ValueError("First name cannot be blank")
-        if first_name.strip() == "":
-            raise ValueError("First name cannot be blank")
-        if last_name is None:
-            raise ValueError("Last name cannot be blank")
-        if last_name.strip() == "":
-            raise ValueError("Last name cannot be blank")
-        if first_name[0].islower() or last_name[0].islower():
-            raise ValueError("First and last name must be capitalized")
+        if not validate.validate_name(first_name, last_name):
+            raise ValueError("Name failed validation")
         self.first_name = first_name
         self.last_name = last_name
         self.save()

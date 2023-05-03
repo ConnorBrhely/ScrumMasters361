@@ -76,3 +76,21 @@ def validate_section_number(section_number: str):
             return False
 
     return True
+
+def validate_name(first_name: str, last_name: str):
+    """
+    Validates a given first and last name to ensure they are capitalized
+    :param first_name: The first name to validate
+    :param last_name: The last name to validate
+    :return: True if the first and last name are capitalized, False otherwise
+    """
+    if not first_name or not last_name:
+        return False
+
+    if first_name[0].islower() or last_name[0].islower():
+        return False
+
+    if not first_name.isalpha() or not last_name.isalpha():
+        return False
+
+    return True

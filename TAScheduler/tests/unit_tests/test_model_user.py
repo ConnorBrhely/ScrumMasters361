@@ -115,32 +115,34 @@ class TestModelUser(TestCase):
             self.account.update_password("   \t\n")
 
     def test_update_name_valid(self):
-        old_name = self.account.user.name
-        self.account.update_name("John")
-        self.assertNotEqual(self.account.user.name, old_name, msg="Name not updated when new name given")
-
+        old_first_name = self.account.first_name
+        old_last_name = self.account.last_name
+        self.account.update_name("New", "Name")
+        self.assertNotEqual(self.account.first_name, old_first_name, msg="First name not updated when new name given")
+        self.assertNotEqual(self.account.last_name, old_last_name, msg="Last name not updated when new name given")
+        
     def test_update_name_empty(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when no input given for name"):
-            self.account.update_name("")
-
+            self.account.update_name("", "")
+            
     def test_update_name_numbers(self):
         with self.assertRaises(ValueError, msg="Name cannot have numbers"):
-            self.account.update_name("John1")
-
+            self.account.update_name("John1", "Doe2")
+            
     def test_update_name_invalid_char(self):
         with self.assertRaises(ValueError, msg="Name cannot have special characters"):
-            self.account.update_name("J*hn")
-            self.account.update_name(" _1st_")
-
+            self.account.update_name("J*hn", "Doe")
+            self.account.update_name(" _1st_", "Doe")
+            
     def test_update_name_whitespaces(self):
         with self.assertRaises(ValueError, msg="Whitespace is not a valid name"):
-            self.account.update_name("   ")  # Contains 'tab' followed by 'space'
-
+            self.account.update_name("   ", "\t\t") # Contains 'tab' followed by 'space'
+            
     def test_update_name_has_whitespace(self):
         with self.assertRaises(ValueError, msg="Name cannot begin with whitespace"):
-            self.account.update_name(" Jane")
+            self.account.update_name(" Jane", "Doe ")
         with self.assertRaises(ValueError, msg="Name cannot contain whitespace"):
-            self.account.update_name("John Doe")
+            self.account.update_name("John Doe", "Doe")
 
     def test_update_no_hours(self):
         with self.assertRaises(ValueError, msg='ValueError not thrown when blank input entered'):
