@@ -61,4 +61,4 @@ class TestModelSection(TestCase):
 
 
     def test_section_str(self):
-        sgelf.assertEqual(str(self.section), f"{self.course} - {self.section.number}")
+        self.assertEqual(str(self.section), f"{self.course} - {self.section.number}")
