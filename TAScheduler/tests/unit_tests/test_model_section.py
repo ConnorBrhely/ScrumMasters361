@@ -58,3 +58,12 @@ class TestModelSection(TestCase):
         self.assertEqual(self.section.tas.count(), 0, msg="TA not removed from section")
         with self.assertRaises(ValueError, msg="Did not raise ValueError for input None"):
             self.section.remove_ta(None)
+
+    def test_remove_TA(self):
+        self.account.add_to_section(self.section)
+        self.section.remove_ta(self.account)
+        self.assertEqual(0, self.section.tas.count(), msg = 'Section did not remove TA')
+
+    def test_remove_no_TA(self):
+        self.section.remove_ta(self.account)
+        self.assertEqual(0, self.section.tas.count(), msg='Section does not have a TA to remove')

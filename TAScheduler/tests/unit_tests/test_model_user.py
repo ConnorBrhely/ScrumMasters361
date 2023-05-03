@@ -75,15 +75,6 @@ class TestModelUser(TestCase):
         with self.assertRaises(ValueError, msg='ValueError not thrown when None entered'):
             self.account.add_to_section(None)
 
-    def test_remove_TA(self):
-        self.account.add_to_section(self.section)
-        self.section.remove_ta(self.account)
-        self.assertEqual(0, self.section.tas.count(), msg = 'Section did not remove TA')
-
-    def test_remove_no_TA(self):
-        self.section.remove_ta(self.account)
-        self.assertEqual(0, self.section.tas.count(), msg='Section does not have a TA to remove')
-
     def test_set_password(self):
         old_hash = self.account.user.password
         self.account.update_password("Password123!")
