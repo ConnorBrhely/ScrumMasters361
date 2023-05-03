@@ -12,9 +12,12 @@ class CreateUser(View):
             return redirect("/login")
         if account.type != UserAccount.UserType.ADMIN:
             raise PermissionDenied
-        return render(request, "createuser.html", {
-            "account": account,
-        })
+        accountemail = self.args["email"]
+        if accountemail != "create":
+            user = UserAccount.objects.get(user__email=accountemail)
+            return render(request, "createuser.html", {"account": account, "user": user, "mode": "Edit"})
+        else:
+            return render(request, "createuser.html", {"account": account, "mode": "Create"})
 
     def post(self, request):
         first_name = request.POST["firstname"].strip()

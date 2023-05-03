@@ -24,7 +24,7 @@
         <h1 class="text-center">Accounts</h1>
     <div class="text-center">
         <div class="btn-group-vertical" style="width: 30%, " role="group">
-            <a href="/create_user" class="btn btn-lg btn-primary btn-block rounded">Create User</a>
+            <a href="/create_user/create" class="btn btn-lg btn-primary btn-block rounded">Create User</a>
             {{ message }}
         </div>
     </div>
@@ -70,7 +70,7 @@
                     <td class="bordered">{{ user.first_name }} {{ user.last_name }}</td>
                     <td class="bordered">{{ user.user.email }}</td>
                     <td class="bordered">{{ user.type }}</td>
-                    <td class="bordered"><button class="btn btn-lg btn-secondary btn-block rounded">EDIT</button></td>
+                    <td class="bordered"><a href="/create_user/{{ user.user.email }}" class="btn btn-lg btn-secondary btn-block rounded">EDIT</a></td>
                     {% if user != account %}
                     <td class="bordered"><button class="btn btn-lg btn-secondary btn-block rounded">DELETE</button></td>
                     {% endif %}
