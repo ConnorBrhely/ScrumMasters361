@@ -43,6 +43,45 @@ class UserAccount(models.Model):
 
     objects = UserAccountManager()
 
+    def update_name(self, first_name: str, last_name: str):
+        """
+        Updates the name for a user
+        :param first_name:
+        :param last_name:
+        :return:
+        """
+        if first_name is None:
+            raise ValueError("First name cannot be blank")
+        if first_name.strip() == "":
+            raise ValueError("First name cannot be blank")
+        if last_name is None:
+            raise ValueError("Last name cannot be blank")
+        if last_name.strip() == "":
+            raise ValueError("Last name cannot be blank")
+        if first_name[0].islower() or last_name[0].islower():
+            raise ValueError("First and last name must be capitalized")
+        self.first_name = first_name
+        self.last_name = last_name
+        self.save()
+        return self
+
+    def update_email(self, email: str):
+        """
+        Updates the email for a user
+        :param email: The new email for the user
+        :return: The updated user object
+        """
+        if email is None:
+            raise ValueError("Email cannot be blank")
+        if email.strip() == "":
+            raise ValueError("Email cannot be blank")
+        if not validate.validate_email(email):
+            raise ValueError("Invalid email")
+        self.user.username = email
+        self.user.email = email
+        self.user.save()
+        return self
+
     def update_password(self, password: str = None):
         """
         Updates the password for a user

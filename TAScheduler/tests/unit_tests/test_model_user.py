@@ -66,18 +66,49 @@ class TestModelUser(TestCase):
         with self.assertRaises(ValueError, msg='ValueError not thrown when None entered'):
             self.account.add_to_section(None)
 
-    def test_set_password(self):
-        old_hash = self.account.user.password
-        self.account.update_password("Password123!")
-        self.assertNotEqual(self.account.user.password, old_hash, msg="Password not updated when valid password entered")
+    def test_set_password_valid(self):
+        old_pass_hash = self.account.user.password
+        self.account.update_password("NewPassword123!")
+        self.assertNotEqual(self.account.user.password, old_pass_hash,
+                            msg="Password not updated when valid password entered")
 
+    def test_set_password_short(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when password is < 8 characters"):
             self.account.update_password("Error1!")
+
+    def test_set_password_no_number(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when password has no number"):
             self.account.update_password("Password!")
+
+    def test_set_password_no_special(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when password has no special character"):
             self.account.update_password("Password123")
+
+    def test_set_password_no_upper(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when password has no uppercase character"):
             self.account.update_password("password123!")
+
+    def test_set_password_blank(self):
         with self.assertRaises(ValueError, msg="Value error not thrown when blank input entered"):
             self.account.update_password("")
+        with self.assertRaises(ValueError, msg="Value error not thrown when blank input with whitespace entered"):
+            self.account.update_password("   \t\n")
+
+    def test_update_name_valid(self):
+        self.account.update_name('New', 'Name')
+        self.assertEqual('New', self.account.first_name, msg='First name not updated when valid name entered')
+        self.assertEqual('Name', self.account.last_name, msg='Last name not updated when valid name entered')
+
+    def test_update_name_blank(self):
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input entered'):
+            self.account.update_name('', '')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input with whitespace entered'):
+            self.account.update_name('   \t\n', '   \t\n')
+
+    def test_update_name_lower(self):
+        with self.assertRaises(ValueError, msg='ValueError not thrown when lowercase input entered'):
+            self.account.update_name('lower', 'lower')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when lowercase last name entered'):
+            self.account.update_name('Upper', 'lower')
+        with self.assertRaises(ValueError, msg='ValueError not thrown when lowercase first name entered'):
+            self.account.update_name('lower', 'Upper')
