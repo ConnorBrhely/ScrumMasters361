@@ -13,7 +13,6 @@
         table, th, td {
             margin: 0 auto;
         }
-
         td {
             vertical-align: middle;
         }
@@ -55,12 +54,14 @@
             </form>
         </table>
         <br>
-        <table class="bordered">
+        <table class="bordered" id="widetable">
             <thead>
             <tr class="bordered">
                 <th class="name">Name</th>
                 <th class="email">Email</th>
                 <th class="type">Type</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -69,6 +70,10 @@
                     <td class="bordered">{{ user.first_name }} {{ user.last_name }}</td>
                     <td class="bordered">{{ user.user.email }}</td>
                     <td class="bordered">{{ user.type }}</td>
+                    <td class="bordered"><button class="btn btn-lg btn-secondary btn-block rounded">EDIT</button></td>
+                    {% if user != account %}
+                    <td class="bordered"><button class="btn btn-lg btn-secondary btn-block rounded">DELETE</button></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
