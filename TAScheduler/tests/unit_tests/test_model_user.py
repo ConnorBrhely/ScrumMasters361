@@ -49,8 +49,12 @@ class TestModelUser(TestCase):
         self.account.update_office_hours('MWF 8-9')
         self.assertEqual('MWF 8-9', self.account.office_hours,
                          msg='Office hours not updated when valid office hours entered')
+
+    def test_update_no_hours(self):
         with self.assertRaises(ValueError, msg='ValueError not thrown when blank input entered'):
             self.account.update_office_hours('')
+
+    def test_update_only_spaces(self):
         with self.assertRaises(ValueError, msg='ValueError not thrown when blank input with whitespace entered'):
             self.account.update_office_hours('   \t\n')
 
@@ -58,47 +62,66 @@ class TestModelUser(TestCase):
         self.account.add_to_section(self.section)
         self.assertEqual(self.section.tas.count(), 1,
                          msg='Section not added to user when valid section entered')
+
+    def test_check_TA(self):
         added_ta = self.section.tas.first()
         ta_name = added_ta.first_name + ' ' + added_ta.last_name
         expected_ta_name = self.account.first_name + ' ' + self.account.last_name
         self.assertEqual(ta_name, expected_ta_name,
                          msg='Section not added to user when valid section entered')
+
+    def test_no_TA(self):
         with self.assertRaises(ValueError, msg='ValueError not thrown when None entered'):
             self.account.add_to_section(None)
 
-    def test_set_password(self):
-        old_hash = self.account.user.password
-        self.account.update_password("Password123!")
-        self.assertNotEqual(self.account.user.password, old_hash, msg="Password not updated when valid password entered")
+    def test_set_password_valid(self):
+        old_pass_hash = self.account.user.password
+        self.account.update_password("NewPassword123!")
+        self.assertNotEqual(self.account.user.password, old_pass_hash,
+                            msg="Password not updated when valid password entered")
 
+    def test_set_password_short(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when password is < 8 characters"):
             self.account.update_password("Error1!")
+
+    def test_set_password_no_number(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when password has no number"):
             self.account.update_password("Password!")
+
+    def test_set_password_no_special(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when password has no special character"):
             self.account.update_password("Password123")
+
+    def test_set_password_no_upper(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when password has no uppercase character"):
             self.account.update_password("password123!")
+
+    def test_set_password_blank(self):
         with self.assertRaises(ValueError, msg="Value error not thrown when blank input entered"):
             self.account.update_password("")
 
-    def test_update_name(self):
+    def test_update_name_valid(self):
         old_name = self.account.user.name
         self.account.update_name("John")
         self.assertNotEqual(self.account.user.name, old_name, msg="Name not updated when new name given")
+        
     def test_update_name_empty(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when no input given for name"):
             self.account.update_name("")
+            
     def test_update_name_numbers(self):
         with self.assertRaises(ValueError, msg="Name cannot have numbers"):
             self.account.update_name("John1")
+            
     def test_update_name_invalid_char(self):
         with self.assertRaises(ValueError, msg="Name cannot have special characters"):
             self.account.update_name("J*hn")
             self.account.update_name(" _1st_" )
+            
     def test_update_name_whitespaces(self):
         with self.assertRaises(ValueError, msg="Whitespace is not a valid name"):
-            self.account.update_name("   ") #contains 'tab' followed by 'space'
+            self.account.update_name("   ") # Contains 'tab' followed by 'space'
+            
     def test_update_name_has_whitespace(self):
         with self.assertRaises(ValueError, msg="Name cannot begin with whitespace"):
             self.account.update_name(" Jane")
