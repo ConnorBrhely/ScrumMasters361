@@ -11,8 +11,6 @@ def validate_password(password: str):
     :param password: The password to validate
     :return: True if the password is valid, False otherwise
     """
-    print(password)
-
     if not password:
         return False
 
