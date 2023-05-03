@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Accounts</title>
+    {% load static %}
+    <link href="{% static 'accounts/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+    <style>
+        table, th, td {
+            margin: 0 auto;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex align-items-center vh-100">
+    <div class="container my-5 w-30 mx-auto">
+        <h1 class="text-center">Accounts</h1>
+    <div class="text-center">
+        <div class="btn-group-vertical" style="width: 30%, " role="group">
+            <a href="/create_user" class="btn btn-lg btn-primary btn-block rounded">Create User</a>
+            {{ message }}
+        </div>
+    </div>
+        <table>
+            <form method="post" action="#">
+                {% csrf_token %}
+                <div class="form-row my-4">
+                    <div class="form-group">
+                        <tr>
+                            <td>
+                                <label for="sorttype">Sort By:</label>
+                                <select class="form-control" id="sorttype" name="sorttype">
+                                    <option value="name">Name A-Z</option>
+                                    <option value="namereverse">Name Z-A</option>
+                                    <option value="type">Type</option>
+                                    <option value="email">Email A-Z</option>
+                                    <option value="emailreverse">Email Z-A</option>
+                                </select>
+                    </div>
+                </div>
+                </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%"
+                               value="Sort">
+                    </td>
+                </tr>
+            </form>
+        </table>
+        <br>
+        <table class="bordered">
+            <thead>
+            <tr class="bordered">
+                <th class="name">Name</th>
+                <th class="email">Email</th>
+                <th class="type">Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in accounts %}
+                <tr class="bordered">
+                    <td class="bordered">{{ user.first_name }} {{ user.last_name }}</td>
+                    <td class="bordered">{{ user.email }}</td>
+                    <td class="bordered">{{ user.type }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    <hr>
+        <p class="text-center figure-caption">Logged in as user: {{ account.user.username }} <b>({{ account.type }})</b></p>
+        <a href="/home" class="btn btn-lg btn-secondary btn-block rounded">Home</a>
+    </div>
+</div>
+</body>
+</html>

@@ -72,15 +72,31 @@ class CreateUser(View):
         elif not password_equal:
             message = "Passwords do not match"
             status = "failure"
+            return render(request, "createuser.html", {
+                "message": message,
+                "status": status,
+                "account": UserAccount.objects.get(user_id=request.user.id),
+            })
         elif not password_valid:
             message = "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character"
             status = "failure"
+            return render(request, "createuser.html", {
+                "message": message,
+                "status": status,
+                "account": UserAccount.objects.get(user_id=request.user.id),
+            })
         else:
             message = "User with email already exists"
             status = "failure"
+            return render(request, "createuser.html", {
+                "message": message,
+                "status": status,
+                "account": UserAccount.objects.get(user_id=request.user.id),
+            })
 
-        return render(request, "createuser.html", {
+        return render(request, "accounts.html", {
             "message": message,
             "status": status,
             "account": UserAccount.objects.get(user_id=request.user.id),
+            "accounts": UserAccount.objects.order_by("type")
         })
