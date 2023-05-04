@@ -53,8 +53,7 @@ class Section(models.Model):
         self.save()
         return self
 
-    def __str__(self):
-        return f"{self.course} - {self.number}"
+
 
     def update_location(self, location: str):
         """
