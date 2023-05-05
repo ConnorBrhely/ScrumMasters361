@@ -23,3 +23,13 @@ class TestModelCourse(TestCase):
             time='Test Time',
             course=self.course,
         )
+    def test_course_name(self):
+        self.assertEqual(self.course.name,'Test Course')
+        self.assertNotEqual(self.course.name, 'Course Test')
+    def test_term_name(self):
+        self.assertEqual(self.course.term, 'Fall 2023', 'term name does not match assigned string')
+        self.assertFalse(self.course.term == '2023 Fall', 'term name does not match assigned string')
+
+    def test_instructor(self):
+        self.assertEqual(self.course.instructor, self.account, 'instructor does not match account')
+
