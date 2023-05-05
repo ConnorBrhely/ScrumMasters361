@@ -41,9 +41,6 @@ class Login(View):
             })
 
         m = authenticate(username=email, password=password)
-        print(f"Email: \"{email}\"")
-        print(f"Password: \"{password}\"")
-        print("User: " + str(m))
 
         if m is not None:
             login(request, m)
