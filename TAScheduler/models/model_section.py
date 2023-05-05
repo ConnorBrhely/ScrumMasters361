@@ -53,13 +53,8 @@ class Section(models.Model):
         self.save()
         return self
 
-
-class Section(models.Model):
-    number = models.CharField(max_length=128)
-    location = models.CharField(max_length=128)
-    time = models.CharField(max_length=256)
-    course = models.ForeignKey("TAScheduler.Course", on_delete=models.CASCADE, related_name='sections', null=True, blank=True)
-    tas = models.ManyToManyField("TAScheduler.UserAccount", related_name='sections')
+    def __str__(self):
+        return f"{self.course} - {self.number}"
 
     def update_location(self, location: str):
         """
