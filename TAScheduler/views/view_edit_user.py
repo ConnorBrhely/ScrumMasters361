@@ -62,7 +62,10 @@ class EditUser(View):
         password_valid = validate.validate_password(password)
         message = "User edited successfully"
         status = "success"
-        if no_such_user and ((password_valid and password_equal) or (len(password) == 0 and len(confirm_password) == 0)):
+        sameEmail = False
+        if username == email:
+            sameEmail = True
+        if (no_such_user or sameEmail) and ((password_valid and password_equal) or (len(password) == 0 and len(confirm_password) == 0)):
             if password_valid and password_equal:
                 account.update_password(password)
             account.update_email(email)
