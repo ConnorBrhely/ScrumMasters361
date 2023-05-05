@@ -34,7 +34,6 @@ class Login(View):
             )
             m.user.is_superuser = True
             login(request, m.user)
-            # request.session["email"] = m.user.email
             return redirect("/home/", {
                 "message": "Initial admin user created",
                 "status": "info",
@@ -44,7 +43,6 @@ class Login(View):
 
         if m is not None:
             login(request, m)
-            # request.session["email"] = m.email
             return redirect("/home/")
         else:
             return render(request, "login.html", {
