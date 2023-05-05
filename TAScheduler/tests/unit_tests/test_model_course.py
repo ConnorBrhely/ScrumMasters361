@@ -33,3 +33,19 @@ class TestModelCourse(TestCase):
     def test_instructor(self):
         self.assertEqual(self.course.instructor, self.account, 'instructor does not match account')
 
+    def test_getTitle(self):
+        self.assertEqual(self.course.getTitle(), 'Test Course')
+    def test_setTitle(self):
+        with self.assertRaises(ValueError, msg='Course name cannot be empty'):
+            self.course.setTitle("")
+        with self.assertRaises(ValueError, msg='Course name must contain characters other than whitespace'):
+            self.course.setTitle(' \t\n')
+        with self.assertNotEqual(self.course.getTitle(), 'New Name'):
+            self.course.setTitle('New Name')
+
+    def test_get_after_set(self):
+        with self.assertRaises(ValueError, msg='Course name not updated properly after set'):
+            self.course.setTitle('New Name')
+            self.assertEqual(self.coruse.getTitle(), 'New Name', msg='expectred title to be \"New Name\"')
+
+
