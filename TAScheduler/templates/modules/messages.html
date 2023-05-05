@@ -1,0 +1,17 @@
+{% if message %}
+    <div class="form-group container my-3 mx-auto">
+        {% if status == "success" %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% elif status == "failure" %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% elif status == "info" %}
+            <div class="alert alert-info" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
