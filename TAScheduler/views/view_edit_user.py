@@ -29,7 +29,14 @@ class EditUser(View):
             return render(request, "edituser.html", {
                 "message": "Invalid email entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
+        no_such_user = False
+        try:
+            UserAccount.objects.get(user__email=email)
+        except UserAccount.DoesNotExist:
+            no_such_user = True
+
 
         password = request.POST["password"].strip()
         confirm_password = request.POST["confirmpassword"].strip()
@@ -42,12 +49,13 @@ class EditUser(View):
                 "message": "One or more blank field detected",
                 "status": "failure",
                 "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
         password_equal = (password == confirm_password)
         password_valid = validate.validate_password(password)
         message = "User edited successfully"
         status = "success"
-        if (password_valid and password_equal) or (len(password) == 0 and len(confirm_password) == 0):
+        if no_such_user and ((password_valid and password_equal) or (len(password) == 0 and len(confirm_password) == 0)):
             if password_valid and password_equal:
                 account.update_password(password)
             account.update_email(email)
@@ -59,6 +67,7 @@ class EditUser(View):
                 "message": message,
                 "status": status,
                 "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
         elif len(password) != 0 and not password_valid:
             message = "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character"
@@ -67,14 +76,16 @@ class EditUser(View):
                 "message": message,
                 "status": status,
                 "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
         else:
             return render(request, "edituser.html", {
-                "message": "Passwords must both be blank or filled in",
+                "message": "Account with email already exists",
                 "status": "failure",
-                "account": UserAccount.objects.get(user_id=request.user.id)
+                "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
-        return render(request, "accounts.html", {
+        return redirect("/accounts", {
             "message": message,
             "status": status,
             "account": UserAccount.objects.get(user_id=request.user.id),

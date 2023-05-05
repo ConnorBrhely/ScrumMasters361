@@ -85,7 +85,7 @@ class CreateUser(View):
                 "account": UserAccount.objects.get(user_id=request.user.id),
             })
 
-        return render(request, "accounts.html", {
+        return redirect("/accounts", {
             "message": message,
             "status": status,
             "account": UserAccount.objects.get(user_id=request.user.id),
