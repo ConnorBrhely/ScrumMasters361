@@ -31,6 +31,13 @@ class EditUser(View):
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
+        if not validate.validate_name(first_name, last_name):
+            return render(request, "edituser.html", {
+                "message": "Invalid first or last entered",
+                "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
+            })
+
         no_such_user = False
         try:
             UserAccount.objects.get(user__email=email)

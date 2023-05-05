@@ -17,12 +17,11 @@ class DeleteUser(View):
         return render(request, "deleteuser.html", {"account": account, "editaccount": editaccount})
 
     def post(self, request):
-        confirm = request.POST["confirmdelete"]
+        useraccount = request.POST["confirmdelete"]
         message = "User deleted successfully"
         status = "success"
         account = UserAccount.objects.get(user__id=request.user.id)
-        print(confirm)
-        if confirm == "donotdelete":
+        if useraccount == "donotdelete":
             message = "Must check box to confirm"
             status = "failure"
             return render(request, "deleteuser.html", {
@@ -31,7 +30,7 @@ class DeleteUser(View):
                 "account": account,
             })
         else:
-            deleteaccount = UserAccount.objects.get(user__username=confirm)
+            deleteaccount = UserAccount.objects.get(user__username=useraccount)
             deleteaccount.delete()
             return redirect("/accounts", {"message": message, "status": status, "account": account,
                                                  "accounts": UserAccount.objects.order_by("type")})
