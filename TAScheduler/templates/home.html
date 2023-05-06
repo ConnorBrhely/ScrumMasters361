@@ -21,26 +21,9 @@
                 <a href="/create_section" class="btn btn-lg btn-primary btn-block rounded">Create Section</a>
             {% endif %}
         </div>
-        <hr>
-        {% if message %}
-            <div class="form-group container my-3 mx-auto">
-                {% if status == "success" %}
-                    <div class="alert alert-success" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif status == "failure" %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif status == "info" %}
-                    <div class="alert alert-info" role="alert">
-                        {{ message }}
-                    </div>
-                {% endif %}
-            </div>
-        {% endif %}
-        <p class="text-center figure-caption">Logged in as user: {{ account.user.username }} <b>({{ account.type }})</b></p>
-        <a href="/logout" class="btn btn-lg btn-danger btn-block rounded">Log out</a>
+        {% include "modules/messages.html" %}
+        {% include "modules/account_info.html" %}
+        {% include "modules/logout_button.html" %}
     </div>
 </div>
 </body>
