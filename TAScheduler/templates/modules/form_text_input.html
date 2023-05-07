@@ -1,0 +1,7 @@
+<div class="form-row my-4">
+    <div class="form-group">
+        <label for="{{ name }}">{{ title }}</label>
+        <input type="text" class="form-control" id="{{ name }}" name="{{ name }}" placeholder="{{ placeholder|default_if_none:"" }}"
+               {% if required|default_if_none:true %} required {% endif %}>
+    </div>
+</div>

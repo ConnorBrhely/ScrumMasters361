@@ -16,18 +16,8 @@
         <h1 class="text-center">Create User</h1>
         <form method="post" action="#">
             {% csrf_token %}
-            <div class="form-row my-4">
-                <div class="form-group">
-                    <label for="firstname">First name</label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" required>
-                </div>
-            </div>
-            <div class="form-row my-4">
-                <div class="form-group">
-                    <label for="lastname">Last name</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" required>
-                </div>
-            </div>
+            {% include "modules/form_text_input.html" with name="firstname" title="First name" placeholder="First name" %}
+            {% include "modules/form_text_input.html" with name="lastname" title="Last name" placeholder="Last name" %}
             <div class="form-row my-4">
                 <div class="form-group">
                     <label for="type">User type</label>
@@ -38,24 +28,10 @@
                     </select>
                 </div>
             </div>
-            <div class="form-row my-4">
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="johndoe@uwm.edu" required>
-                </div>
-            </div>
-            <div class="form-row my-4">
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                </div>
-            </div>
-            <div class="form-row my-4">
-                <div class="form-group">
-                    <label for="confirmpassword">Confirm password</label>
-                    <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm" required>
-                </div>
-            </div>
+            {% include "modules/form_text_input.html" with name="email" title="Email address" placeholder="johndoe@uwm.edu" %}
+            {% include "modules/form_text_input.html" with name="lastname" title="Last name" placeholder="Last name" %}
+            {% include "modules/form_password.html" %}
+
             <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Create User"></input>
         </form>
         {% include "modules/messages.html" %}

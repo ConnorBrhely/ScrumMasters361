@@ -16,40 +16,28 @@
         <h1 class="text-center">Create Section</h1>
         <form method="post" action="#">
             {% csrf_token %}
-            <div class="form-row my-4">
-                <div class="form-group">
-                    <label for="number">Section number</label>
-                    <input type="text" class="form-control" id="number" name="number" placeholder="Section number" required>
-                </div>
-            </div>
+            {% include "modules/form_text_input.html" with name="number" title="Section number" placeholder="Section number" %}
             <div class="form-row my-4">
                 <div class="form-group">
                     <label for="course">Course</label>
                     <select class="form-control" id="course" name="course">
                         {% for course in courses %}
-                            <option value="{{ course.id }}">{{ course.name }} ({{ course.number }}), {{ course.term }} |
-                                {{ course.instructor.first_name }} {{ course.instructor.last_name }}</option>
+                            <option value="{{ course.id }}">
+                                {{ course.name }} ({{ course.number }}),
+                                {{ course.term_season }} {{ course.term_year }} |
+                                {{ course.instructor.first_name }} {{ course.instructor.last_name }}
+                            </option>
                         {% endfor %}
                     </select>
                 </div>
             </div>
-            <div class="form-row my-4">
-                <div class="form-group">
-                    <label for="time">Time</label>
-                    <input type="text" class="form-control" id="time" name="time" placeholder="Time" required>
-                </div>
-            </div>
-            <div class="form-row my-4">
-                <div class="form-group">
-                    <label for="location">Location</label>
-                    <input type="text" class="form-control" id="location" name="location" placeholder="Location" required>
-                </div>
-            </div>
+            {% include "modules/form_text_input.html" with name="time" title="Time" placeholder="Time" %}
+            {% include "modules/form_text_input.html" with name="location" title="Location" placeholder="Location" %}
             {% if courses.count == 0 %}
                 <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Create Course" disabled>
                 <small style="color: crimson">You must have at least one course to create a section.</small>
             {% else %}
-                <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Create Course">
+                <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Create Section">
             {% endif %}
         </form>
         {% include "modules/messages.html" %}

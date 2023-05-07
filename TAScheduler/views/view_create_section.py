@@ -19,7 +19,7 @@ class CreateSection(View):
         message = "Section successfully created"
         status = "success"
 
-        if course == "" or number == "" or location == "":
+        if course == "" or number == "" or location == "" or time == "":
             message = "One or more blank field detected"
             status = "failure"
         try:
