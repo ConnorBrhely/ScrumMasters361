@@ -3,13 +3,17 @@ from django.contrib.auth.decorators import login_required
 from TAScheduler.models import UserAccount
 
 @login_required
-def personal_accounts_view(request):
-    user_account = UserAccount.objects.get(user_id=request.user.id)
+def home_view(request):
+    account = UserAccount.objects.get(user=request.user)
+    message = None
+    status = None
 
     if request.method == 'POST':
-        # Handle updating user account information here
+        # Handle any post requests here
         pass
 
-    return render(request, 'personal_accounts.html', {
-        'user_account': user_account
+    return render(request, 'home.html', {
+        'account': account,
+        'message': message,
+        'status': status
     })
