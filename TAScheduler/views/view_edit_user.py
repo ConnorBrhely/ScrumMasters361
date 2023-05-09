@@ -15,25 +15,22 @@ class EditUser(View):
             return redirect("/login")
         if account.type != UserAccount.UserType.ADMIN:
             raise PermissionDenied
-        return render(request, "edituser.html", {"account": account, "editaccount": editaccount})
+        return render(request, "edituser.html", {"message": "hello there", "account": account, "editaccount": editaccount})
 
     def post(self, request):
         username = request.GET["username"]
-        print(username)
         first_name = request.POST["firstname"].strip()
         last_name = request.POST["lastname"].strip()
         email = request.POST["email"].strip()
-        account = UserAccount.objects.get(user__email=username)
+        account = UserAccount.objects.get(user__username=username)
 
         if not validate.validate_email(email):
-            print("Invalid email entered")
             return render(request, "edituser.html", {
                 "message": "Invalid email entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
         if not validate.validate_name(first_name, last_name):
-            print("Invalid first or last entered")
             return render(request, "edituser.html", {
                 "message": "Invalid first or last name entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
@@ -53,7 +50,6 @@ class EditUser(View):
         if email == "" \
                 or first_name == "" \
                 or last_name == "":
-            print("One or more blank field detected")
             return render(request, "edituser.html", {
                 "message": "One or more blank field detected",
                 "status": "failure",
@@ -72,10 +68,15 @@ class EditUser(View):
                 account.update_password(password)
             account.update_email(email)
             account.update_name(first_name, last_name)
+            return redirect("/accounts/", {
+                "message": message,
+                "status": status,
+                "account": UserAccount.objects.get(user_id=request.user.id),
+                "accounts": UserAccount.objects.order_by("type")
+            })
         elif not password_equal:
             message = "Passwords do not match"
             status = "failure"
-            print(message)
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
@@ -85,7 +86,6 @@ class EditUser(View):
         elif len(password) != 0 and not password_valid:
             message = "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character"
             status = "failure"
-            print(message)
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
@@ -93,17 +93,11 @@ class EditUser(View):
                 "editaccount": account
             })
         else:
-            print(message)
+            message = "Account with email already exists"
+            status = "failure"
             return render(request, "edituser.html", {
-                "message": "Account with email already exists",
-                "status": "failure",
+                "message": message,
+                "status": status,
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
-        print(message)
-        return redirect("/accounts", {
-            "message": message,
-            "status": status,
-            "account": UserAccount.objects.get(user_id=request.user.id),
-            "accounts": UserAccount.objects.order_by("type")
-        })
