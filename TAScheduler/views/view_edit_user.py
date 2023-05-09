@@ -26,12 +26,14 @@ class EditUser(View):
         account = UserAccount.objects.get(user__email=username)
 
         if not validate.validate_email(email):
+            print("Invalid email entered")
             return render(request, "edituser.html", {
                 "message": "Invalid email entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
         if not validate.validate_name(first_name, last_name):
+            print("Invalid first or last entered")
             return render(request, "edituser.html", {
                 "message": "Invalid first or last entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
@@ -73,6 +75,7 @@ class EditUser(View):
         elif not password_equal:
             message = "Passwords do not match"
             status = "failure"
+            print(message)
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
@@ -82,6 +85,7 @@ class EditUser(View):
         elif len(password) != 0 and not password_valid:
             message = "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character"
             status = "failure"
+            print(message)
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
@@ -89,12 +93,14 @@ class EditUser(View):
                 "editaccount": account
             })
         else:
+            print(message)
             return render(request, "edituser.html", {
                 "message": "Account with email already exists",
                 "status": "failure",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
+        print(message)
         return redirect("/accounts", {
             "message": message,
             "status": status,
