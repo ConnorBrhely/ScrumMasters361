@@ -10,7 +10,7 @@ class TestEditUser(TestCase):
             "password": "Password123!",
             "email": "test@uwm.edu"
         }, follow=True)
-        self.account = UserAccount.objects.register(first_name="test", last_name="account", email="newtest@uwm.edu",
+        self.account = UserAccount.objects.register(first_name="Test", last_name="Account", email="newtest@uwm.edu",
                                                     password="Password123!", user_type="INSTRUCTOR")
 
     def test_valid_edit(self):
@@ -21,7 +21,14 @@ class TestEditUser(TestCase):
             "password": "Updated123!",
             "confirmpassword": "Updated123!"
         }, follow=True)
-        self.assertRedirects(response=resp, expected_url="/accounts/", status_code=301, msg_prefix="User not successfully edited with valid information")
-        self.assertEqual(self.account.first_name, "new", msg="First name not updated correctly")
-        self.assertEqual(self.account.last_name, "new", msg="Last name not updated correctly")
+        self.assertEqual(self.account.first_name, "New", msg="First name not updated correctly")
+        self.assertEqual(self.account.last_name, "New", msg="Last name not updated correctly")
         self.assertEqual(self.account.email, "new@gmail.com", msg="Email not updated correctly")
+
+    def test_invalidName(self):
+        resp = self.monkey.post("/edit_user?username=newtest@uwm.edu", {
+            "firstname": "invalid",
+        }, follow=True)
+        self.assertEqual(resp.context["message"], "Invalid first or last name entered", msg="Error message not sent with invalid name (no uppercase)")
+        self.assertEqual(self.account.first_name, "Test", msg="Name updated with invalid name")
+
