@@ -1,80 +1,48 @@
 <!DOCTYPE html>
-<html>
+{% load static %}
+<html lang="en" data-bs-theme="dark">
 <head>
-  <title>My Account</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-  <style>
-    /* CSS code here */
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    {% load static %}
+    <link href="{% static 'home/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">My Account</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Account Settings</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Billing</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <main class="container my-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">Edit Profile</div>
-          <div class="card-body">
-            <form method="post" action="#">
-              {% csrf_token %}
-              <div class="form-group row">
-                <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
-                <div class="col-md-6">
-                  <input type="text" id="name" class="form-control" name="name" required autofocus>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right">Email Address</label>
-                <div class="col-md-6">
-                  <input type="email" id="email" class="form-control" name="email" required>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-                <div class="col-md-6">
-                  <input type="password" id="password" class="form-control" name="password" required>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
-                <div class="col-md-6">
-                  <input type="password" id="password-confirm" class="form-control" name="password_confirmation" required>
-                </div>
-              </div>
-              <div class="form-group row mb-0">
-                <div class="col-md-6 offset-md-4">
-                  <button type="submit" class="btn btn-primary">Update Profile</button>
-                </div>
-              </div>
-                          </form>
+<div class="container d-flex align-items-center vh-100">
+    <div class="container my-5 w-50 mx-auto">
+        <h1 class="text-center">Home</h1>
+        <div class="btn-group-vertical" style="width: 100%" role="group">
+            {% if account.type == 'ADMIN' %}
+                <a href="/create_user" class="btn btn-lg btn-primary btn-block rounded">Create User</a>
+                <a href="/create_course" class="btn btn-lg btn-primary btn-block rounded">Create Course</a>
+                <a href="/create_section" class="btn btn-lg btn-primary btn-block rounded">Create Section</a>
+            {% endif %}
         </div>
-      </div>
+        <hr>
+        {% if message %}
+            <div class="form-group container my-3 mx-auto">
+                {% if status == "success" %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% elif status == "failure" %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% elif status == "info" %}
+                    <div class="alert alert-info" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+        <p class="text-center figure-caption">Logged in as user: {{ account.user.username }} <b>({{ account.type }})</b></p>
+        <a href="/logout" class="btn btn-lg btn-danger btn-block rounded">Log out</a>
     </div>
-  </div>
 </div>
-
+</body>
+</html>
 
