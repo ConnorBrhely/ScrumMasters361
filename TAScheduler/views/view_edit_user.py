@@ -35,7 +35,7 @@ class EditUser(View):
         if not validate.validate_name(first_name, last_name):
             print("Invalid first or last entered")
             return render(request, "edituser.html", {
-                "message": "Invalid first or last entered",
+                "message": "Invalid first or last name entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
