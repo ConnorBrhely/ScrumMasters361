@@ -68,16 +68,18 @@
             </tr>
             </thead>
             <tbody>
-            {% for user in accounts %}
+            {% for loop_user in accounts %}
                 <tr>
-                    <td>{{ user.first_name }} {{ user.last_name }}</td>
-                    <td>{{ user.user.email }}</td>
-                    <td>{{ user.type }}</td>
-                    <td><a href="/edit_user?username={{ user.user.email }}"
-                           class="btn btn-lg btn-secondary btn-block rounded">EDIT</a></td>
-                    {% if user != account %}
-                        <td><a href="/delete_user?username={{ user.user.email }}"
-                               class="btn btn-lg btn-secondary btn-block rounded">DELETE</a></td>
+                    <td>{{ loop_user.first_name }} {{ loop_user.last_name }}</td>
+                    <td>{{ loop_user.user.email }}</td>
+                    <td>{{ loop_user.type }}</td>
+                    {% if account.type == "ADMIN" %}
+                        <td><a href="/edit_user?username={{ loop_user.user.email }}"
+                               class="btn btn-lg btn-secondary btn-block rounded">EDIT</a></td>
+                        {% if loop_user != account %}
+                            <td><a href="/delete_user?username={{ loop_user.user.email }}"
+                                   class="btn btn-lg btn-danger btn-block rounded">DELETE</a></td>
+                        {% endif %}
                     {% endif %}
                 </tr>
             {% endfor %}

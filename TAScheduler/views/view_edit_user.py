@@ -8,18 +8,24 @@ from django.core.exceptions import PermissionDenied
 class EditUser(View):
 
     def get(self, request):
-        autofill = request.GET["username"]
-        account = UserAccount.objects.get(user_id=request.user.id)
-        editaccount = UserAccount.objects.get(user__username=autofill)
-        if not request.user.is_authenticated:
-            return redirect("/login")
-        if account.type != UserAccount.UserType.ADMIN:
+        autofill = request.GET.get("username")
+        try:
+            account = UserAccount.objects.get(user_id=request.user.id)
+            # If no username specified, redirect user to their own edit page
+            if autofill is None:
+                return redirect(f"/edit_user/?username={account.user.username}")
+            editaccount = UserAccount.objects.get(user__username=autofill)
+            if not request.user.is_authenticated:
+                return redirect("/login")
+            if account.type != UserAccount.UserType.ADMIN:
+                raise PermissionDenied
+            return render(request, "edituser.html", {
+                "message": "hello there",
+                "account": account,
+                "editaccount": editaccount
+            })
+        except UserAccount.DoesNotExist:
             raise PermissionDenied
-        return render(request, "edituser.html", {
-            "message": "hello there",
-            "account": account,
-            "editaccount": editaccount
-        })
 
     def post(self, request):
         username = request.GET["username"]
