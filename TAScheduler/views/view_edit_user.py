@@ -9,10 +9,11 @@ class EditUser(View):
 
     def get(self, request):
         autofill = request.GET.get("username")
-        if autofill is None:
-            return redirect("/accounts")
         try:
             account = UserAccount.objects.get(user_id=request.user.id)
+            # If no username specified, redirect user to their own edit page
+            if autofill is None:
+                return redirect(f"/edit_user/?username={account.user.username}")
             editaccount = UserAccount.objects.get(user__username=autofill)
             if not request.user.is_authenticated:
                 return redirect("/login")

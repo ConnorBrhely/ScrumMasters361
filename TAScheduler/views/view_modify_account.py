@@ -29,6 +29,8 @@ class ModifyAccount(View):
         if not check_password(password, account.user.password):
             return self.render_error(request, account, "Incorrect password")
 
+        # TODO: allow admins to edit their own password
+
         if len(phone_number) > 0:
             if not validate.phone_number(phone_number):
                 return self.render_error(request, account, "Invalid phone number")

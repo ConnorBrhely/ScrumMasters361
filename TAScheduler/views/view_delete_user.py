@@ -7,10 +7,14 @@ from django.core.exceptions import PermissionDenied
 class DeleteUser(View):
 
     def get(self, request):
-        autofill = request.GET["username"]
+        autofill = request.GET.get("username")
+        if autofill is None:
+            return redirect("/accounts")
         try:
             account = UserAccount.objects.get(user_id=request.user.id)
             editaccount = UserAccount.objects.get(user__username=autofill)
+            if account == editaccount:
+                raise PermissionDenied
             if not request.user.is_authenticated:
                 return redirect("/login")
             if account.type != UserAccount.UserType.ADMIN:
