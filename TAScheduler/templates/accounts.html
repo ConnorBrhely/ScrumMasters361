@@ -77,7 +77,7 @@
                            class="btn btn-lg btn-secondary btn-block rounded">EDIT</a></td>
                     {% if user != account %}
                         <td><a href="/delete_user?username={{ user.user.email }}"
-                               class="btn btn-lg btn-secondary btn-block rounded">DELETE</a></td>
+                               class="btn btn-lg btn-danger btn-block rounded">DELETE</a></td>
                     {% endif %}
                 </tr>
             {% endfor %}
