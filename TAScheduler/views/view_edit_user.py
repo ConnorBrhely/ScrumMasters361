@@ -23,30 +23,30 @@ class EditUser(View):
         last_name = request.POST["lastname"].strip()
         email = request.POST["email"].strip()
         account = UserAccount.objects.get(user__username=username)
-
+        """Checks for valid email address"""
         if not validate.validate_email(email):
             return render(request, "edituser.html", {
                 "message": "Invalid email entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
+        """Checks for valid first and last name"""
         if not validate.validate_name(first_name, last_name):
             return render(request, "edituser.html", {
                 "message": "Invalid first or last name entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
-
+        """Checks if a user already exists with email they want to update too"""
         no_such_user = False
         try:
             UserAccount.objects.get(user__email=email)
         except UserAccount.DoesNotExist:
             no_such_user = True
 
-
         password = request.POST["password"].strip()
         confirm_password = request.POST["confirmpassword"].strip()
-
+        """Checks for empty string fields and returns if so"""
         if email == "" \
                 or first_name == "" \
                 or last_name == "":
@@ -61,8 +61,11 @@ class EditUser(View):
         message = "User edited successfully"
         status = "success"
         sameEmail = False
+        """Checks to see if the email changed"""
         if username == email:
             sameEmail = True
+        """(If a user doesnt exist with new email or the same email is used) AND ((Password is valid and the two passwords
+        entered are equal) OR (The length of both passwords fields are empty meaning no change)) Then update account"""
         if (no_such_user or sameEmail) and ((password_valid and password_equal) or (len(password) == 0 and len(confirm_password) == 0)):
             if password_valid and password_equal:
                 account.update_password(password)
