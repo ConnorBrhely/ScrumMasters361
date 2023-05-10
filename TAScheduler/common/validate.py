@@ -5,6 +5,8 @@ SPECIAL_CHARACTERS = "!@#$%^&*()_+{}|:<>?[]\;',./`~"
 PASSWORD_REQUIREMENTS = "Passwords must be at least 8 characters long and contain at least one uppercase letter, " \
                         "one lowercase letter, one digit, and one special character."
 
+# TODO: remove validate_ prefix from function names
+
 def validate_password(password: str):
     """
     Validates a given password to ensure it meets the minimum requirements
@@ -114,5 +116,28 @@ def validate_term(term_string: str):
 
     if len(term_year) != 4 or not term_year.isdigit():
         return False
+
+    return True
+
+def validate_address(address: str):
+    if not address:
+        return False
+
+    address_split = address.split()
+    if len(address_split) < 3:
+        return False
+
+    address_number = address_split[0]
+    address_name = "".join(address_split[1:])
+
+    if not address_number.isnumeric():
+        return False
+
+    if not address_name[0].isupper():
+        return False
+
+    for char in address_name:
+        if not char.isalpha() and char not in " .":
+            return False
 
     return True
