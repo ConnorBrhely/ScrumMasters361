@@ -8,14 +8,24 @@ from django.core.exceptions import PermissionDenied
 class EditUser(View):
 
     def get(self, request):
-        autofill = request.GET["username"]
-        account = UserAccount.objects.get(user_id=request.user.id)
-        editaccount = UserAccount.objects.get(user__username=autofill)
-        if not request.user.is_authenticated:
-            return redirect("/login")
-        if account.type != UserAccount.UserType.ADMIN:
+        autofill = request.GET.get("username")
+        try:
+            account = UserAccount.objects.get(user_id=request.user.id)
+            # If no username specified, redirect user to their own edit page
+            if autofill is None:
+                return redirect(f"/edit_user/?username={account.user.username}")
+            editaccount = UserAccount.objects.get(user__username=autofill)
+            if not request.user.is_authenticated:
+                return redirect("/login")
+            if account.type != UserAccount.UserType.ADMIN:
+                raise PermissionDenied
+            return render(request, "edituser.html", {
+                "message": "hello there",
+                "account": account,
+                "editaccount": editaccount
+            })
+        except UserAccount.DoesNotExist:
             raise PermissionDenied
-        return render(request, "edituser.html", {"message": "hello there", "account": account, "editaccount": editaccount})
 
     def post(self, request):
         username = request.GET["username"]
@@ -23,15 +33,15 @@ class EditUser(View):
         last_name = request.POST["lastname"].strip()
         email = request.POST["email"].strip()
         account = UserAccount.objects.get(user__username=username)
-        """Checks for valid email address"""
-        if not validate.validate_email(email):
+
+        if not validate.email(email):
             return render(request, "edituser.html", {
                 "message": "Invalid email entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
-        """Checks for valid first and last name"""
-        if not validate.validate_name(first_name, last_name):
+
+        if not validate.name(first_name, last_name):
             return render(request, "edituser.html", {
                 "message": "Invalid first or last name entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
@@ -52,12 +62,12 @@ class EditUser(View):
                 or last_name == "":
             return render(request, "edituser.html", {
                 "message": "One or more blank field detected",
-                "status": "failure",
+                "status": "error",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
         password_equal = (password == confirm_password)
-        password_valid = validate.validate_password(password)
+        password_valid = validate.password(password)
         message = "User edited successfully"
         status = "success"
         sameEmail = False
@@ -79,7 +89,7 @@ class EditUser(View):
             })
         elif not password_equal:
             message = "Passwords do not match"
-            status = "failure"
+            status = "error"
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
@@ -88,7 +98,7 @@ class EditUser(View):
             })
         elif len(password) != 0 and not password_valid:
             message = "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character"
-            status = "failure"
+            status = "error"
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
@@ -97,7 +107,7 @@ class EditUser(View):
             })
         else:
             message = "Account with email already exists"
-            status = "failure"
+            status = "error"
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,

@@ -19,7 +19,7 @@ class CreateUser(View):
         last_name = request.POST["lastname"].strip()
         email = request.POST["email"].strip()
 
-        if not validate.validate_email(email):
+        if not validate.email(email):
             return render(request, "createuser.html", {
                 "message": "Invalid email entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
@@ -35,12 +35,12 @@ class CreateUser(View):
                 or last_name == "":
             return render(request, "createuser.html", {
                 "message": "One or more blank field detected",
-                "status": "failure",
+                "status": "error",
                 "account": UserAccount.objects.get(user_id=request.user.id),
             })
 
         password_equal = (password == confirm_password)
-        password_valid = validate.validate_password(password)
+        password_valid = validate.password(password)
 
         no_such_user = False
         try:
@@ -62,7 +62,7 @@ class CreateUser(View):
             m.save()
         elif not password_equal:
             message = "Passwords do not match"
-            status = "failure"
+            status = "error"
             return render(request, "createuser.html", {
                 "message": message,
                 "status": status,
@@ -70,7 +70,7 @@ class CreateUser(View):
             })
         elif not password_valid:
             message = "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character"
-            status = "failure"
+            status = "error"
             return render(request, "createuser.html", {
                 "message": message,
                 "status": status,
@@ -78,7 +78,7 @@ class CreateUser(View):
             })
         else:
             message = "User with email already exists"
-            status = "failure"
+            status = "error"
             return render(request, "createuser.html", {
                 "message": message,
                 "status": status,

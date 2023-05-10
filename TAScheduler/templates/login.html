@@ -28,23 +28,7 @@
             </div>
             <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Login">
         </form>
-        {% if message %}
-            <div class="form-group container my-3 mx-auto">
-                {% if status == "success" %}
-                    <div class="alert alert-success" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif status == "failure" %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif status == "info" %}
-                    <div class="alert alert-info" role="alert">
-                        {{ message }}
-                    </div>
-                {% endif %}
-            </div>
-        {% endif %}
+        {% include "modules/messages.html" %}
         <hr>
         <p class="text-center figure-caption">
             Looking to register? Contact your administrator.

@@ -5,6 +5,7 @@ from TAScheduler.models import Section
 
 class UserAccountManager(models.Manager):
     def register(self, first_name, last_name, email, password, user_type, home_address=None, phone_number=None, office_hours=None):
+        # TODO: make username just the email prefix
         user = User.objects.create_user(
             username=email,
             email=email,
@@ -50,7 +51,7 @@ class UserAccount(models.Model):
         :param last_name:
         :return:
         """
-        if not validate.validate_name(first_name, last_name):
+        if not validate.name(first_name, last_name):
             raise ValueError("Name failed validation")
         self.first_name = first_name
         self.last_name = last_name
@@ -67,7 +68,7 @@ class UserAccount(models.Model):
             raise ValueError("Email cannot be blank")
         if email.strip() == "":
             raise ValueError("Email cannot be blank")
-        if not validate.validate_email(email):
+        if not validate.email(email):
             raise ValueError("Invalid email")
         self.user.username = email
         self.user.email = email
@@ -84,7 +85,7 @@ class UserAccount(models.Model):
             raise ValueError("Password cannot be blank")
         if password.strip() == "":
             raise ValueError("Password cannot be blank")
-        if not validate.validate_password(password):
+        if not validate.password(password):
             raise ValueError("Invalid password")
         self.user.set_password(password)
         self.user.save()
@@ -112,7 +113,7 @@ class UserAccount(models.Model):
         """
         if phone_number is None:
             raise ValueError("Phone number cannot be blank")
-        if not validate.validate_phone_number(phone_number):
+        if not validate.phone_number(phone_number):
             raise ValueError("Invalid phone number")
         self.phone_number = phone_number
         self.save()

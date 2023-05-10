@@ -13,6 +13,7 @@
         table, th, td {
             margin: 0 auto;
         }
+
         td {
             vertical-align: middle;
         }
@@ -22,28 +23,14 @@
 <div class="container d-flex align-items-center vh-100">
     <div class="container my-5 w-30 mx-auto">
         <h1 class="text-center">Accounts</h1>
-    <div class="text-center">
-        <div class="btn-group-vertical" style="width: 30%" role="group">
-            <a href="/create_user" class="btn btn-lg btn-primary btn-block rounded">Create User</a>
-        </div>
-        {% if message %}
-            <div class="form-group container my-3 mx-auto">
-                {% if status == "success" %}
-                    <div class="alert alert-success" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif status == "failure" %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif status == "info" %}
-                    <div class="alert alert-info" role="alert">
-                        {{ message }}
-                    </div>
-                {% endif %}
+        {% if account.type == "ADMIN" %}
+            <div class="text-center">
+                <div class="btn-group-vertical" style="width: 30%" role="group">
+                    <a href="/create_user" class="btn btn-lg btn-primary btn-block rounded">Create User</a>
+                </div>
+                {% include "modules/messages.html" %}
             </div>
         {% endif %}
-    </div>
         <table>
             <form method="post" action="#">
                 {% csrf_token %}
@@ -70,9 +57,9 @@
             </form>
         </table>
         <br>
-        <table class="bordered" id="widetable">
+        <table class="table" id="widetable">
             <thead>
-            <tr class="bordered">
+            <tr>
                 <th class="name">Name</th>
                 <th class="email">Email</th>
                 <th class="type">Type</th>
@@ -81,21 +68,24 @@
             </tr>
             </thead>
             <tbody>
-            {% for user in accounts %}
-                <tr class="bordered">
-                    <td class="bordered">{{ user.first_name }} {{ user.last_name }}</td>
-                    <td class="bordered">{{ user.user.email }}</td>
-                    <td class="bordered">{{ user.type }}</td>
-                    <td class="bordered"><a href="/edit_user?username={{ user.user.email }}" class="btn btn-lg btn-secondary btn-block rounded">EDIT</a></td>
-                    {% if user != account %}
-                    <td class="bordered"><a href="/delete_user?username={{ user.user.email }}" class="btn btn-lg btn-secondary btn-block rounded">DELETE</a></td>
+            {% for loop_user in accounts %}
+                <tr>
+                    <td>{{ loop_user.first_name }} {{ loop_user.last_name }}</td>
+                    <td>{{ loop_user.user.email }}</td>
+                    <td>{{ loop_user.type }}</td>
+                    {% if account.type == "ADMIN" %}
+                        <td><a href="/edit_user?username={{ loop_user.user.email }}"
+                               class="btn btn-lg btn-secondary btn-block rounded">EDIT</a></td>
+                        {% if loop_user != account %}
+                            <td><a href="/delete_user?username={{ loop_user.user.email }}"
+                                   class="btn btn-lg btn-danger btn-block rounded">DELETE</a></td>
+                        {% endif %}
                     {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    <hr>
-        <p class="text-center figure-caption">Logged in as user: {{ account.user.username }} <b>({{ account.type }})</b></p>
+        {% include "modules/account_info.html" %}
         <a href="/home" class="btn btn-lg btn-secondary btn-block rounded">Home</a>
     </div>
 </div>

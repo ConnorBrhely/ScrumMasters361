@@ -7,14 +7,21 @@ from django.core.exceptions import PermissionDenied
 class DeleteUser(View):
 
     def get(self, request):
-        autofill = request.GET["username"]
-        account = UserAccount.objects.get(user_id=request.user.id)
-        editaccount = UserAccount.objects.get(user__username=autofill)
-        if not request.user.is_authenticated:
-            return redirect("/login")
-        if account.type != UserAccount.UserType.ADMIN:
+        autofill = request.GET.get("username")
+        if autofill is None:
+            return redirect("/accounts")
+        try:
+            account = UserAccount.objects.get(user_id=request.user.id)
+            editaccount = UserAccount.objects.get(user__username=autofill)
+            if account == editaccount:
+                raise PermissionDenied
+            if not request.user.is_authenticated:
+                return redirect("/login")
+            if account.type != UserAccount.UserType.ADMIN:
+                raise PermissionDenied
+            return render(request, "deleteuser.html", {"account": account, "editaccount": editaccount})
+        except UserAccount.DoesNotExist:
             raise PermissionDenied
-        return render(request, "deleteuser.html", {"account": account, "editaccount": editaccount})
 
     def post(self, request):
 
@@ -28,7 +35,7 @@ class DeleteUser(View):
         account = UserAccount.objects.get(user__id=request.user.id)
         if useraccount == "donotdelete":
             message = "Must check box to confirm"
-            status = "failure"
+            status = "error"
             return render(request, "deleteuser.html", {
                 "message": message,
                 "status": status,

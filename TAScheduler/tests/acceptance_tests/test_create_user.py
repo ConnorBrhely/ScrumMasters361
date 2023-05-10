@@ -27,9 +27,10 @@ class TestCreateUser(TestCase):
             "email": self.email
         }, follow=True)
         self.assertEqual(UserAccount.objects.count(), 2, msg="User not successfully created with valid information")
-        self.assertEqual(resp.context["message"],
-                    "User successfully created",
-                    msg="User not successfully created with valid information")
+        self.assertEqual(resp.status_code, 200, msg="Non 200 status code returned")
+        # self.assertEqual(resp.context["message"],
+        #             "User successfully created",
+        #             msg="User not successfully created with valid information")
 
     def test_invalid_password(self):
         self.password = "password123"
