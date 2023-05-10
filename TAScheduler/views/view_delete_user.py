@@ -31,6 +31,7 @@ class DeleteUser(View):
             })
         else:
             deleteaccount = UserAccount.objects.get(user__username=useraccount)
+            deleteaccount.user.delete()
             deleteaccount.delete()
             return redirect("/accounts", {"message": message, "status": status, "account": account,
                                                  "accounts": UserAccount.objects.order_by("type")})
