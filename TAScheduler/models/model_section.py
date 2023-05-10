@@ -108,3 +108,7 @@ class Section(models.Model):
         :return: True if the section is full, False otherwise
         """
         return self.tas.count() >= self.course.max_tas_per_section
+
+
+    def __str__(self):
+        return f"{self.course} - {self.number}"

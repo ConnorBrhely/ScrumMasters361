@@ -13,7 +13,8 @@ class TestModelCourse(TestCase):
 
         self.course = Course.objects.create(
             name='Test Course',
-            term='Fall 2023',
+            term_season='Fall',
+            term_year=2023,
             instructor=self.account,
         )
 

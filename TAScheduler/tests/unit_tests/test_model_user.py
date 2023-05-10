@@ -14,7 +14,8 @@ class TestModelUser(TestCase):
 
         self.course = Course.objects.create(
             name='Test Course',
-            term='Fall 2023',
+            term_season='Fall',
+            term_year=2023,
             instructor=self.account,
         )
 
@@ -50,29 +51,16 @@ class TestModelUser(TestCase):
         self.assertEqual('MWF 8-9', self.account.office_hours,
                          msg='Office hours not updated when valid office hours entered')
 
-    def test_update_no_hours(self):
-        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input entered'):
-            self.account.update_office_hours('')
-
-    def test_update_only_spaces(self):
-        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input with whitespace entered'):
-            self.account.update_office_hours('   \t\n')
-
     def test_add_to_section(self):
         self.account.add_to_section(self.section)
         self.assertEqual(self.section.tas.count(), 1,
                          msg='Section not added to user when valid section entered')
 
-    def test_check_TA(self):
-        added_ta = self.section.tas.first()
-        ta_name = added_ta.first_name + ' ' + added_ta.last_name
-        expected_ta_name = self.account.first_name + ' ' + self.account.last_name
-        self.assertEqual(ta_name, expected_ta_name,
-                         msg='Section not added to user when valid section entered')
-
-    def test_no_TA(self):
-        with self.assertRaises(ValueError, msg='ValueError not thrown when None entered'):
-            self.account.add_to_section(None)
+    def test_set_password(self):
+        old_hash = self.account.user.password
+        self.account.update_password("Password123!")
+        self.assertNotEqual(self.account.user.password, old_hash,
+                            msg="Password not updated when valid password entered")
 
     def test_set_password_valid(self):
         old_pass_hash = self.account.user.password
@@ -100,30 +88,79 @@ class TestModelUser(TestCase):
         with self.assertRaises(ValueError, msg="Value error not thrown when blank input entered"):
             self.account.update_password("")
 
+    def test_changeValidPhone(self):
+        self.account.update_phone_number("4144444444")
+        self.assertEqual(self.account.phone_number, "4144444444", msg="Phone number not updated with valid number")
+
+    def test_invalidPhone(self):
+        with self.assertRaises(ValueError, msg="ValueError not thrown when phone number is too short"):
+            self.account.update_phone_number("414444444")
+
+    def test_blankPhone(self):
+        with self.assertRaises(ValueError, msg="ValueError not thrown when blank number entered"):
+            self.account.update_phone_number("")
+
+    def test_invalidCharsPhone(self):
+        with self.assertRaises(ValueError, msg="ValueError not thrown when invalid character entered"):
+            self.account.update_phone_number("414B44[as")
+
+    def test_blankAddress(self):
+        with self.assertRaises(ValueError, msg="ValueError not thrown when blank address entered"):
+            self.account.update_address("")
+
+    def test_validAddress(self):
+        self.account.update_address("123 S Fake St")
+        self.assertEqual(self.account.home_address, "123 S Fake St")
+
+        with self.assertRaises(ValueError, msg="Value error not thrown when blank input with whitespace entered"):
+            self.account.update_password("   \t\n")
+
     def test_update_name_valid(self):
-        old_name = self.account.user.name
-        self.account.update_name("John")
-        self.assertNotEqual(self.account.user.name, old_name, msg="Name not updated when new name given")
+        old_first_name = self.account.first_name
+        old_last_name = self.account.last_name
+        self.account.update_name("New", "Name")
+        self.assertNotEqual(self.account.first_name, old_first_name, msg="First name not updated when new name given")
+        self.assertNotEqual(self.account.last_name, old_last_name, msg="Last name not updated when new name given")
         
     def test_update_name_empty(self):
         with self.assertRaises(ValueError, msg="ValueError not thrown when no input given for name"):
-            self.account.update_name("")
+            self.account.update_name("", "")
             
     def test_update_name_numbers(self):
         with self.assertRaises(ValueError, msg="Name cannot have numbers"):
-            self.account.update_name("John1")
+            self.account.update_name("John1", "Doe2")
             
     def test_update_name_invalid_char(self):
         with self.assertRaises(ValueError, msg="Name cannot have special characters"):
-            self.account.update_name("J*hn")
-            self.account.update_name(" _1st_" )
+            self.account.update_name("J*hn", "Doe")
+            self.account.update_name(" _1st_", "Doe")
             
     def test_update_name_whitespaces(self):
         with self.assertRaises(ValueError, msg="Whitespace is not a valid name"):
-            self.account.update_name("   ") # Contains 'tab' followed by 'space'
+            self.account.update_name("   ", "\t\t") # Contains 'tab' followed by 'space'
             
     def test_update_name_has_whitespace(self):
         with self.assertRaises(ValueError, msg="Name cannot begin with whitespace"):
-            self.account.update_name(" Jane")
+            self.account.update_name(" Jane", "Doe ")
         with self.assertRaises(ValueError, msg="Name cannot contain whitespace"):
-            self.account.update_name("John Doe")
+            self.account.update_name("John Doe", "Doe")
+
+    def test_update_no_hours(self):
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input entered'):
+            self.account.update_office_hours('')
+
+    def test_update_only_spaces(self):
+        with self.assertRaises(ValueError, msg='ValueError not thrown when blank input with whitespace entered'):
+            self.account.update_office_hours('   \t\n')
+
+    def test_check_TA(self):
+        self.account.add_to_section(self.section)
+        added_ta = self.section.tas.first()
+        ta_name = added_ta.first_name + ' ' + added_ta.last_name
+        expected_ta_name = self.account.first_name + ' ' + self.account.last_name
+        self.assertEqual(ta_name, expected_ta_name,
+                         msg='Section not added to user when valid section entered')
+
+    def test_no_TA(self):
+        with self.assertRaises(ValueError, msg='ValueError not thrown when None entered'):
+            self.account.add_to_section(None)

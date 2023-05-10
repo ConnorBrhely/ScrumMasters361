@@ -52,26 +52,9 @@
                 <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Create Course">
             {% endif %}
         </form>
-        {% if message %}
-            <div class="form-group container my-3 mx-auto">
-                {% if status == "success" %}
-                    <div class="alert alert-success" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif status == "failure" %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ message }}
-                    </div>
-                {% elif status == "info" %}
-                    <div class="alert alert-info" role="alert">
-                        {{ message }}
-                    </div>
-                {% endif %}
-            </div>
-        {% endif %}
-        <hr>
-        <p class="text-center figure-caption">Logged in as user: {{ account.user.username }} <b>({{ account.type }})</b></p>
-        <a href="/home" class="btn btn-lg btn-secondary btn-block rounded">Home</a>
+        {% include "modules/messages.html" %}
+        {% include "modules/account_info.html" %}
+        {% include "modules/back_button.html" with back_url="home" back_title="Home" %}
     </div>
 </div>
 </body>

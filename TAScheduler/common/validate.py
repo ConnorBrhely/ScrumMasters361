@@ -11,8 +11,6 @@ def validate_password(password: str):
     :param password: The password to validate
     :return: True if the password is valid, False otherwise
     """
-    print(password)
-
     if not password:
         return False
 
@@ -74,5 +72,47 @@ def validate_section_number(section_number: str):
     for char in section_number:
         if not char.isdigit() and char != "-":
             return False
+
+    return True
+
+def validate_name(first_name: str, last_name: str):
+    """
+    Validates a given first and last name to ensure they are capitalized
+    :param first_name: The first name to validate
+    :param last_name: The last name to validate
+    :return: True if the first and last name are capitalized, False otherwise
+    """
+    if not first_name or not last_name:
+        return False
+
+    if first_name[0].islower() or last_name[0].islower():
+        return False
+
+    if not first_name.isalpha() or not last_name.isalpha():
+        return False
+
+    return True
+
+def validate_term(term_string: str):
+    """
+    Validates a given term string to ensure it is a valid term string (i.e. only 0-9 and -)
+    :param term_string: The term string to validate
+    :return: True if the term string is valid, False otherwise
+    """
+    if not term_string:
+        return False
+
+    term_split = term_string.split()
+    if len(term_split) != 2:
+        return False
+
+    term_season = term_split[0]
+    term_year = term_split[1]
+
+    if term_season not in ["Spring", "Summer", "Fall"]:
+        return False
+
+    if len(term_year) != 4 or not term_year.isdigit():
+        return False
 
     return True

@@ -30,18 +30,11 @@ class CreateUser(View):
         password = request.POST["password"].strip()
         confirm_password = request.POST["confirmpassword"].strip()
 
-        print(f"email: '{email}'")
-        print(f"password: '{password}'")
-        print(f"confirm_password: '{confirm_password}'")
-        print(f"first_name: '{first_name}'")
-        print(f"last_name: '{last_name}'")
-
         if email == "" \
                 or password == "" \
                 or confirm_password == "" \
                 or first_name == "" \
                 or last_name == "":
-            print("One or more blank field detected")
             return render(request, "createuser.html", {
                 "message": "One or more blank field detected",
                 "status": "failure",
