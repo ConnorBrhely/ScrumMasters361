@@ -18,6 +18,8 @@ class DeleteUser(View):
 
     def post(self, request):
         useraccount = request.POST["confirmdelete"]
+        editaccount = request.POST["editaccount"]
+        editaccount = UserAccount.objects.get(user__email=editaccount)
         message = "User deleted successfully"
         status = "success"
         account = UserAccount.objects.get(user__id=request.user.id)
@@ -28,6 +30,7 @@ class DeleteUser(View):
                 "message": message,
                 "status": status,
                 "account": account,
+                "editaccount": editaccount
             })
         else:
             deleteaccount = UserAccount.objects.get(user__username=useraccount)

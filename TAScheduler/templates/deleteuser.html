@@ -52,6 +52,7 @@
             </div>
             <div class="form-row my-4">
                 <div class="form-group">
+                    <input type="hidden" name="editaccount" value="{{ editaccount.user.email }}">
                     <input type="hidden" name="confirmdelete" value="donotdelete">
                     <input type="checkbox" name="confirmdelete" id="confirmdelete" value="{{ editaccount.user.email }}">
                     <label for="confirmelete">Are you sure you want to delete this account?</label>
