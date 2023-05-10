@@ -24,3 +24,4 @@ class TestModelCourse(TestCase):
             time='Test Time',
             course=self.course,
         )
+
