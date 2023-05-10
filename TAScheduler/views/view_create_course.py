@@ -31,7 +31,7 @@ class CreateCourse(View):
 
         if name == "" or number == "" or term_season == "" or term_year == "" or request.POST["instructor"].strip() == "":
             message = "One or more blank field detected"
-            status = "failure"
+            status = "error"
         try:
             Course.objects.get(number=number, term_season=term_season, term_year=term_year)
         except Course.DoesNotExist:
@@ -47,7 +47,7 @@ class CreateCourse(View):
             m.save()
         else:
             message = "Course already exists"
-            status = "failure"
+            status = "error"
         return render(request, "createcourse.html", {
             "message": message,
             "status": status,

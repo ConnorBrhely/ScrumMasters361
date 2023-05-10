@@ -21,7 +21,7 @@ class CreateSection(View):
 
         if course == "" or number == "" or location == "" or time == "":
             message = "One or more blank field detected"
-            status = "failure"
+            status = "error"
         try:
             Section.objects.get(number=number, course=course)
         except Section.DoesNotExist:
@@ -36,7 +36,7 @@ class CreateSection(View):
             m.save()
         else:
             message = "Section already exists"
-            status = "failure"
+            status = "error"
         return render(request, "createsection.html", {
             "message": message,
             "status": status,

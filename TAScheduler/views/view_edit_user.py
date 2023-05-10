@@ -15,7 +15,11 @@ class EditUser(View):
             return redirect("/login")
         if account.type != UserAccount.UserType.ADMIN:
             raise PermissionDenied
-        return render(request, "edituser.html", {"message": "hello there", "account": account, "editaccount": editaccount})
+        return render(request, "edituser.html", {
+            "message": "hello there",
+            "account": account,
+            "editaccount": editaccount
+        })
 
     def post(self, request):
         username = request.GET["username"]
@@ -24,13 +28,13 @@ class EditUser(View):
         email = request.POST["email"].strip()
         account = UserAccount.objects.get(user__username=username)
 
-        if not validate.validate_email(email):
+        if not validate.email(email):
             return render(request, "edituser.html", {
                 "message": "Invalid email entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
-        if not validate.validate_name(first_name, last_name):
+        if not validate.name(first_name, last_name):
             return render(request, "edituser.html", {
                 "message": "Invalid first or last name entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
@@ -52,12 +56,12 @@ class EditUser(View):
                 or last_name == "":
             return render(request, "edituser.html", {
                 "message": "One or more blank field detected",
-                "status": "failure",
+                "status": "error",
                 "account": UserAccount.objects.get(user_id=request.user.id),
                 "editaccount": account
             })
         password_equal = (password == confirm_password)
-        password_valid = validate.validate_password(password)
+        password_valid = validate.password(password)
         message = "User edited successfully"
         status = "success"
         sameEmail = False
@@ -76,7 +80,7 @@ class EditUser(View):
             })
         elif not password_equal:
             message = "Passwords do not match"
-            status = "failure"
+            status = "error"
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
@@ -85,7 +89,7 @@ class EditUser(View):
             })
         elif len(password) != 0 and not password_valid:
             message = "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character"
-            status = "failure"
+            status = "error"
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
@@ -94,7 +98,7 @@ class EditUser(View):
             })
         else:
             message = "Account with email already exists"
-            status = "failure"
+            status = "error"
             return render(request, "edituser.html", {
                 "message": message,
                 "status": status,

@@ -18,7 +18,7 @@ class Section(models.Model):
             raise ValueError("Name cannot be blank")
         if number.strip() == "":
             raise ValueError("Name cannot be blank")
-        if not validate.validate_section_number(number):
+        if not validate.section_number(number):
             raise ValueError("Invalid section number")
         self.number = number
         self.save()

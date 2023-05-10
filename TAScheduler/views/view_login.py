@@ -13,12 +13,12 @@ class Login(View):
         if "email" not in request.POST or request.POST["email"] == "":
             return render(request, "login.html", {
                 "message": "No email provided",
-                "status": "failure",
+                "status": "error",
             })
         if "password" not in request.POST or request.POST["password"] == "":
             return render(request, "login.html", {
                 "message": "No password provided",
-                "status": "failure",
+                "status": "error",
             })
 
         email = request.POST["email"].strip()
@@ -47,5 +47,5 @@ class Login(View):
         else:
             return render(request, "login.html", {
                 "message": "Invalid email or password",
-                "status": "failure",
+                "status": "error",
             })

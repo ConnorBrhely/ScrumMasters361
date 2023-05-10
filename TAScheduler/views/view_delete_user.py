@@ -25,7 +25,7 @@ class DeleteUser(View):
         account = UserAccount.objects.get(user__id=request.user.id)
         if useraccount == "donotdelete":
             message = "Must check box to confirm"
-            status = "failure"
+            status = "error"
             return render(request, "deleteuser.html", {
                 "message": message,
                 "status": status,
