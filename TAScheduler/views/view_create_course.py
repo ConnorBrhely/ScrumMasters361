@@ -22,24 +22,26 @@ class CreateCourse(View):
         no_such_course = False
         name = request.POST["name"].strip()
         number = request.POST["number"].strip()
-        term = request.POST["term"].strip()
+        term_season = request.POST["term_season"].strip()
+        term_year = request.POST["term_year"].strip()
         instructor = UserAccount.objects.get(pk=int(request.POST["instructor"].strip()))
 
         message = "Course successfully created"
         status = "success"
 
-        if name == "" or number == "" or term == "" or request.POST["instructor"].strip() == "":
+        if name == "" or number == "" or term_season == "" or term_year == "" or request.POST["instructor"].strip() == "":
             message = "One or more blank field detected"
             status = "failure"
         try:
-            Course.objects.get(number=number, term=term)
+            Course.objects.get(number=number, term_season=term_season, term_year=term_year)
         except Course.DoesNotExist:
             no_such_course = True
         if no_such_course:
             m = Course.objects.create(
                 name=name,
                 number=number,
-                term=term,
+                term_season=term_season,
+                term_year=term_year,
                 instructor=instructor
             )
             m.save()
@@ -50,6 +52,7 @@ class CreateCourse(View):
             "message": message,
             "status": status,
             "account": UserAccount.objects.get(user_id=request.user.id),
+            "terms": Course.TERM_SEASON_CHOICES,
             "courses": Course.objects.all(),
             "instructors": UserAccount.objects.filter(type="INSTRUCTOR")
         })

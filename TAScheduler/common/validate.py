@@ -92,3 +92,27 @@ def validate_name(first_name: str, last_name: str):
         return False
 
     return True
+
+def validate_term(term_string: str):
+    """
+    Validates a given term string to ensure it is a valid term string (i.e. only 0-9 and -)
+    :param term_string: The term string to validate
+    :return: True if the term string is valid, False otherwise
+    """
+    if not term_string:
+        return False
+
+    term_split = term_string.split()
+    if len(term_split) != 2:
+        return False
+
+    term_season = term_split[0]
+    term_year = term_split[1]
+
+    if term_season not in ["Spring", "Summer", "Fall"]:
+        return False
+
+    if len(term_year) != 4 or not term_year.isdigit():
+        return False
+
+    return True

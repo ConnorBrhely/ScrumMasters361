@@ -32,5 +32,6 @@ urlpatterns = [
     path('accounts/', views.Accounts.as_view()),
     path('edit_user/', views.EditUser.as_view()),
     path('delete_user/', views.DeleteUser.as_view())
+    path('modify_account/', views.ModifyAccount.as_view())
     # path("favicon.ico", RedirectView.as_view(url=static("images/favicon.ico")))
 ]

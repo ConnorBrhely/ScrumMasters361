@@ -6,4 +6,4 @@ from .view_create_section import CreateSection
 from .view_create_course import CreateCourse
 from .view_accounts import Accounts
 from .view_edit_user import EditUser
-from .view_delete_user import DeleteUser
+from .view_modify_account import ModifyAccount
