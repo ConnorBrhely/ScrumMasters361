@@ -24,7 +24,10 @@ class DeleteUser(View):
             raise PermissionDenied
 
     def post(self, request):
+
         useraccount = request.POST["confirmdelete"]
+        """User account is either email or 'donotdelete' if box isnt checked"""
+        """Edit acount is the name of the account regardless in order to autofill form if submitted without check off"""
         editaccount = request.POST["editaccount"]
         editaccount = UserAccount.objects.get(user__email=editaccount)
         message = "User deleted successfully"
