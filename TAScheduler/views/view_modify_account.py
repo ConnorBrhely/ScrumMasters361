@@ -1,19 +1,15 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.views import View
+from TAScheduler.common import validate
 from TAScheduler.models import UserAccount
-
-@login_required
-def home_view(request):
-    account = UserAccount.objects.get(user=request.user)
-    message = None
-    status = None
-
-    if request.method == 'POST':
-        # Handle any post requests here
-        pass
-
-    return render(request, 'home.html', {
-        'account': account,
-        'message': message,
-        'status': status
-    })
+from django.core.exceptions import PermissionDenied
+class ModifyAccount(View):
+    def get(self, request):
+        account = UserAccount.objects.get(user_id=request.user.id)
+        if not request.user.is_authenticated:
+            return redirect("/login")
+        if account.type != UserAccount.UserType.ADMIN:
+            raise PermissionDenied
+        return render(request, "createsection.html", {
+            "account": account,
+        })
