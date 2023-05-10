@@ -5,25 +5,23 @@ SPECIAL_CHARACTERS = "!@#$%^&*()_+{}|:<>?[]\;',./`~"
 PASSWORD_REQUIREMENTS = "Passwords must be at least 8 characters long and contain at least one uppercase letter, " \
                         "one lowercase letter, one digit, and one special character."
 
-# TODO: remove validate_ prefix from function names
-
-def validate_password(password: str):
+def password(password_str: str):
     """
     Validates a given password to ensure it meets the minimum requirements
-    :param password: The password to validate
+    :param password_str: The password to validate
     :return: True if the password is valid, False otherwise
     """
-    if not password:
+    if not password_str:
         return False
 
-    if len(password) < 8:
+    if len(password_str) < 8:
         return False
 
     has_upper = False
     has_lower = False
     has_digit = False
     has_special = False
-    for char in password:
+    for char in password_str:
         if char.isupper():
             has_upper = True
         elif char.islower():
@@ -35,49 +33,54 @@ def validate_password(password: str):
 
     return has_upper and has_lower and has_digit and has_special
 
-def validate_email(email):
+def email(email_str: str):
     """
     Validates a given email to ensure it is a valid email address
-    :param email: The email to validate
+    :param email_str: The email to validate
     :return: True if the email is valid, False otherwise
     """
-    if not email:
+    if not email_str:
         return False
 
-    return re.match(r"[^@]+@[^@]+\.[^@]+", email) is not None
+    email_str = email_str.strip()
 
-def validate_phone_number(phone_number: str):
+    return re.match(r"[^@]+@[^@]+\.[^@]+", email_str) is not None
+
+def phone_number(phone_number_str: str):
     """
     Validates a given phone number to ensure it is a valid phone number (i.e. only 0-9, (), +, and -)
-    :param phone_number: The phone number to validate
+    :param phone_number_str: The phone number to validate
     :return: True if the phone number is valid, False otherwise
     """
-    if not phone_number:
+    if not phone_number_str:
         return False
-    if len(phone_number) < 10:
+    phone_number_str = phone_number_str.strip()
+    if len(phone_number_str) < 10:
         return False
-    for char in phone_number:
+    for char in phone_number_str:
         if not char.isdigit() and char not in "()+- ":
             return False
 
     return True
 
-def validate_section_number(section_number: str):
+def section_number(section_number_str: str):
     """
     Validates a given section number to ensure it is a valid section number (i.e. only 0-9 and -)
-    :param section_number: The section number to validate
+    :param section_number_str: The section number to validate
     :return: True if the section number is valid, False otherwise
     """
-    if not section_number:
+    if not section_number_str:
         return False
 
-    for char in section_number:
+    section_number_str = section_number_str.strip()
+
+    for char in section_number_str:
         if not char.isdigit() and char != "-":
             return False
 
     return True
 
-def validate_name(first_name: str, last_name: str):
+def name(first_name: str, last_name: str):
     """
     Validates a given first and last name to ensure they are capitalized
     :param first_name: The first name to validate
@@ -87,6 +90,9 @@ def validate_name(first_name: str, last_name: str):
     if not first_name or not last_name:
         return False
 
+    first_name = first_name.strip()
+    last_name = last_name.strip()
+
     if first_name[0].islower() or last_name[0].islower():
         return False
 
@@ -95,16 +101,17 @@ def validate_name(first_name: str, last_name: str):
 
     return True
 
-def validate_term(term_string: str):
+def term(term_str: str):
     """
     Validates a given term string to ensure it is a valid term string (i.e. only 0-9 and -)
-    :param term_string: The term string to validate
+    :param term_str: The term string to validate
     :return: True if the term string is valid, False otherwise
     """
-    if not term_string:
+    if not term_str:
         return False
 
-    term_split = term_string.split()
+    term_str = term_str.strip()
+    term_split = term_str.split()
     if len(term_split) != 2:
         return False
 
@@ -119,11 +126,12 @@ def validate_term(term_string: str):
 
     return True
 
-def validate_address(address: str):
-    if not address:
+def address(address_str: str):
+    if not address_str:
         return False
 
-    address_split = address.split()
+    address_str = address_str.strip()
+    address_split = address_str.split()
     if len(address_split) < 3:
         return False
 
@@ -137,7 +145,17 @@ def validate_address(address: str):
         return False
 
     for char in address_name:
-        if not char.isalpha() and char not in " .":
+        if not char.isalpha() and not char == ".":
             return False
+
+    return True
+
+def office_hours(office_hours_str: str):
+    if not office_hours_str:
+        return False
+
+    office_hours_str = office_hours_str.strip()
+    if len(office_hours_str) == 0:
+        return False
 
     return True
