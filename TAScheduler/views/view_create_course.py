@@ -22,8 +22,10 @@ class CreateCourse(View):
         no_such_course = False
         name = request.POST["name"].strip()
         number = request.POST["number"].strip()
-        term_season = request.POST["term_season"].strip()
-        term_year = request.POST["term_year"].strip()
+        s = request.POST["term_season"].strip()
+        s = s.split()
+        term_season = s[0]
+        term_year = s[1]
         instructor = UserAccount.objects.get(pk=int(request.POST["instructor"].strip()))
 
         message = "Course successfully created"
