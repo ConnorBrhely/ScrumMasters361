@@ -1,0 +1,32 @@
+
+.email {
+    text-align: center;
+    width: 50%;
+}
+.name {
+    text-align: center;
+    width: 30%;
+}
+.type {
+    text-align: center;
+    width: 20%;
+}
+td {
+    text-align: center;
+}
+th {
+    text-align: center;
+}
+.bordered {
+    border: 1px solid black;
+}
+.btn-group-vertical > .btn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.text-center {
+    text-align: center;
+}
+#widetable{
+    width: 600px;
+}

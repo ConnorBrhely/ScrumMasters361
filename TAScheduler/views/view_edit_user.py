@@ -5,42 +5,37 @@ from TAScheduler.models import UserAccount
 from django.core.exceptions import PermissionDenied
 
 
-class CreateUser(View):
+class EditUser(View):
+
     def get(self, request):
+        autofill = request.GET["username"]
         account = UserAccount.objects.get(user_id=request.user.id)
+        editaccount = UserAccount.objects.get(user__username=autofill)
         if not request.user.is_authenticated:
             return redirect("/login")
         if account.type != UserAccount.UserType.ADMIN:
             raise PermissionDenied
-        return render(request, "createuser.html", {"account": account})
+        return render(request, "edituser.html", {"message": "hello there", "account": account, "editaccount": editaccount})
 
     def post(self, request):
+        username = request.GET["username"]
         first_name = request.POST["firstname"].strip()
         last_name = request.POST["lastname"].strip()
         email = request.POST["email"].strip()
+        account = UserAccount.objects.get(user__username=username)
 
         if not validate.validate_email(email):
-            return render(request, "createuser.html", {
+            return render(request, "edituser.html", {
                 "message": "Invalid email entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
-
-        password = request.POST["password"].strip()
-        confirm_password = request.POST["confirmpassword"].strip()
-
-        if email == "" \
-                or password == "" \
-                or confirm_password == "" \
-                or first_name == "" \
-                or last_name == "":
-            return render(request, "createuser.html", {
-                "message": "One or more blank field detected",
-                "status": "failure",
+        if not validate.validate_name(first_name, last_name):
+            return render(request, "edituser.html", {
+                "message": "Invalid first or last name entered",
                 "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
-
-        password_equal = (password == confirm_password)
-        password_valid = validate.validate_password(password)
 
         no_such_user = False
         try:
@@ -48,46 +43,61 @@ class CreateUser(View):
         except UserAccount.DoesNotExist:
             no_such_user = True
 
-        message = "User successfully created"
-        status = "success"
 
-        if no_such_user and password_valid and password_equal:
-            m = UserAccount.objects.register(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=password,
-                user_type=request.POST["type"]
-            )
-            m.save()
+        password = request.POST["password"].strip()
+        confirm_password = request.POST["confirmpassword"].strip()
+
+        if email == "" \
+                or first_name == "" \
+                or last_name == "":
+            return render(request, "edituser.html", {
+                "message": "One or more blank field detected",
+                "status": "failure",
+                "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
+            })
+        password_equal = (password == confirm_password)
+        password_valid = validate.validate_password(password)
+        message = "User edited successfully"
+        status = "success"
+        sameEmail = False
+        if username == email:
+            sameEmail = True
+        if (no_such_user or sameEmail) and ((password_valid and password_equal) or (len(password) == 0 and len(confirm_password) == 0)):
+            if password_valid and password_equal:
+                account.update_password(password)
+            account.update_email(email)
+            account.update_name(first_name, last_name)
+            return redirect("/accounts/", {
+                "message": message,
+                "status": status,
+                "account": UserAccount.objects.get(user_id=request.user.id),
+                "accounts": UserAccount.objects.order_by("type")
+            })
         elif not password_equal:
             message = "Passwords do not match"
             status = "failure"
-            return render(request, "createuser.html", {
+            return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
                 "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
-        elif not password_valid:
+        elif len(password) != 0 and not password_valid:
             message = "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character"
             status = "failure"
-            return render(request, "createuser.html", {
+            return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
                 "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
         else:
-            message = "User with email already exists"
+            message = "Account with email already exists"
             status = "failure"
-            return render(request, "createuser.html", {
+            return render(request, "edituser.html", {
                 "message": message,
                 "status": status,
                 "account": UserAccount.objects.get(user_id=request.user.id),
+                "editaccount": account
             })
-
-        return redirect("/accounts", {
-            "message": message,
-            "status": status,
-            "account": UserAccount.objects.get(user_id=request.user.id),
-            "accounts": UserAccount.objects.order_by("type")
-        })
