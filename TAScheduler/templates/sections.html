@@ -40,9 +40,11 @@
                             <td>
                                 <label for="sorttype">Sort By:</label>
                                 <select class="form-control" id="sorttype" name="sorttype">
-                                    <option value="type">Type</option>
-                                    <option value="name">Name A-Z</option>
-                                    <option value="namereverse">Name Z-A</option>
+                                    <option value="course" {% if sort_method == "course" %} selected="selected" {% endif %}>Course</option>
+                                    <option value="number" {% if sort_method == "number" %} selected="selected" {% endif %}>Section Number Ascending</option>
+                                    <option value="numberreverse" {% if sort_method == "numberreverse" %} selected="selected" {% endif %}>Section Number Descending</option>
+                                    <option value="location" {% if sort_method == "location" %} selected="selected" {% endif %}>Location A-Z</option>
+                                    <option value="locationreverse" {% if sort_method == "locationreverse" %} selected="selected" {% endif %}>Location Z-A</option>
                                 </select>
                             </td>
                         </tr>

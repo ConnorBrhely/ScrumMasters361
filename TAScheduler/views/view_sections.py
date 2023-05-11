@@ -21,9 +21,9 @@ class Sections(View):
             if sort_method == "numberreverse":
                 sections = sections.reverse()
         elif sort_method == "location" or sort_method == "locationreverse":
-            sections = UserAccount.objects.order_by("location")
+            sections = Section.objects.order_by("location")
             if sort_method == "locationreverse":
                 sections = sections.reverse()
         else:
-            sections = UserAccount.objects.order_by("course")
-        return render(request, "sections.html", {"sections": sections, "account": account})
+            sections = Section.objects.order_by("course")
+        return render(request, "sections.html", {"sections": sections, "account": account, "sort_method": sort_method})
