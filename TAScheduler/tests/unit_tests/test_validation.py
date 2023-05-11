@@ -23,6 +23,7 @@ class TestValidation(TestCase):
         self.assertTrue(validate.phone_number("+1 (414) 555-1234"), msg="Valid phone number failed validation")
         self.assertFalse(validate.phone_number(""), msg="Blank phone number passed validation")
         self.assertFalse(validate.phone_number("+1 (414) 555-1234!"), msg="Phone number with illegal char passed validation")
+
     def test_validate_address(self):
         self.assertTrue(validate.address("1234 Ammar Street"), "Valid address failed validation")
         self.assertTrue(validate.address("1234 Ammar St."), "Valid address with abbreviation failed validation")
@@ -52,6 +53,17 @@ class TestValidation(TestCase):
         self.assertFalse(validate.office_hours(""), msg="Blank office hours passed validation")
         self.assertFalse(validate.office_hours(" "), msg="Blank office hours with whitespace passed validation")
 
-    def test_validate_office_hours(self):
-        self.assertTrue(validate.office_hours("M 3:00-5:00, W 2:00-4:00"), msg="Valid office hours failed validation")
-        self.assertFalse(validate.office_hours(""), msg="Blank office hours passed validation")
+    def test_validate_section_numbers(self):
+        self.assertTrue(validate.section_number("003"), msg="Valid section number failed validation")
+        self.assertTrue(validate.section_number("003-555"), msg="Valid section number with hyphens failed validation")
+        self.assertFalse(validate.section_number("ZeroZeroThree"), msg="Section number with alpha characters passed validation")
+        self.assertFalse(validate.section_number("0 0\t3"), msg="Section number with whitespace passed validation")
+        self.assertFalse(validate.section_number(""), msg="Blank section number passed validation")
+        self.assertFalse(validate.section_number("  \t"), msg="Blank section number with whitespace passed validation")
+
+    def test_validate_name(self):
+        self.assertTrue(validate.name("John", "Doe"), msg="Valid name failed validation")
+        self.assertFalse(validate.name("john", "doe"), msg="Lowercase name passed validation")
+        self.assertFalse(validate.name("j0hn", "d0e"), msg="Name with digits passed validation")
+        self.assertFalse(validate.name("  ", "\t"), msg="Name with whitespace passed validation")
+        self.assertFalse(validate.name("", ""), msg="Blank name passed validation")
