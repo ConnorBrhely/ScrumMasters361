@@ -24,12 +24,12 @@
     <div class="container my-5 w-30 mx-auto">
         <h1 class="text-center">Accounts</h1>
         {% if account.type == "ADMIN" %}
-            <div class="text-center">
-                <div class="btn-group-vertical" style="width: 30%" role="group">
-                    <a href="/create_user" class="btn btn-lg btn-primary btn-block rounded">Create User</a>
-                </div>
-                {% include "modules/messages.html" %}
+        <div class="text-center">
+            <div class="btn-group-vertical" style="width: 30%" role="group">
+                <a href="/create_user" class="btn btn-lg btn-primary btn-block rounded">Create User</a>
             </div>
+            {% include "modules/messages.html" %}
+        </div>
         {% endif %}
         <table>
             <form method="post" action="#">
@@ -44,10 +44,10 @@
                                     <option value="name">Name A-Z</option>
                                     <option value="namereverse">Name Z-A</option>
                                 </select>
+                            </td>
+                        </tr>
                     </div>
                 </div>
-                </td>
-                </tr>
                 <tr>
                     <td>
                         <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%"
@@ -69,21 +69,21 @@
             </thead>
             <tbody>
             {% for loop_user in accounts %}
-                <tr>
-                    <td>{{ loop_user.first_name }} {{ loop_user.last_name }}</td>
-                    <td>{{ loop_user.user.email }}</td>
-                    <td>{{ loop_user.type }}</td>
-                    {% if account.type == "ADMIN" %}
-                        <td><a href="/edit_user?username={{ loop_user.user.email }}"
-                               class="btn btn-lg btn-secondary btn-block rounded">EDIT</a></td>
-                        {% if loop_user != account %}
-                            <td><a href="/delete_user?username={{ loop_user.user.email }}"
-                                   class="btn btn-lg btn-danger btn-block rounded">DELETE</a></td>
-                            {% else %}
-                            <td></td>
-                        {% endif %}
-                    {% endif %}
-                </tr>
+            <tr>
+                <td>{{ loop_user.first_name }} {{ loop_user.last_name }}</td>
+                <td>{{ loop_user.user.email }}</td>
+                <td>{{ loop_user.type }}</td>
+                {% if account.type == "ADMIN" %}
+                <td><a href="/edit_user?username={{ loop_user.user.email }}"
+                       class="btn btn-secondary btn-block rounded">Edit</a></td>
+                {% if loop_user != account %}
+                <td><a href="/delete_user?username={{ loop_user.user.email }}"
+                       class="btn btn-danger btn-block rounded">Delete</a></td>
+                {% else %}
+                <td></td>
+                {% endif %}
+                {% endif %}
+            </tr>
             {% endfor %}
             </tbody>
         </table>
