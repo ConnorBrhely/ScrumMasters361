@@ -10,13 +10,7 @@ class CreateCourse(View):
             return redirect("/login")
         if account.type != "ADMIN":
             raise PermissionDenied
-        courses = Course.objects.all()
-        instructors = UserAccount.objects.filter(type="INSTRUCTOR")
-        return render(request, "createcourse.html", {
-            "account": account,
-            "courses": courses,
-            "instructors": instructors
-        })
+        return self.render_simple(request, "", "success")
 
     def post(self, request):
         no_such_course = False
@@ -26,12 +20,8 @@ class CreateCourse(View):
         term_year = request.POST["term_year"].strip()
         instructor = UserAccount.objects.get(pk=int(request.POST["instructor"].strip()))
 
-        message = "Course successfully created"
-        status = "success"
-
         if name == "" or number == "" or term_season == "" or term_year == "" or request.POST["instructor"].strip() == "":
-            message = "One or more blank field detected"
-            status = "error"
+            return self.render_simple(request, "One or more blank field detected", "error")
         try:
             Course.objects.get(number=number, term_season=term_season, term_year=term_year)
         except Course.DoesNotExist:
@@ -46,12 +36,17 @@ class CreateCourse(View):
             )
             m.save()
         else:
-            message = "Course already exists"
-            status = "error"
+            return self.render_simple(request, "Course already exists", "error")
+
+        return self.render_simple(request, "Course successfully created", "success")
+
+    @staticmethod
+    def render_simple(request, message, status="success"):
+        user = request.user
         return render(request, "createcourse.html", {
             "message": message,
             "status": status,
-            "account": UserAccount.objects.get(user_id=request.user.id),
+            "account": UserAccount.objects.get(user_id=user.id),
             "terms": Course.TERM_SEASON_CHOICES,
             "courses": Course.objects.all(),
             "instructors": UserAccount.objects.filter(type="INSTRUCTOR")
