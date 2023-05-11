@@ -12,3 +12,7 @@ class Course(models.Model):
     term_season = models.CharField(max_length=6, choices=TERM_SEASON_CHOICES)
     # String must be used instead of a foreign key to avoid circular imports
     instructor = models.ForeignKey("TAScheduler.UserAccount", null=True, on_delete=models.SET_NULL, related_name='instructor')
+
+    def __str__(self):
+        return f"{self.name} ({self.number}), {self.term_season} {self.term_year} | " \
+               f"{self.instructor.first_name} {self.instructor.last_name}"

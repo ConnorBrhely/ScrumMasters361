@@ -18,8 +18,8 @@
             <a href="/accounts" class="btn btn-lg btn-primary btn-block rounded">Accounts</a>
             {% if account.type == 'ADMIN' %}
                 <a href="/create_course" class="btn btn-lg btn-primary btn-block rounded">Create Course</a>
-                <a href="/create_section" class="btn btn-lg btn-primary btn-block rounded">Create Section</a>
             {% endif %}
+            <a href="/sections" class="btn btn-lg btn-primary btn-block rounded">Sections</a>
         </div>
         {% include "modules/messages.html" %}
         {% include "modules/account_info.html" %}

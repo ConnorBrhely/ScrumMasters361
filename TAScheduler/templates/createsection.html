@@ -23,9 +23,7 @@
                     <select class="form-control" id="course" name="course">
                         {% for course in courses %}
                             <option value="{{ course.id }}">
-                                {{ course.name }} ({{ course.number }}),
-                                {{ course.term_season }} {{ course.term_year }} |
-                                {{ course.instructor.first_name }} {{ course.instructor.last_name }}
+                                {{ course }}
                             </option>
                         {% endfor %}
                     </select>
@@ -42,7 +40,7 @@
         </form>
         {% include "modules/messages.html" %}
         {% include "modules/account_info.html" %}
-        {% include "modules/back_button.html" with back_url="home" back_title="Home" %}
+        {% include "modules/back_button.html" with back_url="sections" back_title="Back" %}
     </div>
 </div>
 </body>

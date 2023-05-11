@@ -30,6 +30,7 @@ urlpatterns = [
     path('create_course/', views.CreateCourse.as_view()),
     path('create_section/', views.CreateSection.as_view()),
     path('accounts/', views.Accounts.as_view()),
+    path('sections/', views.Sections.as_view()),
     path('edit_user/', views.EditUser.as_view()),
     path('delete_user/', views.DeleteUser.as_view()),
     path('modify_account/', views.ModifyAccount.as_view())
