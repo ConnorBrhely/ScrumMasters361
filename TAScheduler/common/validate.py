@@ -73,6 +73,8 @@ def section_number(section_number_str: str):
         return False
 
     section_number_str = section_number_str.strip()
+    if len(section_number_str) == 0:
+        return False
 
     for char in section_number_str:
         if not char.isdigit() and char != "-":
@@ -92,6 +94,9 @@ def name(first_name: str, last_name: str):
 
     first_name = first_name.strip()
     last_name = last_name.strip()
+
+    if len(first_name) == 0 or len(last_name) == 0:
+        return False
 
     if first_name[0].islower() or last_name[0].islower():
         return False
