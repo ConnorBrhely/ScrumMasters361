@@ -7,9 +7,9 @@ from django.core.exceptions import PermissionDenied
 
 class CreateUser(View):
     def get(self, request):
-        account = UserAccount.objects.get(user_id=request.user.id)
         if not request.user.is_authenticated:
             return redirect("/login")
+        account = UserAccount.objects.get(user_id=request.user.id)
         if account.type != UserAccount.UserType.ADMIN:
             raise PermissionDenied
         return render(request, "createuser.html", {"account": account})

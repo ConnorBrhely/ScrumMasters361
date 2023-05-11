@@ -1,6 +1,5 @@
 from TAScheduler.models import UserAccount, Course, Section
 from django.test import TestCase
-from django.db.utils import IntegrityError
 
 class TestModelSection(TestCase):
     def setUp(self):

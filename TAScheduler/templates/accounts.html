@@ -74,14 +74,18 @@
                 <td>{{ loop_user.user.email }}</td>
                 <td>{{ loop_user.type }}</td>
                 {% if account.type == "ADMIN" %}
-                <td><a href="/edit_user?username={{ loop_user.user.email }}"
-                       class="btn btn-secondary btn-block rounded">Edit</a></td>
-                {% if loop_user != account %}
-                <td><a href="/delete_user?username={{ loop_user.user.email }}"
-                       class="btn btn-danger btn-block rounded">Delete</a></td>
-                {% else %}
-                <td></td>
-                {% endif %}
+                    <td>
+                        <a href="/edit_user?username={{ loop_user.user.email }}"
+                           class="btn btn-secondary btn-block rounded">Edit</a>
+                    </td>
+                    {% if loop_user != account %}
+                        <td>
+                            <a href="/delete_user?username={{ loop_user.user.email }}"
+                               class="btn btn-danger btn-block rounded">Delete</a>
+                        </td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
                 {% endif %}
             </tr>
             {% endfor %}
