@@ -13,9 +13,7 @@ class ModifyAccount(View):
         if request.GET["username"] != account.user.username:
             raise PermissionDenied
 
-        return render(request, "modifyaccount.html", {
-            "account": account,
-        })
+        return self.render_simple(request, account)
 
     def post(self, request):
         account = UserAccount.objects.get(user_id=request.user.id)
@@ -27,42 +25,34 @@ class ModifyAccount(View):
         password = request.POST["password"].strip()
 
         if not check_password(password, account.user.password):
-            return self.render_error(request, account, "Incorrect password")
+            return self.render_simple(request, account, "Incorrect password", "error")
 
         # TODO: allow admins to edit their own password
 
         if len(phone_number) > 0:
             if not validate.phone_number(phone_number):
-                return self.render_error(request, account, "Invalid phone number")
+                return self.render_simple(request, account, "Invalid phone number", "error")
             account.phone_number = phone_number
         if len(address) > 0:
             if not validate.address(address):
-                return self.render_error(request, account, "Invalid address")
+                return self.render_simple(request, account, "Invalid address", "error")
             account.home_address = address
         if len(email) > 0 and account.user.email != email:
             if not validate.email(email):
-                return self.render_error(request, account, "Invalid email address")
+                return self.render_simple(request, account, "Invalid email address", "error")
             account.user.email = email
         if len(office_hours) > 0:
             if not validate.office_hours(office_hours):
-                return self.render_error(request, account, "Invalid office hours")
+                return self.render_simple(request, account, "Invalid office hours", "error")
             account.office_hours = office_hours
 
         account.save()
-        return self.render_success(request, account, "Updated account information")
+        return self.render_simple(request, account, "Updated account information")
 
     @staticmethod
-    def render_success(request, account, message):
+    def render_simple(request, account, message="", status="success"):
         return render(request, "modifyaccount.html", {
             "account": account,
             "message": message,
-            "status": "success"
-        })
-
-    @staticmethod
-    def render_error(request, account, message):
-        return render(request, "modifyaccount.html", {
-            "account": account,
-            "message": message,
-            "status": "error"
+            "status": status
         })

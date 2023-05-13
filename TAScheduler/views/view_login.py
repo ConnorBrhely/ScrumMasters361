@@ -7,19 +7,13 @@ class Login(View):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect("/home/")
-        return render(request, "login.html", {})
+        return self.render_simple(request)
 
     def post(self,request):
         if "email" not in request.POST or request.POST["email"] == "":
-            return render(request, "login.html", {
-                "message": "No email provided",
-                "status": "error",
-            })
+            return self.render_simple(request, "No email provided", "error")
         if "password" not in request.POST or request.POST["password"] == "":
-            return render(request, "login.html", {
-                "message": "No password provided",
-                "status": "error",
-            })
+            return self.render_simple(request, "No password provided", "error")
 
         email = request.POST["email"].strip()
         password = request.POST["password"].strip()
@@ -45,7 +39,11 @@ class Login(View):
             login(request, m)
             return redirect("/home/")
         else:
-            return render(request, "login.html", {
-                "message": "Invalid email or password",
-                "status": "error",
-            })
+            return self.render_simple(request, "Invalid email or password", "error")
+
+    @staticmethod
+    def render_simple(request, message="", status=""):
+        return render(request, "login.html", {
+            "message": message,
+            "status": status,
+        })

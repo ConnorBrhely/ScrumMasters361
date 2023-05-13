@@ -10,7 +10,7 @@ class CreateCourse(View):
             return redirect("/login")
         if account.type != "ADMIN":
             raise PermissionDenied
-        return self.render_simple(request, "", "success")
+        return self.render_simple(request)
 
     def post(self, request):
         no_such_course = False
@@ -38,10 +38,10 @@ class CreateCourse(View):
         else:
             return self.render_simple(request, "Course already exists", "error")
 
-        return self.render_simple(request, "Course successfully created", "success")
+        return self.render_simple(request, "Course successfully created")
 
     @staticmethod
-    def render_simple(request, message, status="success"):
+    def render_simple(request, message="", status="success"):
         user = request.user
         return render(request, "createcourse.html", {
             "message": message,

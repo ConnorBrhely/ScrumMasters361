@@ -12,7 +12,7 @@ class CreateUser(View):
         account = UserAccount.objects.get(user_id=request.user.id)
         if account.type != UserAccount.UserType.ADMIN:
             raise PermissionDenied
-        return render(request, "createuser.html", {"account": account})
+        return self.render_simple(request)
 
     def post(self, request):
         first_name = request.POST["firstname"].strip()
@@ -20,10 +20,7 @@ class CreateUser(View):
         email = request.POST["email"].strip()
 
         if not validate.email(email):
-            return render(request, "createuser.html", {
-                "message": "Invalid email entered",
-                "account": UserAccount.objects.get(user_id=request.user.id),
-            })
+            return self.render_simple(request, "Invalid email entered", "error")
 
         password = request.POST["password"].strip()
         confirm_password = request.POST["confirmpassword"].strip()
@@ -33,11 +30,7 @@ class CreateUser(View):
                 or confirm_password == "" \
                 or first_name == "" \
                 or last_name == "":
-            return render(request, "createuser.html", {
-                "message": "One or more blank field detected",
-                "status": "error",
-                "account": UserAccount.objects.get(user_id=request.user.id),
-            })
+            return self.render_simple(request, "One or more blank field detected", "error")
 
         password_equal = (password == confirm_password)
         password_valid = validate.password(password)
@@ -47,9 +40,6 @@ class CreateUser(View):
             UserAccount.objects.get(user__email=email)
         except UserAccount.DoesNotExist:
             no_such_user = True
-
-        message = "User successfully created"
-        status = "success"
 
         if no_such_user and password_valid and password_equal:
             m = UserAccount.objects.register(
@@ -61,33 +51,24 @@ class CreateUser(View):
             )
             m.save()
         elif not password_equal:
-            message = "Passwords do not match"
-            status = "error"
-            return render(request, "createuser.html", {
-                "message": message,
-                "status": status,
-                "account": UserAccount.objects.get(user_id=request.user.id),
-            })
+            return self.render_simple(request, "Passwords do not match", "error")
         elif not password_valid:
-            message = "Password must contain 8 characters with 1 uppercase letter, 1 number, and 1 special character"
-            status = "error"
-            return render(request, "createuser.html", {
-                "message": message,
-                "status": status,
-                "account": UserAccount.objects.get(user_id=request.user.id),
-            })
+            return self.render_simple(request, "Password must contain 8 characters with 1 uppercase letter, 1 number, "
+                                               "and 1 special character", "error")
         else:
-            message = "User with email already exists"
-            status = "error"
-            return render(request, "createuser.html", {
-                "message": message,
-                "status": status,
-                "account": UserAccount.objects.get(user_id=request.user.id),
-            })
+            return self.render_simple(request, "User already exists", "error")
 
         return redirect("/accounts", {
-            "message": message,
-            "status": status,
+            "message": "Account successfully created",
+            "status": "success",
             "account": UserAccount.objects.get(user_id=request.user.id),
             "accounts": UserAccount.objects.order_by("type")
+        })
+
+    @staticmethod
+    def render_simple(request, message, status="success"):
+        return render(request, "createuser.html", {
+            "message": message,
+            "status": status,
+            "account": UserAccount.objects.get(user_id=request.user.id)
         })

@@ -120,5 +120,5 @@ class TestCreateUser(TestCase):
             "confirmpassword": self.confirm_password,
             "email": self.email
         }, follow=False)
-        self.assertEqual(resp.context["message"], "User with email already exists", msg="Correct error message not displayed when duplicate email entered")
+        self.assertEqual(resp.context["message"], "User already exists", msg="Correct error message not displayed when duplicate email entered")
 

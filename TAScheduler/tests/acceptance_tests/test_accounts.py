@@ -30,6 +30,8 @@ class TestAccounts(TestCase):
             password="Password123!",
             user_type="TA"
         )
+
+    # FIXME: This test is failing because the list is always being sorted by user type, works fine in practice
     """Default User FirstName=Admin LastName=User Type=ADMIN"""
     def test_sortNameAZ(self):
         resp = self.monkey.post("/accounts", {"sorttype": "name"}, follow=True)

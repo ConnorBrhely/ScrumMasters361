@@ -4,10 +4,7 @@ from TAScheduler.models import Section, UserAccount, Course
 
 class CreateSection(View):
     def get(self, request):
-        return render(request, "createsection.html", {
-            "courses": Course.objects.all(),
-            "account": UserAccount.objects.get(user_id=request.user.id),
-        })
+        return self.render_simple(request)
 
     def post(self, request):
         no_such_section = False
@@ -16,12 +13,8 @@ class CreateSection(View):
         location = request.POST["location"].strip()
         time = request.POST["time"].strip()
 
-        message = "Section successfully created"
-        status = "success"
-
         if course == "" or number == "" or location == "" or time == "":
-            message = "One or more blank field detected"
-            status = "error"
+            return self.render_simple(request, "One or more blank field detected", "error")
         try:
             Section.objects.get(number=number, course=course)
         except Section.DoesNotExist:
@@ -35,8 +28,12 @@ class CreateSection(View):
             )
             m.save()
         else:
-            message = "Section already exists"
-            status = "error"
+            return self.render_simple(request, "Section already exists", "error")
+
+        return self.render_simple(request, "Section successfully created")
+
+    @staticmethod
+    def render_simple(request, message="", status="success"):
         return render(request, "createsection.html", {
             "message": message,
             "status": status,

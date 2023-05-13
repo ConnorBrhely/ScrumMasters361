@@ -28,8 +28,8 @@ class DeleteUser(View):
         useraccount = request.POST["confirmdelete"]
         """User account is either email or 'donotdelete' if box isnt checked"""
         """Edit acount is the name of the account regardless in order to autofill form if submitted without check off"""
-        editaccount = request.POST["editaccount"]
-        editaccount = UserAccount.objects.get(user__email=editaccount)
+        account_to_edit = request.POST["editaccount"]
+        account_to_edit = UserAccount.objects.get(user__email=account_to_edit)
         message = "User deleted successfully"
         status = "success"
         account = UserAccount.objects.get(user__id=request.user.id)
@@ -40,12 +40,12 @@ class DeleteUser(View):
                 "message": message,
                 "status": status,
                 "account": account,
-                "editaccount": editaccount
+                "editaccount": account_to_edit
             })
         else:
-            deleteaccount = UserAccount.objects.get(user__username=useraccount)
-            deleteaccount.user.delete()
-            deleteaccount.delete()
+            account_to_delete = UserAccount.objects.get(user__username=useraccount)
+            account_to_delete.user.delete()
+            account_to_delete.delete()
             return redirect("/accounts", {"message": message, "status": status, "account": account,
                                                  "accounts": UserAccount.objects.order_by("type")})
 

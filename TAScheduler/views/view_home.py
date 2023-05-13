@@ -11,6 +11,3 @@ class Home(View):
         return render(request, "home.html", {
             "account": account,
         })
-
-    # def post(self, request):
-

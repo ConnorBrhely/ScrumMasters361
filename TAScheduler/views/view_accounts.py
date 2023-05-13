@@ -11,15 +11,11 @@ class Accounts(View):
 
     def post(self, request):
         account = UserAccount.objects.get(user_id=request.user.id)
-        sortmethod = request.POST["sorttype"].strip()
-        if sortmethod == "name" or sortmethod == "namereverse":
+        sort_method = request.POST["sorttype"].strip()
+        if sort_method == "name" or sort_method == "namereverse":
             users = UserAccount.objects.order_by("first_name")
-            if sortmethod == "namereverse":
+            if sort_method == "namereverse":
                 users = users.reverse()
         else:
             users = UserAccount.objects.order_by("type")
         return render(request, "accounts.html", {"accounts": users, "account": account})
-
-
-
-
