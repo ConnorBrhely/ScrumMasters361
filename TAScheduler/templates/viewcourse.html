@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>view courses</title>
+    <link href="{% static 'courses/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+</head>
+<body>
+    <div class="container d-flex align-items-center vh-100">
+        <div class="container my-5 w-30 mx-auto">
+            <h1 class="text-center">All Courses</h1>
+            <table class="table table-striped table-hover table-dark">
+             <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Course Number</th>
+                    <th>Term Yr</th>
+                    <th>Season</th>
+                    <th>Instructor</th>
+                <!-- Add more table headers as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in objects %}
+                    <tr>
+                        <td class="bordered">{{ course.name }}</td>
+                        <td class="bordered">{{ course.number }}</td>
+                        <td class="bordered">{{ course.term_year }}</td>
+                        <td class="bordered">{{ course.term_season }}</td>
+                        <td class="bordered">{{ course.instructor }}</td>
+                        <td class="bordered"> <a href="/edit_course?courses={{ course }}" class="btn btn-md btn-secondary btn-block rounded">EDIT</a></td>
+                        <td class="bordered"><a href="/delete_course?courses={{ course }}" class="btn btn-md btn-secondary btn-block rounded"></a>Delete</td>
+                    <!-- Add more table cells based on the fields you want to display -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</body>
+</html>
