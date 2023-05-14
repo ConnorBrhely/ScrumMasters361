@@ -8,40 +8,36 @@
     <link href="{% static 'courses/style.css' %}" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           crossorigin="anonymous">
-    <style>
-        table, th, td {
-            margin: 0 auto;
-        }
-        td {
-            vertical-align: middle;
-        }
-    </style>
 </head>
 <body>
-    <h1>All Courses</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Course</th>
-                <th>Course Num.</th>
-                <th>Term Yr</th>
-                <th>Season</th>
-                <th>Instructor</th>
-                <!-- Add more table headers as needed -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for obj in objects %}
+    <div class="container d-flex align-items-center vh-100">
+        <div class="container my-5 w-30 mx-auto">
+            <h1 class="text-center">All Courses</h1>
+            <table>
+             <thead>
                 <tr>
-                    <td>{{ obj.field1 }}</td>
-                    <td>{{ obj.field2 }}</td>
-                    <td>{{ obj.field3 }}</td>
-                    <td>{{ obj.field4 }}</td>
-                    <td>{{ obj.field5 }}</td>
-                    <!-- Add more table cells based on the fields you want to display -->
+                    <th>Course</th>
+                    <th>Course Number</th>
+                    <th>Term Yr</th>
+                    <th>Season</th>
+                    <th>Instructor</th>
+                <!-- Add more table headers as needed -->
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for obj in objects %}
+                    <tr>
+                        <td>{{ obj.field1 }}</td>
+                        <td>{{ obj.field2 }}</td>
+                        <td>{{ obj.field3 }}</td>
+                        <td>{{ obj.field4 }}</td>
+                        <td>{{ obj.field5 }}</td>
+                    <!-- Add more table cells based on the fields you want to display -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
 </body>
 </html>
