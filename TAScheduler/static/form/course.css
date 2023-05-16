@@ -49,3 +49,9 @@ h1 {
    text-align: center;
     padding-bottom: 5px;
 }
+.table, .th,. td{
+    margin: 0 auto;
+}
+.td{
+    vertical-align: middle;
+}

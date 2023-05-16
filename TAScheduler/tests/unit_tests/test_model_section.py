@@ -52,6 +52,18 @@ class TestModelSection(TestCase):
         with self.assertRaises(ValueError, msg="Did not raise IntegrityError for input None"):
             self.section.add_ta(None)
 
+    def test_add_many(self):
+        self.account1 = UserAccount.objects.register(
+            email="testuser1@uwm.edu",
+            password="TestPassword123!",
+            first_name='Test1',
+            last_name='User1',
+            user_type='TA',
+        )
+        self.section.add_ta(self.account)
+        self.section.add_ta(self.account1)
+        self.assertTrue(self.section.tas.contains(self.account), msg="TA not added to section")
+        self.assertTrue(self.section.tas.contains(self.account1), msg="TA1 not added to section")
     def test_remove_ta(self):
         self.section.tas.add(self.account)
         self.section.remove_ta(self.account)
