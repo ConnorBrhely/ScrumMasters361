@@ -18,7 +18,7 @@ class TestEditUser(TestCase):
             user_type="INSTRUCTOR")
 
     def test_valid_edit(self):
-        self.monkey.post(f"/edit_user/?username={self.account.user.username}", {
+        self.monkey.post(f"/edit_user?username={self.account.user.username}", {
             "firstname": "New",
             "lastname": "New",
             "email": "new@gmail.com",

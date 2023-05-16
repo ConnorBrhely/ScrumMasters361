@@ -92,6 +92,13 @@ class Section(models.Model):
         self.save()
         return self
 
+    def get_tas(self):
+        """
+        Gets all TAs in the section
+        :return: A list of all TAs in the section
+        """
+        return self.tas.all()
+
     def is_ta_assigned(self, user):
         """
         Checks if a TA is assigned to the section

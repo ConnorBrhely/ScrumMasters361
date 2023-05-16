@@ -19,7 +19,7 @@ class TestDeleteUser(TestCase):
 
     def test_successfulDelete(self):
         self.assertEqual(2, UserAccount.objects.count(), msg="Are not two objects before deletetion")
-        resp = self.monkey.post(f"/delete_user/?username={self.account.user.username}", {
+        resp = self.monkey.post(f"/delete_user?username={self.account.user.username}", {
             "confirmdelete": "newtest@uwm.edu",
             "editaccount": "newtest@uwm.edu"
         }, follow=True)

@@ -66,7 +66,7 @@ class CreateUser(View):
         })
 
     @staticmethod
-    def render_simple(request, message, status="success"):
+    def render_simple(request, message="", status="success"):
         return render(request, "createuser.html", {
             "message": message,
             "status": status,

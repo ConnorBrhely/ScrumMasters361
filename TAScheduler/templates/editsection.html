@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit User</title>
+    {% load static %}
+    <link href="{% static 'home/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container d-flex align-items-center vh-100">
+    <div class="container my-5 w-50 mx-auto">
+        <h1 class="text-center">Edit Section</h1>
+        <form method="post" action="#">
+            {% csrf_token %}
+            <div class="form-row my-4">
+                <div class="form-group">
+                    <label for="number">Section Number</label>
+                    <input type="text" class="form-control" id="number" name="number" value="{{ editsection.number }}" required>
+                </div>
+            </div>
+            <div class="form-row my-4">
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" value="{{ editsection.location }}" required>
+                </div>
+            </div>
+            <div class="form-row my-4">
+                <div class="form-group">
+                    <label for="time">Time</label>
+                    <input type="text" class="form-control" id="time" name="time" value="{{ editsection.time }}" required>
+                </div>
+            </div>
+            <br>
+            <input type="hidden" name="section_id" value="{{ editsection.id }}">
+            <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Update Section"></input>
+        </form>
+        <div class="form-group">
+            <ul class="list-group">
+                {% for ta in tas_in_section %}
+                    <li class="list-group-item">
+                        <p class="m-0">
+                            <b>{{ ta.first_name }} {{ ta.last_name }}</b>
+                            <a href="/edit_section/remove_ta?id={{ ta.id }}" class="float-end d-inline btn btn-danger rounded btn-space btn-sm">Delete</a>
+                        </p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <form method="post" action="add_ta/">
+            {% csrf_token %}
+            <label for="ta-to-add">Add TA</label>
+            <select class="form-control" id="ta-to-add" name="ta-to-add">
+                {% for ta in tas %}
+                    <option value="{{ ta.id }}">{{ ta.first_name }} {{ ta.last_name }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="section_id" value="{{ editsection.id }}">
+            <input type="submit" class="btn btn-outline-primary rounded btn-space my-2" value="Add to Section">
+        </form>
+        {% include "modules/messages.html" %}
+        {% include "modules/account_info.html" %}
+        <a href="/sections" class="btn btn-lg btn-secondary btn-block rounded">Back</a>
+    </div>
+</div>
+</body>
+</html>
