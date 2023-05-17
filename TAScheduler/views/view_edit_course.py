@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+"""from django.shortcuts import render, redirect
 from django.views import View
-from TAScheduler.models import UserAccount, Course, model_section
+from TAScheduler.models import UserAccount, Course, Section
 from django.core.exceptions import PermissionDenied
 
 
@@ -15,8 +15,8 @@ class EditCourse(View):
 
     def post(self, request):
         course = request.GET["course"]
-        name=request.POST["name"].strip()
-        number=request.POST["number"].strip()
+        name = request.POST["name"].strip()
+        number = request.POST["number"].strip()
         s = request.POST["term_season"].strip()
         s = s.split()
         term_season = s[0]
@@ -43,3 +43,4 @@ class EditCourse(View):
             "tas": UserAccount.objects.filter(type=UserAccount.UserType.TA),
 
         })
+"""
