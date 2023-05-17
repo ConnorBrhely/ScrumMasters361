@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Course</title>
+    {% load static %}
+    <link href="{% static 'home/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container d-flex align-items-center vh-100">
+    <div class="container my-5 w-50 mx-auto">
+        <h1 class="container my-5 w-50 mx-auto">Edit Course</h1>
+        <form method="post" action="#">
+            {% csrf_token %}
+            <div class="form-row my-4">
+                <div class="form-group">
+                    <label for="coursename">Name</label>
+                    <input type="text" class="form-control" id="coursename" name="coursename" value="{{ editcourse.name }}" required>
+                </div>
+            </div>
+            <div class="form-row my-4">
+                <div class="form-group">
+                    <label for="coursenumber">Number</label>
+                    <input type="text" class="form-control" id="coursenumber" name="coursenumber" value="{{ editcourse.number }}" required>
+                </div>
+            </div>
+            <div class="form-row my-4">
+                <div class="form-group">
+                    <label for="courseterm">Term</label>
+                    <input type="text" class="form-control" id="courseterm" name="courseterm" value="{{ editcourse.term }}" required>
+                </div>
+            </div>
+            <div class="form-row my-4">
+                <div class="form-group">
+                    <label for="term_season">Term Season</label>
+                    <select class="form-control" id="term_season" name="term_season">
+                        <option value="Fall"{% if editcourse.season == "Fall" %} selected="selected"{% endif %}>Fall</option>
+                        <option value="Summer"{% if editcourse.season == "Summer" %} selected="selected"{% endif %}></option>
+                        <option value="Spring"{% if editcourse.season == "Spring" %} selected="selected"{% endif %}>Spring</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row my-4">
+                <div class="form-group">
+                    <label for="courseinstructor">Intstructor</label>
+                    <select class="form-control" id="courseinstructor" name="courseintstructor">
+                        {% for instructor in instructors %}
+                            <option value="{{ instructor.id }}"{% if editcourse.intstructor == instructor %} selected{% endif %}>{{ instructor.user.first_name }} {{ instructor.user.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Edit Course">
+        </form>
+        {% include "modules/messages.html" %}
+        {% include "modules/account_info.html" %}
+        {% include "modules/back_button.html" with back_url="courses" back_title="Back" %}
+    </div>
+</div>
+</body>
+</html>
