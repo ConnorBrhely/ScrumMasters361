@@ -7,7 +7,9 @@ class Accounts(View):
     def get(self, request):
         users = UserAccount.objects.order_by("type")
         account = UserAccount.objects.get(user_id=request.user.id)
-        return render(request, "accounts.html", {"accounts": users, "message": "", "account": account})
+        users = list(users)
+        sort_method = "type"
+        return render(request, "accounts.html", {"accounts": users, "message": "", "account": account, "sorttype": sort_method})
 
     def post(self, request):
         account = UserAccount.objects.get(user_id=request.user.id)
@@ -18,4 +20,5 @@ class Accounts(View):
                 users = users.reverse()
         else:
             users = UserAccount.objects.order_by("type")
-        return render(request, "accounts.html", {"accounts": users, "account": account})
+        users = list(users)
+        return render(request, "accounts.html", {"accounts": users, "account": account, "sorttype": sort_method})

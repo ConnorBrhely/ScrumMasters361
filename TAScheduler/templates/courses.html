@@ -81,7 +81,7 @@
                     <td>{{ loop_course.number }}</td>
                     <td>{{ loop_course.term_season }}</td>
                     <td>{{ loop_course.term_year }}</td>
-                    <td>{{ loop_course.instructor }}</td>
+                    <td>{{ loop_course.instructor.first_name }} {{ loop_course.instructor.last_name }}</td>
                     {% if account.type == "ADMIN" %}
                         <td>
                             <a href="/edit_course?id={{ loop_course.id }}"

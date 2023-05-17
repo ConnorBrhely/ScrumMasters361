@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from TAScheduler.models import UserAccount, Course, model_section
+from TAScheduler.models import UserAccount, Course, Section
 from django.core.exceptions import PermissionDenied
 
 
