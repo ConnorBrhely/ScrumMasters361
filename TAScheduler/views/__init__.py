@@ -12,3 +12,4 @@ from .view_delete_user import DeleteUser
 from .view_modify_account import ModifyAccount
 from .view_add_section_ta import AddSectionTA
 from .view_courses import Courses
+from .view_edit_course import EditCourse
