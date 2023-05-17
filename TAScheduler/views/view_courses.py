@@ -17,12 +17,12 @@ class Courses(View):
             return redirect("/courses")
         sort_method = request.POST["sorttype"].strip()
         if sort_method == "coursenumber" or sort_method == "coursenumberreverse":
-            courses = Course.objects.order_by("coursenumber")
+            courses = Course.objects.order_by("number")
             if sort_method == "coursenumberreverse":
                 courses = courses.reverse()
         else:
             courses = Course.objects.order_by("name")
-        return render(request, "sections.html", {"courses": courses, "account": account, "sort_method": sort_method})
+        return render(request, "courses.html", {"courses": courses, "account": account, "sort_method": sort_method})
 
 
 
