@@ -82,11 +82,13 @@
                     <td>{{ loop_section.course.number }}<br>({{ loop_section.course.term_season }} {{ loop_section.course.term_year }})</td>
                     <td>{{ loop_section.time }}</td>
                     <td>{{ loop_section.location }}</td>
-                    {% if account.type == "ADMIN" %}
+                    {% if account.type == "ADMIN" or account.type == "INSTRUCTOR" %}
                         <td>
                             <a href="/edit_section?id={{ loop_section.id }}"
                                class="btn btn-secondary btn-block rounded">Edit</a>
                         </td>
+                    {% endif %}
+                    {% if account.type == "ADMIN" %}
                         <td>
                             <form action="" method="post">
                                 {% csrf_token %}

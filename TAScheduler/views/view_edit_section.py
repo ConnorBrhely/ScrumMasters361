@@ -13,7 +13,7 @@ class EditSection(View):
             # If no username specified, redirect user to their own edit page
             if not request.user.is_authenticated:
                 return redirect("/login")
-            if account.type != UserAccount.UserType.ADMIN:
+            if account.type != UserAccount.UserType.ADMIN and account.type != UserAccount.UserType.INSTRUCTOR:
                 raise PermissionDenied
             return self.render_simple(request)
         except UserAccount.DoesNotExist:
