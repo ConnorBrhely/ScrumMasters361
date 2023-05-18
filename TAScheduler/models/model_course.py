@@ -30,18 +30,23 @@ class Course(models.Model):
 
     def update_name(self,name):
         self.name = name
+        self.save()
 
     def update_number(self,number):
         self.number = number
+        self.save()
 
     def update_term_year(self,year):
         self.term_year = year
+        self.save()
 
     def update_term_season(self,season):
         self.term_season = season
+        self.save()
 
     def update_instructor(self,user=None):
         self.instructor = user
+        self.save()
 
     def __str__(self):
         return f"{self.name} ({self.number}), {self.term_season} {self.term_year} | " \
