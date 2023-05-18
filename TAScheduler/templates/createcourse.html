@@ -46,12 +46,7 @@
                     </select>
                 </div>
             </div>
-            {% if instructors.count == 0 %}
-                <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Create Course" disabled>
-                <small style="color: crimson">You must have at least one instructor to create a course.</small>
-            {% else %}
                 <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Create Course">
-            {% endif %}
         </form>
         {% include "modules/messages.html" %}
         {% include "modules/account_info.html" %}
