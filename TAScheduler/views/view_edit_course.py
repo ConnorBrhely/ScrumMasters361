@@ -34,7 +34,7 @@ class EditCourse(View):
         course_to_edit.update_term_year=(term_year)
         course_to_edit.update_term_season=(term_season)
         course_to_edit.update_instructor = (instructor)
-        return self.render_simple(request, "Course edited successfully")
+        return self.render_simple1(request, "Course edited successfully")
 
 
 
