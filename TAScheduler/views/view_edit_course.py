@@ -34,7 +34,7 @@ class EditCourse(View):
         course_to_edit.update_instructor=(instructor)
 
 
-    def render_simple1(request, message="", status="success"):
+    def render_simple1(self, request, message="", status="success"):
         course_id = request.GET["id"]
         course_to_edit = Course.objects.get(pk=course_id)
         return render(request, "editcourse.html", {
@@ -42,7 +42,5 @@ class EditCourse(View):
             "status": status,
             "account": UserAccount.objects.get(user_id=request.user.id),
             "editcourse": course_to_edit,
-            "tas_in_section": course_to_edit.get_tas(),
-            "tas": UserAccount.objects.filter(type=UserAccount.UserType.TA),
 
         })
