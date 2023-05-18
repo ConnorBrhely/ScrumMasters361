@@ -26,6 +26,7 @@ class EditCourse(View):
 
         if name == "" or number == "" or term_season == "" or term_year == "" or instructor == "":
             return self.render_simple1(request, "One or more blank field detected", "error")
+
         course_id = request.POST["course_id"]
         course_to_edit = Course.objects.get(pk=course_id)
         course_to_edit.update_name(name)
@@ -33,6 +34,8 @@ class EditCourse(View):
         course_to_edit.update_term_year=(term_year)
         course_to_edit.update_term_season=(term_season)
         course_to_edit.update_instructor = (instructor)
+        return self.render_simple(request, "Course edited successfully")
+
 
 
     def render_simple1(self, request, message="", status="success"):
