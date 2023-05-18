@@ -39,6 +39,7 @@
                 <div class="form-group">
                     <label for="instructor">Instructors</label>
                     <select class="form-control" id="instructor" name="instructor">
+                        <option value="none">None</option>
                         {% for instructor in instructors %}
                             <option value="{{ instructor.id }}">{{ instructor.user.first_name }} {{ instructor.user.last_name }}</option>
                         {% endfor %}
