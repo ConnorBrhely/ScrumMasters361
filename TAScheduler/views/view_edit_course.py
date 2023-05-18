@@ -14,7 +14,6 @@ class EditCourse(View):
         return self.render_simple1(request)
 
     def post(self, request):
-        # course = request.GET["coursename"]
         name = request.POST["coursename"].strip()
         number = request.POST["coursenumber"].strip()
         term_year = request.POST["courseterm"].strip()
@@ -45,6 +44,4 @@ class EditCourse(View):
             "account": UserAccount.objects.get(user_id=request.user.id),
             "editcourse": course_to_edit,
             "instructors": UserAccount.objects.filter(type=UserAccount.UserType.INSTRUCTOR)
-
-
         })

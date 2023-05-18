@@ -47,15 +47,16 @@
             <div class="form-row my-4">
                 <div class="form-group">
                     <label for="courseinstructor">Intstructor</label>
-                    <select class="form-control" id="courseinstructor" name="courseintstructor">
-                        <option value="none">None</option>
+                    <select class="form-control" id="courseinstructor" name="courseinstructor">
+                        <option value="none" {% if editcourse.instructor == None %}selected="selected"{% endif %}>None</option>
                         {% for instructor in instructors %}
                             <option value="{{ instructor.id }}"{% if editcourse.intstructor == instructor %} selected{% endif %}>{{ instructor.user.first_name }} {{ instructor.user.last_name }}</option>
                         {% endfor %}
                     </select>
                 </div>
             </div>
-            <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Edit Course">
+            <input type="hidden" name="course_id" value="{{ editcourse.id }}">
+            <input type="submit" class="btn btn-lg btn-primary btn-block rounded" style="width: 100%" value="Update Course">
         </form>
         {% include "modules/messages.html" %}
         {% include "modules/account_info.html" %}
