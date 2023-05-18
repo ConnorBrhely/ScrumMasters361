@@ -48,9 +48,11 @@
                 <div class="form-group">
                     <label for="courseinstructor">Intstructor</label>
                     <select class="form-control" id="courseinstructor" name="courseinstructor">
-                        <option value="none" {% if editcourse.instructor == None %}selected="selected"{% endif %}>None</option>
-                        {% for instructor in instructors %}
-                            <option value="{{ instructor.id }}"{% if editcourse.intstructor == instructor %} selected{% endif %}>{{ instructor.user.first_name }} {{ instructor.user.last_name }}</option>
+                        <option value="none">None</option>
+                        {% for loop_instructor in instructors %}
+                            <option value="{{ loop_instructor.id }}" {% if editcourse.instructor == loop_instructor %}selected="selected"{% endif %}>
+                                {{ loop_instructor.user.first_name }} {{ loop_instructor.user.last_name }}
+                            </option>
                         {% endfor %}
                     </select>
                 </div>

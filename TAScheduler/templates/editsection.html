@@ -44,7 +44,8 @@
                     <li class="list-group-item">
                         <p class="m-0">
                             <b>{{ ta.first_name }} {{ ta.last_name }}</b>
-                            <a href="/edit_section/remove_ta?id={{ ta.id }}" class="float-end d-inline btn btn-danger rounded btn-space btn-sm">Delete</a>
+                            <a href="/edit_section/remove_ta?section={{ editsection.id }}&ta={{ ta.pk }}"
+                               class="float-end d-inline btn btn-danger rounded btn-space btn-sm">Remove</a>
                         </p>
                     </li>
                 {% endfor %}
@@ -56,11 +57,15 @@
             <label for="ta-to-add">Add TA</label>
             <select class="form-control" id="ta-to-add" name="ta-to-add">
                 {% for ta in tas %}
-                    <option value="{{ ta.id }}">{{ ta.first_name }} {{ ta.last_name }}</option>
+                    <option value="{{ ta.pk }}">{{ ta.first_name }} {{ ta.last_name }}</option>
                 {% endfor %}
             </select>
             <input type="hidden" name="section_id" value="{{ editsection.id }}">
-            <input type="submit" class="btn btn-outline-primary rounded btn-space my-2" value="Add to Section">
+            {% if tas.count > 0 %}
+                <input type="submit" class="btn btn-outline-primary rounded btn-space my-2" value="Add to Section">
+            {% else %}
+                <input type="submit" class="btn btn-outline-primary rounded btn-space my-2" value="Add to Section" disabled>
+            {% endif %}
         </form>
         {% include "modules/messages.html" %}
         {% include "modules/account_info.html" %}

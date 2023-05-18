@@ -10,20 +10,21 @@ class Course(models.Model):
     number = models.CharField(max_length=128)
     term_year = models.CharField(max_length=4)
     term_season = models.CharField(max_length=6, choices=TERM_SEASON_CHOICES)
-    # String must be used instead of a foreign key to avoid circular imports
     instructor = models.ForeignKey("TAScheduler.UserAccount", null=True, on_delete=models.SET_NULL, related_name='instructor')
+    # String must be used instead of an import reference to avoid circular imports
+    # instructors = models.ManyToManyField("TAScheduler.UserAccount", related_name='courses')
 
-    def add_instructor(self, user):    #     adds instructor
-        from TAScheduler.models import UserAccount
-        if user.type != UserAccount.UserType.instructor:
-            raise ValueError('User must be an instructor to be added to a course')
-        self.tas.add(user)
-        self.save()
-        return self
-
-    def remove_instructor(self,user):
-        self.tas.remove(user)
-        self.save()
+    # def add_instructor(self, user):    #     adds instructor
+    #     from TAScheduler.models import UserAccount
+    #     if user.type != UserAccount.UserType.INSTRUCTOR:
+    #         raise ValueError('User must be an instructor to be added to a course')
+    #     self.tas.add(user)
+    #     self.save()
+    #     return self
+    #
+    # def remove_instructor(self,user):
+    #     self.tas.remove(user)
+    #     self.save()
 
     def get_instructor(self):
         return self.instructor

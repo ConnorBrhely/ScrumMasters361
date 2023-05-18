@@ -40,13 +40,17 @@ class EditSection(View):
 
     @staticmethod
     def render_simple(request, message="", status="success"):
-        section_id = request.GET["id"]
-        section_to_edit = Section.objects.get(pk=section_id)
+        section_to_edit = Section.objects.get(pk=request.GET["id"])
+        tas_in_section = section_to_edit.get_tas()
+        tas = UserAccount.objects.filter(type=UserAccount.UserType.TA)
+        for ta in tas:
+            if ta in tas_in_section:
+                tas = tas.exclude(pk=ta.pk)
         return render(request, "editsection.html", {
             "message": message,
             "status": status,
             "account": UserAccount.objects.get(user_id=request.user.id),
             "editsection": section_to_edit,
             "tas_in_section": section_to_edit.get_tas(),
-            "tas": UserAccount.objects.filter(type=UserAccount.UserType.TA),
+            "tas": tas,
         })

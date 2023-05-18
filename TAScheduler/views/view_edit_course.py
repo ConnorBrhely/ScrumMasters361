@@ -11,7 +11,7 @@ class EditCourse(View):
             return redirect("/login")
         if account.type != UserAccount.UserType.ADMIN:
             raise PermissionDenied
-        return self.render_simple1(request)
+        return self.render_simple(request)
 
     def post(self, request):
         name = request.POST["coursename"].strip()
@@ -24,8 +24,8 @@ class EditCourse(View):
         else:
             instructor = None
 
-        if name == "" or number == "" or term_season == "" or term_year == "" or instructor == "":
-            return self.render_simple1(request, "One or more blank field detected", "error")
+        if name == "" or number == "" or term_season == "" or term_year == "":
+            return self.render_simple(request, "One or more blank field detected", "error")
 
         course_id = request.POST["course_id"]
         course_to_edit = Course.objects.get(pk=course_id)
@@ -34,21 +34,24 @@ class EditCourse(View):
         course_to_edit.update_term_year(term_year)
         course_to_edit.update_term_season(term_season)
         course_to_edit.update_instructor(instructor)
-        return redirect("/courses/", {
-            "message": "User edited successfully",
-            "status": "success",
-            "account": UserAccount.objects.get(user_id=request.user.id),
-            "courses": Course.objects.order_by("name")
-        })
 
+        return self.render_simple(request, "Course successfully edited")
+        # return redirect("/courses/", {
+        #     "message": "User edited successfully",
+        #     "status": "success",
+        #     "account": UserAccount.objects.get(user_id=request.user.id),
+        #     "courses": Course.objects.order_by("name")
+        # })
 
-    def render_simple1(self, request, message="", status="success"):
+    def render_simple(self, request, message="", status="success"):
         course_id = request.GET["id"]
         course_to_edit = Course.objects.get(pk=course_id)
+
         return render(request, "editcourse.html", {
             "message": message,
             "status": status,
             "account": UserAccount.objects.get(user_id=request.user.id),
             "editcourse": course_to_edit,
+            "instructor": course_to_edit.instructor,
             "instructors": UserAccount.objects.filter(type=UserAccount.UserType.INSTRUCTOR)
         })

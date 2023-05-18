@@ -35,6 +35,7 @@ class Section(models.Model):
 
         from TAScheduler.models import UserAccount
         if user.type != UserAccount.UserType.TA:
+            print(user.type)
             raise ValueError('User must be a TA to be added to a section')
 
         self.tas.add(user)

@@ -13,7 +13,6 @@ class CreateCourse(View):
         return self.render_simple(request)
 
     def post(self, request):
-        no_such_course = False
         name = request.POST["name"].strip()
         number = request.POST["number"].strip()
         s = request.POST["term_season"].strip()
@@ -29,9 +28,8 @@ class CreateCourse(View):
             return self.render_simple(request, "One or more blank field detected", "error")
         try:
             Course.objects.get(number=number, term_season=term_season, term_year=term_year)
+            return self.render_simple(request, "Course already exists", "error")
         except Course.DoesNotExist:
-            no_such_course = True
-        if no_such_course:
             m = Course.objects.create(
                 name=name,
                 number=number,
@@ -40,8 +38,6 @@ class CreateCourse(View):
                 instructor=instructor
             )
             m.save()
-        else:
-            return self.render_simple(request, "Course already exists", "error")
 
         return self.render_simple(request, "Course successfully created")
 
