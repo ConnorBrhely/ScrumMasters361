@@ -15,7 +15,7 @@ class TestDeleteUser(TestCase):
             last_name="Account",
             email="newtest@uwm.edu",
             password="Password123!",
-            user_type="INSTRUCTOR")
+            user_type=UserAccount.UserType.INSTRUCTOR)
 
     def test_successfulDelete(self):
         self.assertEqual(2, UserAccount.objects.count(), msg="Are not two objects before deletetion")

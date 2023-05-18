@@ -14,21 +14,21 @@ class TestAccounts(TestCase):
             last_name="A",
             email="a@gmail.com",
             password="Password123!",
-            user_type="INSTRUCTOR"
+            user_type=UserAccount.UserType.ADMIN
         )
         self.usertwo = UserAccount.objects.register(
             first_name="B",
             last_name="B",
             email="b@gmail.com",
             password="Password123!",
-            user_type="ADMIN"
+            user_type=UserAccount.UserType.ADMIN
         )
         self.userthree = UserAccount.objects.register(
             first_name="C",
             last_name="C",
             email="c@gmail.com",
             password="Password123!",
-            user_type="TA"
+            user_type=UserAccount.UserType.TA
         )
 
     # FIXME: This test is failing because the list is always being sorted by user type, works fine in practice

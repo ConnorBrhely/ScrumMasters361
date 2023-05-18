@@ -9,7 +9,7 @@ class TestDatabaseDeletion(TestCase):
             last_name='User',
             email="testemail@uwm.edu",
             password="TestPassword123!",
-            user_type='INSTRUCTOR',
+            user_type=UserAccount.UserType.INSTRUCTOR,
         )
 
         self.course = Course.objects.create(

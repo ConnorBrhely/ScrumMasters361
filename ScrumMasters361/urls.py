@@ -34,6 +34,7 @@ urlpatterns = [
     path('edit_user/', views.EditUser.as_view()),
     path('edit_section/', views.EditSection.as_view()),
     path('edit_section/add_ta/', views.AddSectionTA.as_view()),
+    path('edit_section/remove_ta/', views.RemoveSectionTA.as_view()),
     path('delete_user/', views.DeleteUser.as_view()),
     path('modify_account/', views.ModifyAccount.as_view()),
     path('courses/', views.Courses.as_view()),

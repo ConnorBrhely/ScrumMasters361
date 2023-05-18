@@ -9,7 +9,7 @@ class TestModelUser(TestCase):
             password="TestPassword123!",
             first_name='Test',
             last_name='User',
-            user_type='INSTRUCTOR',
+            user_type=UserAccount.UserType.INSTRUCTOR,
         )
 
         self.course = Course.objects.create(

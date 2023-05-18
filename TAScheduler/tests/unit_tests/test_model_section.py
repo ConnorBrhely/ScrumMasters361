@@ -8,7 +8,7 @@ class TestModelSection(TestCase):
             password="TestPassword123!",
             first_name='Test',
             last_name='User',
-            user_type='TA',
+            user_type=UserAccount.UserType.TA,
         )
 
         self.course = Course.objects.create(
@@ -45,7 +45,7 @@ class TestModelSection(TestCase):
             password="TestPassword123!",
             first_name='Test',
             last_name='Student',
-            user_type='STUDENT',
+            user_type=UserAccount.UserType.ADMIN,
         )
         with self.assertRaises(ValueError, msg="Did not raise ValueError for non-TA user"):
             self.section.add_ta(non_ta_user)
@@ -58,7 +58,7 @@ class TestModelSection(TestCase):
             password="TestPassword123!",
             first_name='Test1',
             last_name='User1',
-            user_type='TA',
+            user_type=UserAccount.UserType.TA,
         )
         self.section.add_ta(self.account)
         self.section.add_ta(self.account1)

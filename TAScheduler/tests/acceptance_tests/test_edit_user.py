@@ -15,7 +15,7 @@ class TestEditUser(TestCase):
             last_name="Account",
             email="newtest@uwm.edu",
             password="Password123!",
-            user_type="INSTRUCTOR")
+            user_type=UserAccount.UserType.INSTRUCTOR)
 
     def test_valid_edit(self):
         self.monkey.post(f"/edit_user?username={self.account.user.username}", {
@@ -63,7 +63,7 @@ class TestEditUser(TestCase):
             last_name="AccountTwo",
             email="newaccount@uwm.edu",
             password="Password123!",
-            user_type="ADMIN")
+            user_type=UserAccount.UserType.ADMIN)
         resp = self.monkey.post(f"/edit_user?username={self.account.user.username}", {
             "email": "newaccount@uwm.edu"
         })
