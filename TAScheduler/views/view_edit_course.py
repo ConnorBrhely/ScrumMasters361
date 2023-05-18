@@ -14,27 +14,25 @@ class EditCourse(View):
         return self.render_simple1(request)
 
     def post(self, request):
-        name=request.POST["coursename"].strip()
-        number=request.POST["coursenumber"].strip()
+        name = request.POST["coursename"].strip()
+        number = request.POST["coursenumber"].strip()
         term_year = request.POST["courseterm"].strip()
-        term_season = request.POST["term_season"].strip()
-        # s = s.split()
-        # term_season = s[0]
-        # term_year = s[1]
-        s = request.POST["courseinstructor"]
-        if s != "none":
-            instructor = UserAccount.objects.get(pk=int(s))
+        term_season = request.POST["term_season"]
+        instructor = request.POST["courseinstructor"].strip()
+        if instructor != "none":
+            instructor = UserAccount.objects.get(pk=int(instructor))
         else:
             instructor = None
-        if name == "" or number == "" or term_season == "" or term_year == "":
+
+        if name == "" or number == "" or term_season == "" or term_year == "" or instructor == "":
             return self.render_simple1(request, "One or more blank field detected", "error")
         course_id = request.POST["course_id"]
         course_to_edit = Course.objects.get(pk=course_id)
         course_to_edit.update_name(name)
         course_to_edit.update_number(number)
-        course_to_edit.update_term_year(term_year)
-        course_to_edit.update_term_season(term_season)
-        course_to_edit.update_instructor=(instructor)
+        course_to_edit.update_term_year=(term_year)
+        course_to_edit.update_term_season=(term_season)
+        course_to_edit.update_instructor = (instructor)
 
 
     def render_simple1(self, request, message="", status="success"):
@@ -45,5 +43,5 @@ class EditCourse(View):
             "status": status,
             "account": UserAccount.objects.get(user_id=request.user.id),
             "editcourse": course_to_edit,
-            "instructors": UserAccount.objects.filter(type="INSTRUCTOR")
+            "instructors": UserAccount.objects.filter(type=UserAccount.UserType.INSTRUCTOR)
         })
