@@ -20,8 +20,11 @@ class CreateCourse(View):
         s = s.split()
         term_season = s[0]
         term_year = s[1]
-        instructor = UserAccount.objects.get(pk=int(request.POST["instructor"].strip()))
-
+        instructor = request.POST["instructor"].strip()
+        if instructor != "none":
+            instructor = UserAccount.objects.get(pk=int(instructor))
+        else:
+            instructor = None
         if name == "" or number == "" or term_season == "" or term_year == "" or request.POST["instructor"].strip() == "":
             return self.render_simple(request, "One or more blank field detected", "error")
         try:
