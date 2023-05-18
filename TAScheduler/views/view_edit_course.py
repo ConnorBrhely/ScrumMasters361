@@ -34,8 +34,12 @@ class EditCourse(View):
         course_to_edit.update_term_year=(term_year)
         course_to_edit.update_term_season=(term_season)
         course_to_edit.update_instructor = (instructor)
-        return self.render_simple(request, "Course edited successfully")
-
+        return redirect("/courses/", {
+            "message": "User edited successfully",
+            "status": "success",
+            "account": UserAccount.objects.get(user_id=request.user.id),
+            "courses": Course.objects.order_by("name")
+        })
 
 
     def render_simple1(self, request, message="", status="success"):
