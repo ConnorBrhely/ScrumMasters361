@@ -21,6 +21,7 @@ from django.views.generic import RedirectView
 import TAScheduler.views as views
 
 urlpatterns = [
+    path('profile/', views.OtherAccount.as_view()),
     path('admin/', admin.site.urls),
     path('', views.Login.as_view()),
     path('login/', views.Login.as_view()),

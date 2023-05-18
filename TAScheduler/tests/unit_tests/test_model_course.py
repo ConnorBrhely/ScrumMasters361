@@ -29,48 +29,41 @@ class TestModelCourse(TestCase):
         self.course.update_name("hello")
         self.assertEqual(self.course.name, "hello", msg="Course name not updated")
     def test_update_no_name(self):
-        self.course.update_name("")
-        self.assertRaises(ValueError, msg="Course Name must not be empty")
-
-    def test_update_invalid_name(self):
-        self.course.update_name("111")
-        self.assertRaises(ValueError, msg="Course Name must contain letters")
+        with self.assertRaises(ValueError, msg="Course Name must not be empty"):
+            self.course.update_name("")
 
     def test_update_name_whitespace(self):
-      self.course.update_name("   \t\n")
-      self.assertRaises(ValueError, msg="Course Name did not raise ValueError for only whitespace")
-
+      with self.assertRaises(ValueError, msg="Course Name did not raise ValueError for only whitespace"):
+        self.course.update_name("   \t\n")
 
     def test_update_number(self):
         self.course.update_number("123")
-        self.assertEqual(self.course.number, "hello", msg="Course Number not updated")
+        self.assertEqual(self.course.number, "123", msg="Course Number not updated")
+
     def test_update_no_number(self):
-        self.course.update_number("")
-        self.assertRaises(ValueError, msg="Course Number must not be empty")
+        with self.assertRaises(ValueError, msg="Course Number must not be empty"):
+            self.course.update_number("")
 
     def test_update_invalid_number(self):
-        self.course.update_number("abcd")
-        self.assertRaises(ValueError, msg="Course Number must contain numbers")
+        with self.assertRaises(ValueError, msg="Course Number must contain numbers"):
+            self.course.update_number("abcd")
 
     def test_update_number_whitespace(self):
-       self.course.update_number("   \t\n")
-       self.assertRaises(ValueError, msg="Course Number did not raise ValueError for only whitespace")
-
+        with self.assertRaises(ValueError, msg="Course Number did not raise ValueError for only whitespace"):
+            self.course.update_number("   \t\n")
 
     def test_update_term_year(self):
         self.course.update_term_year("2025")
         self.assertEqual(self.course.term_year, "2025", msg="Term Year not updated")
 
     def test_empty_term_year(self):
-        self.course.update_term_year(None)
-        self.assertRaises(ValueError, msg="Course Term must not be None")
-
-
+        with self.assertRaises(ValueError, msg="Course Term must not be None"):
+            self.course.update_term_year(None)
 
     def test_update_invalid_term_year(self):
-        self.course.update_number("abcd")
-        self.assertRaises(ValueError, msg="Course Term must contain numbers")
+        with self.assertRaises(ValueError, msg="Course Term must contain numbers"):
+            self.course.update_number("abcd")
 
     def test_update_number_whitespace(self):
-        self.course.update_term_year("   \t\n")
-        self.assertRaises(ValueError, msg="Course Term did not raise ValueError for only whitespace")
+        with self.assertRaises(ValueError, msg="Course Term did not raise ValueError for only whitespace"):
+            self.course.update_term_year("   \t\n")

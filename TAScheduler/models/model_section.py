@@ -110,12 +110,12 @@ class Section(models.Model):
             raise ValueError("User cannot be blank")
         return user in self.tas.all()
 
-    def is_full(self):
-        """
-        Checks if the section is at full capacity
-        :return: True if the section is full, False otherwise
-        """
-        return self.tas.count() >= self.course.max_tas_per_section
+    # def is_full(self):
+    #     """
+    #     Checks if the section is at full capacity
+    #     :return: True if the section is full, False otherwise
+    #     """
+    #     return self.tas.count() >= self.course.max_tas_per_section
 
 
     def __str__(self):

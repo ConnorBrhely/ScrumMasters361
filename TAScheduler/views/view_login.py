@@ -5,12 +5,13 @@ from TAScheduler.models import UserAccount
 
 class Login(View):
     def get(self, request):
-        try:
-            UserAccount.objects.get(user_id=request.user.id)
-            if request.user.is_authenticated:
-                return redirect("/home/")
-        except UserAccount.DoesNotExist:
-            return self.render_simple(request, "Your account was set up incorrectly. Please contact an administrator.", "error")
+        if request.user.is_authenticated:
+            try:
+                UserAccount.objects.get(user_id=request.user.id)
+                if request.user.is_authenticated:
+                    return redirect("/home/")
+            except UserAccount.DoesNotExist:
+                return self.render_simple(request, "Your account was set up incorrectly. Please contact an administrator.", "error")
 
         return self.render_simple(request)
 

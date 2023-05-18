@@ -16,9 +16,7 @@
         <h1 class="text-center">Home</h1>
         <div class="btn-group-vertical" style="width: 100%" role="group">
             <a href="/accounts" class="btn btn-lg btn-primary btn-block rounded">Accounts</a>
-            {% if account.type == 'ADMIN' %}
-                <a href="/courses" class="btn btn-lg btn-primary btn-block rounded">Courses</a>
-            {% endif %}
+            <a href="/courses" class="btn btn-lg btn-primary btn-block rounded">Courses</a>
             <a href="/sections" class="btn btn-lg btn-primary btn-block rounded">Sections</a>
         </div>
         {% include "modules/messages.html" %}

@@ -82,6 +82,26 @@ def section_number(section_number_str: str):
 
     return True
 
+# Course number ex: COMPSCI 672
+def course_number(course_number_str: str):
+    """
+    Validates a given course number to ensure it is a valid course number (i.e. only 0-9, and space)
+    :param course_number_str: The course number to validate
+    :return: True if the course number is valid, False otherwise
+    """
+    if not course_number_str:
+        return False
+
+    course_number_str = course_number_str.strip()
+    if len(course_number_str) == 0:
+        return False
+
+    for char in course_number_str:
+        if not char.isdigit() and char != " ":
+            return False
+
+    return True
+
 def name(first_name: str, last_name: str):
     """
     Validates a given first and last name to ensure they are capitalized
@@ -92,8 +112,15 @@ def name(first_name: str, last_name: str):
     if not first_name or not last_name:
         return False
 
+    len_first_before = len(first_name)
+    len_last_before = len(last_name)
+
     first_name = first_name.strip()
     last_name = last_name.strip()
+
+    # Trailing whitespace is not allowed
+    if len(first_name) != len_first_before or len(last_name) != len_last_before:
+        return False
 
     if len(first_name) == 0 or len(last_name) == 0:
         return False
@@ -127,6 +154,21 @@ def term(term_str: str):
         return False
 
     if len(term_year) != 4 or not term_year.isdigit():
+        return False
+
+    return True
+
+def year(year_str: str):
+    """
+    Validates a given year string to ensure it is a valid year string (i.e. only 0-9)
+    :param year_str: The year string to validate
+    :return: True if the year string is valid, False otherwise
+    """
+    if not year_str:
+        return False
+
+    year_str = year_str.strip()
+    if len(year_str) != 4 or not year_str.isdigit():
         return False
 
     return True

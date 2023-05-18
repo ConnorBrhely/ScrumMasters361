@@ -1,11 +1,12 @@
+from django.db.models import QuerySet
+
 from ..common import validate
 from django.db import models
 from django.contrib.auth.models import User
-from TAScheduler.models import Section
+from TAScheduler.models import Section, Course
 
 class UserAccountManager(models.Manager):
     def register(self, first_name, last_name, email, password, user_type, home_address=None, phone_number=None, office_hours=None):
-        # TODO: make username just the email prefix
         user = User.objects.create_user(
             username=email,
             email=email,
@@ -144,3 +145,20 @@ class UserAccount(models.Model):
         section.tas.add(self)
         section.save()
         return self
+
+    def get_courses(self) -> QuerySet[Course]:
+        if self.type == self.UserType.TA:
+            sections = Section.objects.all()
+            courses = []
+            for section in sections:
+                if self in section.tas.all():
+                    print("TA in section: ", section.course)
+                    courses.append(section.course)
+            queryset = QuerySet(model=Course, query=None)
+            queryset._result_cache = {i: None for i in courses}
+            queryset._prefetch_done = True
+            return queryset
+        elif self.type == self.UserType.INSTRUCTOR:
+            return Course.objects.filter(instructor=self)
+        else:
+            return Course.objects.all()

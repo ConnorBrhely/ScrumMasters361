@@ -70,7 +70,9 @@
             <tbody>
             {% for loop_user in accounts %}
             <tr>
-                <td>{{ loop_user.first_name }} {{ loop_user.last_name }}</td>
+                <td>
+                    <a href="/profile?id={{ loop_user.pk }}">{{ loop_user.first_name }} {{ loop_user.last_name }}</a>
+                </td>
                 <td>{{ loop_user.user.email }}</td>
                 <td>{{ loop_user.type }}</td>
                 {% if account.type == "ADMIN" %}
