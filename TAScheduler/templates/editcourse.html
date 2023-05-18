@@ -31,16 +31,16 @@
             <div class="form-row my-4">
                 <div class="form-group">
                     <label for="courseterm">Term Year</label>
-                    <input type="text" class="form-control" id="courseterm" name="courseterm" value="{{ editcourse.term }}" required>
+                    <input type="text" class="form-control" id="courseterm" name="courseterm" value="{{ editcourse.term_year }}" required>
                 </div>
             </div>
             <div class="form-row my-4">
                 <div class="form-group">
                     <label for="term_season">Term Season</label>
                     <select class="form-control" id="term_season" name="term_season">
-                        <option value="Fall"{% if editcourse.season == "Fall" %} selected="selected"{% endif %}>Fall</option>
-                        <option value="Summer"{% if editcourse.season == "Summer" %} selected="selected"{% endif %}></option>
-                        <option value="Spring"{% if editcourse.season == "Spring" %} selected="selected"{% endif %}>Spring</option>
+                        <option value="Fall"{% if editcourse.term_season == "Fall" %} selected="selected"{% endif %}>Fall</option>
+                        <option value="Summer"{% if editcourse.term_season == "Summer" %} selected="selected"{% endif %}></option>
+                        <option value="Spring"{% if editcourse.term_season == "Spring" %} selected="selected"{% endif %}>Spring</option>
                     </select>
                 </div>
             </div>
