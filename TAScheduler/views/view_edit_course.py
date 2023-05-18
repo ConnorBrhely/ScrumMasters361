@@ -31,9 +31,9 @@ class EditCourse(View):
         course_to_edit = Course.objects.get(pk=course_id)
         course_to_edit.update_name(name)
         course_to_edit.update_number(number)
-        course_to_edit.update_term_year=(term_year)
-        course_to_edit.update_term_season=(term_season)
-        course_to_edit.update_instructor = (instructor)
+        course_to_edit.update_term_year(term_year)
+        course_to_edit.update_term_season(term_season)
+        course_to_edit.update_instructor(instructor)
         return redirect("/courses/", {
             "message": "User edited successfully",
             "status": "success",
