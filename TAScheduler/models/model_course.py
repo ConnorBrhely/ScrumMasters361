@@ -1,5 +1,4 @@
 from django.db import models
-from ..common import validate
 
 class Course(models.Model):
     TERM_SEASON_CHOICES = [
