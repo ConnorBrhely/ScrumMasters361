@@ -41,7 +41,7 @@ class Course(models.Model):
     def update_term_season(self,season):
         self.term_season = season
 
-    def update_instructor(self,user):
+    def update_instructor(self,user=None):
         self.instructor = user
 
     def __str__(self):
