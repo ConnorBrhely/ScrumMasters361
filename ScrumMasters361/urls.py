@@ -21,9 +21,9 @@ from django.views.generic import RedirectView
 import TAScheduler.views as views
 
 urlpatterns = [
+    path('', views.Login.as_view()),
     path('profile/', views.OtherAccount.as_view()),
     path('admin/', admin.site.urls),
-    path('', views.Login.as_view()),
     path('login/', views.Login.as_view()),
     path('logout/', views.Logout.as_view()),
     path('home/', views.Home.as_view()),
@@ -40,5 +40,4 @@ urlpatterns = [
     path('modify_account/', views.ModifyAccount.as_view()),
     path('courses/', views.Courses.as_view()),
     path('edit_course/', views.EditCourse.as_view())
-    # path("favicon.ico", RedirectView.as_view(url=static("images/favicon.ico")))
 ]
