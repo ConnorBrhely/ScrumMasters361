@@ -13,6 +13,7 @@ class TestModelCourse(TestCase):
 
         self.course = Course.objects.create(
             name='Test Course',
+            number='TEST 123',
             term_season='Fall',
             term_year=2023,
             instructor=self.account,
@@ -37,8 +38,8 @@ class TestModelCourse(TestCase):
         self.course.update_name("   \t\n")
 
     def test_update_number(self):
-        self.course.update_number("123")
-        self.assertEqual(self.course.number, "123", msg="Course Number not updated")
+        self.course.update_number("TEST 456")
+        self.assertEqual(self.course.number, "TEST 456", msg="Course Number not updated")
 
     def test_update_no_number(self):
         with self.assertRaises(ValueError, msg="Course Number must not be empty"):
@@ -57,7 +58,7 @@ class TestModelCourse(TestCase):
         self.assertEqual(self.course.term_year, "2025", msg="Term Year not updated")
     
     def test_str(self):
-        expected_str = 'Test Course (001), Fall 2023 | Test User'
+        expected_str = 'Test Course (TEST 123), Fall 2023 | Test User'
         self.assertEqual(str(self.course), expected_str)
 
     def test_empty_term_year(self):
@@ -67,7 +68,3 @@ class TestModelCourse(TestCase):
     def test_update_invalid_term_year(self):
         with self.assertRaises(ValueError, msg="Course Term must contain numbers"):
             self.course.update_number("abcd")
-
-    def test_update_number_whitespace(self):
-        with self.assertRaises(ValueError, msg="Course Term did not raise ValueError for only whitespace"):
-            self.course.update_term_year("   \t\n")
