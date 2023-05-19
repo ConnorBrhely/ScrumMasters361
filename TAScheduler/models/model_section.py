@@ -33,6 +33,7 @@ class Section(models.Model):
         if user is None:
             raise ValueError("User cannot be blank")
 
+        # Ensure non-TAs cannot be added to a section
         from TAScheduler.models import UserAccount
         if user.type != UserAccount.UserType.TA:
             raise ValueError('User must be a TA to be added to a section')
@@ -108,14 +109,6 @@ class Section(models.Model):
         if user is None:
             raise ValueError("User cannot be blank")
         return user in self.tas.all()
-
-    # def is_full(self):
-    #     """
-    #     Checks if the section is at full capacity
-    #     :return: True if the section is full, False otherwise
-    #     """
-    #     return self.tas.count() >= self.course.max_tas_per_section
-
 
     def __str__(self):
         return f"{self.course} - {self.number}"

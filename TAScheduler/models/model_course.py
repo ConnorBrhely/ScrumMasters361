@@ -44,6 +44,7 @@ class Course(models.Model):
         self.save()
 
     def __str__(self):
+        # If instructor is None, display "No Instructor" instead of "None"
         if self.instructor is None:
             return f"{self.name} ({self.number}), {self.term_season} {self.term_year} | No Instructor"
         return f"{self.name} ({self.number}), {self.term_season} {self.term_year} | " \

@@ -38,7 +38,7 @@ class ModifyAccount(View):
                 return self.render_simple(request, account, "Invalid phone number", "error")
             account.phone_number = phone_number
         if len(address) > 0:
-            if not validate.address(address):
+            if not validate.home_address(address):
                 return self.render_simple(request, account, "Invalid address", "error")
             account.home_address = address
         if len(email) > 0 and account.user.email != email:

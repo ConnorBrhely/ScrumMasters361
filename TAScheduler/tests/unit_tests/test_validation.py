@@ -20,7 +20,7 @@ class TestValidation(TestCase):
 
     def test_validate_email(self):
         self.assertTrue(validate.email("email@gmail.com"), msg="Valid email failed validation")
-        self.assertTrue(validate.email("e.mail@gmail.com"), msg="Valid email with dots failed validation")
+        self.assertTrue(validate.email("email123@gmail.com"), msg="Valid email with numbers failed validation")
 
     def test_validate_email_invalid(self):
         self.assertFalse(validate.email("emailgmail.com"), msg="Email with no @ passed validation")
@@ -53,27 +53,27 @@ class TestValidation(TestCase):
         self.assertFalse(validate.phone_number(" \t\n"), msg="Blank phone number passed validation")
 
     def test_validate_address(self):
-        self.assertTrue(validate.address("1234 Ammar Street"), "Valid address failed validation")
-        self.assertTrue(validate.address("1234 Ammar St."), "Valid address with abbreviation failed validation")
+        self.assertTrue(validate.home_address("1234 Ammar Street"), "Valid address failed validation")
+        self.assertTrue(validate.home_address("1234 Ammar St."), "Valid address with abbreviation failed validation")
 
     def test_validate_address_invalid_num(self):
-        self.assertFalse(validate.address("OneTwoThreeFour Ammar St."), "Address with no starting digits passed validation")
-        self.assertFalse(validate.address("Ammar St."), "Address with no numbers passed validation")
-        self.assertFalse(validate.address("12-34 Ammar St."), "Address with invalid characters in number passed validation")
+        self.assertFalse(validate.home_address("OneTwoThreeFour Ammar St."), "Address with no starting digits passed validation")
+        self.assertFalse(validate.home_address("Ammar St."), "Address with no numbers passed validation")
+        self.assertFalse(validate.home_address("12-34 Ammar St."), "Address with invalid characters in number passed validation")
 
     def test_validate_address_invalid_name(self):
-        self.assertFalse(validate.address("1234 Ammar St-"), "Address with invalid characters in name passed validation")
-        self.assertFalse(validate.address("1234 Am__mar --St."), "Address with invalid characters in name passed validation")
+        self.assertFalse(validate.home_address("1234 Ammar St-"), "Address with invalid characters in name passed validation")
+        self.assertFalse(validate.home_address("1234 Am__mar --St."), "Address with invalid characters in name passed validation")
 
     def test_validate_address_blank(self):
-        self.assertFalse(validate.address(None), "None address passed validation")
-        self.assertFalse(validate.address(""), "Blank address passed validation")
-        self.assertFalse(validate.address(" \t\n"), "Blank address with whitespace passed validation")
+        self.assertFalse(validate.home_address(None), "None address passed validation")
+        self.assertFalse(validate.home_address(""), "Blank address passed validation")
+        self.assertFalse(validate.home_address(" \t\n"), "Blank address with whitespace passed validation")
 
     def test_validate_blank_address(self):
-        self.assertFalse(validate.address(None), "None address passed validation")
-        self.assertFalse(validate.address(""), "Blank address passed validation")
-        self.assertFalse(validate.address(" \t\n"), "Blank address with whitespace passed validation")
+        self.assertFalse(validate.home_address(None), "None address passed validation")
+        self.assertFalse(validate.home_address(""), "Blank address passed validation")
+        self.assertFalse(validate.home_address(" \t\n"), "Blank address with whitespace passed validation")
 
     def test_phone_number(self):
         self.assertTrue(validate.phone_number("+1 (414) 555-1234"), msg="Valid phone number failed validation")

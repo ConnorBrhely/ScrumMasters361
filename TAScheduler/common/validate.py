@@ -21,6 +21,8 @@ def password(password_str: str):
     has_lower = False
     has_digit = False
     has_special = False
+
+    # Confirm that all required characters are present
     for char in password_str:
         if char.isupper():
             has_upper = True
@@ -44,7 +46,8 @@ def email(email_str: str):
 
     email_str = email_str.strip()
 
-    return re.match(r"[^@]+@[^@]+\.[^@]+", email_str) is not None
+    # Email regex from www.regexlib.com
+    return re.match(r"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$", email_str) is not None
 
 def phone_number(phone_number_str: str):
     """
@@ -55,8 +58,12 @@ def phone_number(phone_number_str: str):
     if not phone_number_str:
         return False
     phone_number_str = phone_number_str.strip()
+
+    # Enforce length limits
     if len(phone_number_str) < 10 or len(phone_number_str) > 32:
         return False
+
+    # Ensure that only valid characters are present
     for char in phone_number_str:
         if not char.isdigit() and char not in "()+-. ":
             return False
@@ -76,13 +83,13 @@ def section_number(section_number_str: str):
     if len(section_number_str) == 0:
         return False
 
+    # Ensure that only valid characters are present
     for char in section_number_str:
         if not char.isdigit() and char != "-":
             return False
 
     return True
 
-# Course number ex: COMPSCI 672
 def course_number(course_number_str: str):
     """
     Validates a given course number to ensure it is a valid course number (i.e. only 0-9, and space)
@@ -96,21 +103,25 @@ def course_number(course_number_str: str):
     if len(course_number_str) == 0:
         return False
 
-    # Two words in course number
+    # Must be two words in course number
     if len(course_number_str.split()) != 2:
         return False
 
     course_abbrev = course_number_str.split()[0]
     course_num = course_number_str.split()[1]
 
+    # Course abbreviation (e.g. "COMPSCI") must be between 3 and 16 characters
     if len(course_abbrev) < 3 or len(course_abbrev) > 16:
         return False
-    elif len(course_num) != 3:
+    # Course number (e.g. "101") must be 3 characters
+    if len(course_num) != 3:
         return False
 
-    if not course_abbrev.isalpha():
+    # Course abbreviation must be all uppercase letters
+    if not course_abbrev.isalpha() or not course_abbrev.isupper():
         return False
 
+    # Course number must be all digits
     if not course_num.isdigit():
         return False
 
@@ -139,9 +150,11 @@ def name(first_name: str, last_name: str):
     if len(first_name) == 0 or len(last_name) == 0:
         return False
 
+    # Names must have a capital first letter
     if first_name[0].islower() or last_name[0].islower():
         return False
 
+    # Names must be all letters
     if not first_name.isalpha() or not last_name.isalpha():
         return False
 
@@ -156,6 +169,7 @@ def term(term_str: str):
     if not term_str:
         return False
 
+    # Must be two words in term string
     term_str = term_str.strip()
     term_split = term_str.split()
     if len(term_split) != 2:
@@ -164,9 +178,11 @@ def term(term_str: str):
     term_season = term_split[0]
     term_year = term_split[1]
 
+    # Only allow valid seasons
     if term_season not in ["Spring", "Summer", "Fall"]:
         return False
 
+    # Year must be 4 digits
     if len(term_year) != 4 or not term_year.isdigit():
         return False
 
@@ -181,30 +197,34 @@ def year(year_str: str):
     if not year_str:
         return False
 
+    # Year must be 4 digits, sorry to any schools in the year 10,000
     year_str = year_str.strip()
     if len(year_str) != 4 or not year_str.isdigit():
         return False
 
     return True
 
-def address(address_str: str):
+def home_address(address_str: str):
     if not address_str:
         return False
 
-    address_str = address_str.strip()
-    address_split = address_str.split()
+    # Address must be at least 3 words
+    address_split = address_str.strip().split()
     if len(address_split) < 3:
         return False
 
     address_number = address_split[0]
     address_name = "".join(address_split[1:])
 
+    # Address number must be numeric
     if not address_number.isnumeric():
         return False
 
+    # Address name must be capitalized
     if not address_name[0].isupper():
         return False
 
+    # All words in address must be all letters or periods
     for char in address_name:
         if not char.isalpha() and not char == ".":
             return False

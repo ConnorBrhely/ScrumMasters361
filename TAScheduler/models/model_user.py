@@ -7,6 +7,18 @@ from TAScheduler.models import Section, Course
 
 class UserAccountManager(models.Manager):
     def register(self, first_name, last_name, email, password, user_type, home_address=None, phone_number=None, office_hours=None):
+        """
+        Creates a new user account and saves it to the database
+        :param first_name: The first name of the user
+        :param last_name: The last name of the user
+        :param email: The email of the user
+        :param password: The password of the user
+        :param user_type: The type of user
+        :param home_address: The home address of the user
+        :param phone_number: The phone number of the user
+        :param office_hours: The office hours of the user
+        :return: The newly created user account
+        """
         user = User.objects.create_user(
             username=email,
             email=email,
@@ -148,11 +160,14 @@ class UserAccount(models.Model):
 
     def get_courses(self) -> QuerySet[Course]:
         if self.type == self.UserType.TA:
+            # Get all sections that the user is a TA for
             sections = Section.objects.all()
             courses = []
             for section in sections:
                 if self in section.tas.all():
                     courses.append(section.course)
+
+            # Must convert to a QuerySet for filtering to work, sorry!
             queryset = QuerySet(model=Course, query=None)
             queryset._result_cache = {i: None for i in courses}
             queryset._prefetch_done = True
