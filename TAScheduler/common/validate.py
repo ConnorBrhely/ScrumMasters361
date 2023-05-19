@@ -96,9 +96,21 @@ def course_number(course_number_str: str):
     if len(course_number_str) == 0:
         return False
 
-    for char in course_number_str:
-        if not char.isdigit() and char != " ":
-            return False
+    # Two words in course number
+    if len(course_number_str.split()) != 2:
+        return False
+
+    course_abbrev = course_number_str.split()[0]
+    course_num = course_number_str.split()[1]
+
+    if len(course_abbrev) < 3:
+        return False
+
+    if not course_abbrev.isalpha():
+        return False
+
+    if not course_num.isdigit():
+        return False
 
     return True
 

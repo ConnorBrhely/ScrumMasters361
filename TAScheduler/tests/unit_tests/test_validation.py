@@ -69,7 +69,10 @@ class TestValidation(TestCase):
         self.assertFalse(validate.name("", ""), msg="Blank name passed validation")
 
     def test_validate_course_number(self):
-        self.assertTrue(validate.course_number("001"), msg="Valid course number failed validation")
+        self.assertTrue(validate.course_number("COMPSCI 361"), msg="Valid course number failed validation")
+        self.assertFalse(validate.course_number("COMPSCI361"), msg="Course number with no space passed validation")
+        self.assertFalse(validate.course_number("COMP SCI 361"), msg="Course number with too many spaces passed validation")
+        self.assertFalse(validate.course_number("001"), msg="Course number with no abbreviation passed validation")
         self.assertFalse(validate.course_number("ZeroZeroThree"), msg="Course number with alpha characters passed validation")
         self.assertFalse(validate.course_number("0 0\t3"), msg="Course number with whitespace passed validation")
         self.assertFalse(validate.course_number(""), msg="Blank course number passed validation")
