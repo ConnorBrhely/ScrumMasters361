@@ -8,8 +8,12 @@ from ..common import validate
 class ModifyAccount(View):
     def get(self, request):
         account = UserAccount.objects.get(user_id=request.user.id)
+
+        # Redirect to login page if not logged in
         if not request.user.is_authenticated:
             return redirect("/login")
+
+        # Don't let user modify an account that isn't theirs
         if request.GET["username"] != account.user.username:
             raise PermissionDenied
 
@@ -24,11 +28,11 @@ class ModifyAccount(View):
         office_hours = request.POST["officehours"].strip()
         password = request.POST["password"].strip()
 
+        # Confirm that password is correct
         if not check_password(password, account.user.password):
             return self.render_simple(request, account, "Incorrect password", "error")
 
-        # TODO: allow admins to edit their own password
-
+        # Validate and update account information
         if len(phone_number) > 0:
             if not validate.phone_number(phone_number):
                 return self.render_simple(request, account, "Invalid phone number", "error")

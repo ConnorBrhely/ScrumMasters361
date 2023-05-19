@@ -7,11 +7,15 @@ from django.core.exceptions import PermissionDenied
 
 class CreateUser(View):
     def get(self, request):
+        # If the user is not logged in, redirect them to the login page
         if not request.user.is_authenticated:
             return redirect("/login")
+
+        # Only admins can create users
         account = UserAccount.objects.get(user_id=request.user.id)
         if account.type != UserAccount.UserType.ADMIN:
             raise PermissionDenied
+
         return self.render_simple(request)
 
     def post(self, request):
@@ -19,12 +23,10 @@ class CreateUser(View):
         last_name = request.POST["lastname"].strip()
         email = request.POST["email"].strip()
 
-        if not validate.email(email):
-            return self.render_simple(request, "Invalid email entered", "error")
-
         password = request.POST["password"].strip()
         confirm_password = request.POST["confirmpassword"].strip()
 
+        # Check for blank fields
         if email == "" \
                 or password == "" \
                 or confirm_password == "" \
@@ -32,31 +34,36 @@ class CreateUser(View):
                 or last_name == "":
             return self.render_simple(request, "One or more blank field detected", "error")
 
+        # Validate user input
+        if not validate.email(email):
+            return self.render_simple(request, "Invalid email entered", "error")
+        elif not validate.name(first_name, last_name):
+            return self.render_simple(request, "Invalid name entered", "error")
+        elif not validate.email(email):
+            return self.render_simple(request, "Invalid email entered", "error")
+
         password_equal = (password == confirm_password)
         password_valid = validate.password(password)
 
-        no_such_user = False
         try:
+            # Check if user already exists, should not reach return if it does not exist
             UserAccount.objects.get(user__email=email)
-        except UserAccount.DoesNotExist:
-            no_such_user = True
-
-        if no_such_user and password_valid and password_equal:
-            m = UserAccount.objects.register(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=password,
-                user_type=request.POST["type"]
-            )
-            m.save()
-        elif not password_equal:
-            return self.render_simple(request, "Passwords do not match", "error")
-        elif not password_valid:
-            return self.render_simple(request, "Password must contain 8 characters with 1 uppercase letter, 1 number, "
-                                               "and 1 special character", "error")
-        else:
             return self.render_simple(request, "User already exists", "error")
+        except UserAccount.DoesNotExist:
+            if password_valid and password_equal:
+                new_user = UserAccount.objects.register(
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    password=password,
+                    user_type=request.POST["type"]
+                )
+                new_user.save()
+            elif not password_equal:
+                return self.render_simple(request, "Passwords do not match", "error")
+            elif not password_valid:
+                return self.render_simple(request, "Password must contain 8 characters with 1 uppercase letter, 1 number, "
+                                                   "and 1 special character", "error")
 
         return redirect("/accounts", {
             "message": "Account successfully created",

@@ -5,8 +5,10 @@ from TAScheduler.models import UserAccount
 
 class OtherAccount(View):
     def get(self, request):
+        # Don't allow non-logged in users to view this page
         if not request.user.is_authenticated:
             redirect("/login")
+
         account_other = UserAccount.objects.get(pk=request.GET["id"])
         return self.render_simple(request, account_other)
 

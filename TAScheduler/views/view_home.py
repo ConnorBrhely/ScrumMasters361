@@ -4,10 +4,11 @@ from TAScheduler.models import UserAccount
 
 class Home(View):
     def get(self,request):
-        try:
-            account = UserAccount.objects.get(user_id=request.user.id)
-        except UserAccount.DoesNotExist:
+        # If user is not logged in, redirect to login page
+        if not request.user.is_authenticated:
             return redirect("/login")
+
+        account = UserAccount.objects.get(user_id=request.user.id)
         return render(request, "home.html", {
             "account": account,
         })

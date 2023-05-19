@@ -7,14 +7,15 @@ from django.core.exceptions import PermissionDenied
 
 class EditSection(View):
     def get(self, request):
-        autofill = request.GET.get("id")
         try:
             account = UserAccount.objects.get(user_id=request.user.id)
+
             # If no username specified, redirect user to their own edit page
             if not request.user.is_authenticated:
                 return redirect("/login")
             if account.type != UserAccount.UserType.ADMIN and account.type != UserAccount.UserType.INSTRUCTOR:
                 raise PermissionDenied
+
             return self.render_simple(request)
         except UserAccount.DoesNotExist:
             raise PermissionDenied
@@ -24,6 +25,11 @@ class EditSection(View):
         location = request.POST["location"].strip()
         time = request.POST["time"].strip()
 
+        # Check for blank fields
+        if number == "" or location == "" or time == "":
+            return self.render_simple(request, "One or more blank field detected", "error")
+
+        # Validate input
         if not validate.section_number(number):
             return self.render_simple(request, "Invalid email entered", "error")
         if number == "" or location == "" or time == "":
@@ -32,6 +38,7 @@ class EditSection(View):
         section_id = request.POST["section_id"]
         section_to_edit = Section.objects.get(pk=section_id)
 
+        # Update section
         section_to_edit.update_number(number)
         section_to_edit.update_location(location)
         section_to_edit.update_time(time)

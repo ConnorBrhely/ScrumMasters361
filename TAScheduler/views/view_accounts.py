@@ -16,11 +16,23 @@ class Accounts(View):
     def post(self, request):
         account = UserAccount.objects.get(user_id=request.user.id)
         sort_method = request.POST["sorttype"].strip()
-        if sort_method == "name" or sort_method == "namereverse":
+
+        if sort_method == "name":
             users = UserAccount.objects.order_by("first_name")
-            if sort_method == "namereverse":
-                users = users.reverse()
-        else:
+        elif sort_method == "namereverse":
+            users = UserAccount.objects.order_by("first_name").reverse()
+        elif sort_method == "type":
             users = UserAccount.objects.order_by("type")
+        else:
+            # Default to sorting by type
+            users = UserAccount.objects.order_by("type")
+            return render(request, "accounts.html", {
+                "accounts": users,
+                "account": account,
+                "sorttype": sort_method,
+                "message": "Invalid sort method",
+                "status": "error"
+            })
+
         users = list(users)
         return render(request, "accounts.html", {"accounts": users, "account": account, "sorttype": sort_method})

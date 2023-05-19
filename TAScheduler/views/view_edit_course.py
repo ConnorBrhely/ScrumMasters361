@@ -7,10 +7,13 @@ from ..common import validate
 class EditCourse(View):
     def get(self, request):
         account = UserAccount.objects.get(user_id=request.user.id)
+
+        # If user is not properly authenticated, redirect to login page
         if not request.user.is_authenticated:
             return redirect("/login")
         if account.type != UserAccount.UserType.ADMIN:
             raise PermissionDenied
+
         return self.render_simple(request)
 
     def post(self, request):
@@ -20,14 +23,17 @@ class EditCourse(View):
         term_season = request.POST["term_season"]
         instructor = request.POST["courseinstructor"].strip()
 
-        if instructor != "none":
-            instructor = UserAccount.objects.get(pk=int(instructor))
-        else:
+        # Allow no instructor to be specified
+        if instructor == "none":
             instructor = None
+        else:
+            instructor = UserAccount.objects.get(pk=int(instructor))
 
+        # Check for blank fields
         if name == "" or number == "" or term_season == "" or term_year == "":
             return self.render_simple(request, "One or more blank field detected", "error")
 
+        # Validate input
         if not validate.course_number(number):
             return self.render_simple(request, "Invalid course number", "error")
         if not validate.year(term_year):
@@ -37,6 +43,8 @@ class EditCourse(View):
 
         course_id = request.POST["course_id"]
         course_to_edit = Course.objects.get(pk=course_id)
+
+        # Update course
         course_to_edit.update_name(name)
         course_to_edit.update_number(number)
         course_to_edit.update_term_year(term_year)

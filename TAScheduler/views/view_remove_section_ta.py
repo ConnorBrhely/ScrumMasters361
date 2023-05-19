@@ -11,6 +11,7 @@ class RemoveSectionTA(View):
         section = Section.objects.get(pk=section_id)
         ta_to_remove = UserAccount.objects.get(pk=ta_id)
 
+        # Error if we tried to remove a TA that isn't in the section
         if ta_to_remove not in section.get_tas():
             return self.render_simple(request, "TA not in section", "error")
 

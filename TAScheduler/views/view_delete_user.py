@@ -9,43 +9,52 @@ class DeleteUser(View):
     def get(self, request):
         autofill = request.GET.get("username")
         if autofill is None:
+            # If no username is provided, redirect to accounts page
             return redirect("/accounts")
+
         try:
             account = UserAccount.objects.get(user_id=request.user.id)
-            editaccount = UserAccount.objects.get(user__username=autofill)
-            if account == editaccount:
-                raise PermissionDenied
+            edit_account = UserAccount.objects.get(user__username=autofill)
+
+            # If user is not properly authenticated, redirect to login page
             if not request.user.is_authenticated:
                 return redirect("/login")
             if account.type != UserAccount.UserType.ADMIN:
                 raise PermissionDenied
-            return render(request, "deleteuser.html", {"account": account, "editaccount": editaccount})
+
+            # Don't let user delete themselves
+            if account == edit_account:
+                raise PermissionDenied
+
+            return render(request, "deleteuser.html", {"account": account, "editaccount": edit_account})
         except UserAccount.DoesNotExist:
-            raise PermissionDenied
+            raise ValueError("User does not exist")
 
     def post(self, request):
+        user_account = request.POST["confirmdelete"]
 
-        useraccount = request.POST["confirmdelete"]
-        """User account is either email or 'donotdelete' if box isnt checked"""
-        """Edit acount is the name of the account regardless in order to autofill form if submitted without check off"""
+        # User account is either email, or 'donotdelete' if the confirmation box isn't checked
+        # Edit account is the name of the account regardless in order to autofill form if submitted without check off
         account_to_edit = request.POST["editaccount"]
         account_to_edit = UserAccount.objects.get(user__email=account_to_edit)
-        message = "User deleted successfully"
-        status = "success"
         account = UserAccount.objects.get(user__id=request.user.id)
-        if useraccount == "donotdelete":
-            message = "Must check box to confirm"
-            status = "error"
+
+        # Confirmation box not checked
+        if user_account == "donotdelete":
             return render(request, "deleteuser.html", {
-                "message": message,
-                "status": status,
+                "message": "Must check box to confirm",
+                "status": "error",
                 "account": account,
                 "editaccount": account_to_edit
             })
         else:
-            account_to_delete = UserAccount.objects.get(user__username=useraccount)
+            # Delete user and its Django user account
+            account_to_delete = UserAccount.objects.get(user__username=user_account)
             account_to_delete.user.delete()
             account_to_delete.delete()
-            return redirect("/accounts", {"message": message, "status": status, "account": account,
-                                                 "accounts": UserAccount.objects.order_by("type")})
-
+            return redirect("/accounts", {
+                "message": "User deleted successfully",
+                "status": "success",
+                "account": account,
+                "accounts": UserAccount.objects.order_by("type"),
+            })

@@ -7,7 +7,6 @@ class CreateSection(View):
         return self.render_simple(request)
 
     def post(self, request):
-        no_such_section = False
         number = request.POST["number"].strip()
         course = request.POST["course"].strip()
         location = request.POST["location"].strip()
@@ -16,19 +15,17 @@ class CreateSection(View):
         if course == "" or number == "" or location == "" or time == "":
             return self.render_simple(request, "One or more blank field detected", "error")
         try:
+            # Check if section already exists, should not reach return if section does not exist
             Section.objects.get(number=number, course=course)
+            return self.render_simple(request, "Section already exists", "error")
         except Section.DoesNotExist:
-            no_such_section = True
-        if no_such_section:
-            m = Section.objects.create(
+            new_section = Section.objects.create(
                 number=number,
                 location=location,
                 course=Course.objects.get(pk=int(course)),
                 time=time
             )
-            m.save()
-        else:
-            return self.render_simple(request, "Section already exists", "error")
+            new_section.save()
 
         return self.render_simple(request, "Section successfully created")
 
