@@ -55,6 +55,10 @@ class TestModelCourse(TestCase):
     def test_update_term_year(self):
         self.course.update_term_year("2025")
         self.assertEqual(self.course.term_year, "2025", msg="Term Year not updated")
+    
+    def test_str(self):
+        expected_str = 'Test Course (001), Fall 2023 | Test User'
+        self.assertEqual(str(self.course), expected_str)
 
     def test_empty_term_year(self):
         with self.assertRaises(ValueError, msg="Course Term must not be None"):
