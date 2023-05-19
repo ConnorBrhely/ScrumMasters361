@@ -23,8 +23,7 @@ class TestDeleteUser(TestCase):
             "confirmdelete": "newtest@uwm.edu",
             "editaccount": "newtest@uwm.edu"
         }, follow=True)
-        # TODO: more rigorous testing of response
-        self.assertEqual(2, UserAccount.objects.count(), msg="User not deleted")
+        self.assertEqual(1, UserAccount.objects.count(), msg="User not deleted")
 
     def test_uncheckedDelete(self):
         self.assertEqual(2, UserAccount.objects.count(), msg="Are not two objects before attempted deletion")

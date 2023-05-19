@@ -67,3 +67,17 @@ class TestValidation(TestCase):
         self.assertFalse(validate.name("j0hn", "d0e"), msg="Name with digits passed validation")
         self.assertFalse(validate.name("  ", "\t"), msg="Name with whitespace passed validation")
         self.assertFalse(validate.name("", ""), msg="Blank name passed validation")
+
+    def test_validate_course_number(self):
+        self.assertTrue(validate.course_number("001"), msg="Valid course number failed validation")
+        self.assertFalse(validate.course_number("ZeroZeroThree"), msg="Course number with alpha characters passed validation")
+        self.assertFalse(validate.course_number("0 0\t3"), msg="Course number with whitespace passed validation")
+        self.assertFalse(validate.course_number(""), msg="Blank course number passed validation")
+        self.assertFalse(validate.course_number("  \t"), msg="Blank course number with whitespace passed validation")
+
+    def test_validate_year(self):
+        self.assertTrue(validate.year("2020"), msg="Valid year failed validation")
+        self.assertFalse(validate.year("TwentyTwenty"), msg="Year with alpha characters passed validation")
+        self.assertFalse(validate.year("2 0\t2 0"), msg="Year with whitespace passed validation")
+        self.assertFalse(validate.year(""), msg="Blank year passed validation")
+        self.assertFalse(validate.year("  \t"), msg="Blank year with whitespace passed validation")
