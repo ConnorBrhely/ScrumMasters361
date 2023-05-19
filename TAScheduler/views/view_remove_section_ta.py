@@ -15,7 +15,6 @@ class RemoveSectionTA(View):
             return self.render_simple(request, "TA not in section", "error")
 
         section.remove_ta(ta_to_remove)
-        print("Removed TA from section " + section_id)
         return redirect("/edit_section?id=" + section_id)
 
     @staticmethod

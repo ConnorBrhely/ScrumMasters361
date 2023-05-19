@@ -152,7 +152,6 @@ class UserAccount(models.Model):
             courses = []
             for section in sections:
                 if self in section.tas.all():
-                    print("TA in section: ", section.course)
                     courses.append(section.course)
             queryset = QuerySet(model=Course, query=None)
             queryset._result_cache = {i: None for i in courses}

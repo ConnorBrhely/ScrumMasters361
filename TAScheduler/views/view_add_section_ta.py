@@ -9,13 +9,11 @@ class AddSectionTA(View):
         section_id = request.POST["section_id"]
         section = Section.objects.get(pk=section_id)
         ta_to_add = UserAccount.objects.get(pk=request.POST["ta-to-add"])
-        print("Adding TA: " + ta_to_add.first_name + " " + ta_to_add.last_name + ", to section " + section_id)
 
         if ta_to_add in section.get_tas():
             return self.render_simple(request, "TA already in section", "error")
 
         section.add_ta(ta_to_add)
-        print("Added TA to section " + section_id)
         return redirect("/edit_section?id=" + section_id)
 
     @staticmethod
