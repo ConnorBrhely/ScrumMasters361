@@ -5,6 +5,8 @@ from TAScheduler.models import UserAccount, Section
 
 class Sections(View):
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect("/login")
         account = UserAccount.objects.get(user_id=request.user.id)
         sections = Section.objects.order_by("course")
         return render(request, "sections.html", {"sections": sections, "account": account})

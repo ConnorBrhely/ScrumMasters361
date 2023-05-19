@@ -5,6 +5,8 @@ from TAScheduler.models import UserAccount
 
 class Accounts(View):
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect("/login")
         users = UserAccount.objects.order_by("type")
         account = UserAccount.objects.get(user_id=request.user.id)
         users = list(users)

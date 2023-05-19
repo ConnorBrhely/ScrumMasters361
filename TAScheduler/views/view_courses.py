@@ -5,6 +5,8 @@ from TAScheduler.models import UserAccount
 class Courses(View):
 
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect("/login")
         account = UserAccount.objects.get(user_id=request.user.id)
         courses = account.get_courses().order_by("name")
         return render(request, "courses.html", {"courses": courses, "account": account})
