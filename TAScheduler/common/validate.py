@@ -55,10 +55,10 @@ def phone_number(phone_number_str: str):
     if not phone_number_str:
         return False
     phone_number_str = phone_number_str.strip()
-    if len(phone_number_str) < 10:
+    if len(phone_number_str) < 10 or len(phone_number_str) > 32:
         return False
     for char in phone_number_str:
-        if not char.isdigit() and char not in "()+- ":
+        if not char.isdigit() and char not in "()+-. ":
             return False
 
     return True
@@ -103,7 +103,9 @@ def course_number(course_number_str: str):
     course_abbrev = course_number_str.split()[0]
     course_num = course_number_str.split()[1]
 
-    if len(course_abbrev) < 3:
+    if len(course_abbrev) < 3 or len(course_abbrev) > 16:
+        return False
+    elif len(course_num) != 3:
         return False
 
     if not course_abbrev.isalpha():
