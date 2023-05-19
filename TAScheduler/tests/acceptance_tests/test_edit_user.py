@@ -17,20 +17,6 @@ class TestEditUser(TestCase):
             password="Password123!",
             user_type=UserAccount.UserType.INSTRUCTOR)
 
-    # FIXME: This test is failing for some reason
-    # def test_valid_edit(self):
-    #     self.monkey.post(f"/edit_user?username={self.account.user.username}", {
-    #         "firstname": "New",
-    #         "lastname": "New",
-    #         "email": "new@gmail.com",
-    #         "password": "Updated123!",
-    #         "confirmpassword": "Updated123!"
-    #     }, follow=True)
-    #     updated_account = UserAccount.objects.get(user_id=self.account.user.id)
-    #     self.assertEqual(updated_account.first_name, "New", msg="First name not updated correctly")
-    #     self.assertEqual(updated_account.last_name, "New", msg="Last name not updated correctly")
-    #     self.assertEqual(updated_account.user.email, "new@gmail.com", msg="Email not updated correctly")
-
     def test_invalidName(self):
         resp = self.monkey.post(f"/edit_user?username={self.account.user.username}", {
             "firstname": "invalid",
